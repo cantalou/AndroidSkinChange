@@ -11,5 +11,5 @@
 
 #缺陷
 1.已打开的Activity不支持如下操作</br>
-  1.1 不支持动态创建的view,如: 在代码中通过new TextView()创建</br>
-  1.2 不支持
+  <li>不支持动态创建的view,如: 在代码中通过new TextView()创建</br>
+  <li>不支持
