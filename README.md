@@ -13,7 +13,8 @@
 1. 已创建的Activity自动替换资源不支持如下操作:</br>
    <ul>
      <li> 在代码中动态设置View的background, ImageView的src, TextView的textColor, drawableLeft等</li>
-     <li> 在代码中通过new View()生成的视图
+     <li> 在代码中通过new View()生成的视图</li>
    </ul>
-2. 不支持layout资源切换, 即layout资源只会使用app内自带的资源文件</li>
-3. 暂不支持padding, margin, textSize等类型的资源切换
+2. 不支持layout资源切换, 即layout资源只会使用app内自带的资源文件
+3. 不支持drawable中xml类型资源的切换, 不同版本间同一个xml文件不得修改
+4. 暂不支持padding, margin, textSize等类型的资源切换
