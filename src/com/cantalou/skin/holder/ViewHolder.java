@@ -19,7 +19,7 @@ public class ViewHolder extends AbstractHolder {
 	@Override
 	public boolean parse(AttributeSet attrs) {
 		background = getResourceId(attrs, "background");
-		return background != 0;
+		return super.parse(attrs) && background != 0;
 	}
 
 }

@@ -21,6 +21,7 @@ public class TextViewHolder extends ViewHolder {
 	protected int shadowColor;
 	protected int textCursorDrawable;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void reload(View view, Resources res) {
 		super.reload(view, res);

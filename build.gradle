@@ -4,21 +4,22 @@ buildscript {
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
         classpath 'com.android.tools.build:gradle:1.+'
     }
 }
 
 apply plugin: 'com.android.library'
-android {
 
-    repositories {
-       maven {url "http://dl.bintray.com/cantalou/maven" }
-    }
-    dependencies {
-      compile "com.cantalou:android-util:1.0.0"
-    }
-    
+repositories {
+  jcenter()
+  //maven {url "http://dl.bintray.com/cantalou/maven" }
+}
+dependencies {
+  compile 'com.cantalou:android-util:1.0.0'
+}
+
+android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'

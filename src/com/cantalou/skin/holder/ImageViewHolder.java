@@ -9,6 +9,7 @@ public class ImageViewHolder extends ViewHolder {
 
 	protected int src;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void reload(View view, Resources res) {
 		super.reload(view, res);

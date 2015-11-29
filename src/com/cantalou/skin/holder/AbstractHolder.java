@@ -5,9 +5,19 @@ import android.view.View;
 
 public abstract class AbstractHolder implements AttrHolder {
 
+	/**
+	 * 父类的parse是否有被调用
+	 */
+	private boolean called = false;
+
 	@Override
 	public final void parse(View view, AttributeSet attrs) {
-		if (parse(attrs)) {
+		called = false;
+		boolean result = parse(attrs);
+		if (!called) {
+			throw new IllegalStateException("super parse(AttributeSet attrs) must be call");
+		}
+		if (result) {
 			view.setTag(ATTR_HOLDER_KEY, this);
 		}
 	}
@@ -18,7 +28,10 @@ public abstract class AbstractHolder implements AttrHolder {
 	 * @param attrs
 	 * @return 组件使用app资源 true
 	 */
-	public abstract boolean parse(AttributeSet attrs);
+	protected boolean parse(AttributeSet attrs) {
+		called = true;
+		return true;
+	}
 
 	protected int getResourceId(AttributeSet attrs, String name) {
 		int len = attrs.getAttributeCount();

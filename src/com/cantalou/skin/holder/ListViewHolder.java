@@ -9,6 +9,7 @@ public class ListViewHolder extends ViewHolder {
 
 	protected int divider;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void reload(View view, Resources res) {
 		super.reload(view, res);
