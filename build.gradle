@@ -11,10 +11,25 @@ buildscript {
 
 apply plugin: 'com.android.library'
 android {
+
+    repositories {
+       maven {url "http://dl.bintray.com/cantalou/maven" }
+    }
+    dependencies {
+      compile "com.cantalou:android-util:1.0.0"
+    }
+    
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src', 'src']
+        }
+    }
+
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
-        defaultConfig {
+    defaultConfig {
         minSdkVersion 9
         targetSdkVersion 18
     }
@@ -31,6 +46,7 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+    
 }
 
 
