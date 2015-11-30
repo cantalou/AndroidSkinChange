@@ -8,6 +8,7 @@ Android换肤,基于插件式的资源切换方案
 
 #原理
 通过替换Activity的mResources和mTheme两个属性
+http://blog.csdn.net/cantalou/article/details/49708469
 
 #缺陷
 1. 已创建的Activity自动替换资源不支持如下操作:</br>
