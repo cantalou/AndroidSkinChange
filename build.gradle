@@ -13,10 +13,9 @@ apply plugin: 'com.android.library'
 
 repositories {
   jcenter()
-  //maven {url "http://dl.bintray.com/cantalou/maven" }
 }
 dependencies {
-  compile 'com.cantalou:android-util:1.0.0@aar'
+  compile 'com.cantalou:android-util:1+@aar'
 }
 
 android {
@@ -56,4 +55,5 @@ android {
 
 
 // this script was used to upload files to bintray.
-apply from: 'https://raw.githubusercontent.com/msdx/gradle-publish/master/bintray.gradle'
+//apply from: 'https://raw.githubusercontent.com/msdx/gradle-publish/master/bintray.gradle'
+apply from: './bintray.gradle'

@@ -11,15 +11,29 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+ext {
+    aarJars = project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+android.libraryVariants.all { variant -> 
+    parent.ext.aarJars += files(variant.javaCompile.classpath.files)
+}
+
+aarJars.each{
+  println it
+}
+
 task javadoc(type: Javadoc) {
-    failOnError false
     source = android.sourceSets.main.java.srcDirs
-    classpath += configurations.compile
+    //classpath += configurations.compile
+    //classpath += files('D:/work/ws/git/androidSkinChange/build/intermediates/exploded-aar/com.cantalou/android-util/1.0.4/jars/classes.jar')
+    classpath += aarJars
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    //classpath += files(project.tasks('javaCompile').classpath.files, project.android.getBootClasspath())
+    failOnError false
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    failOnError false
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
