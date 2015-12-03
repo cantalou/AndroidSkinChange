@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
+import com.cantalou.android.util.ReflectUtil;
+
 import android.annotation.SuppressLint;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
@@ -241,7 +243,7 @@ public class ProxyResources extends Resources {
 				String file = value.string.toString();
 				if (file.endsWith(".xml")) {
 					try {
-						XmlResourceParser rp = invoke(this, "loadXmlResourceParser", new Class[] { String.class, int.class, int.class,
+						XmlResourceParser rp = invoke(res, "loadXmlResourceParser", new Class[] { String.class, int.class, int.class,
 								String.class }, file, id, value.assetCookie, "drawable");
 						result = Drawable.createFromXml(this, rp);
 						rp.close();
@@ -256,6 +258,7 @@ public class ProxyResources extends Resources {
 						BitmapFactory.Options opts = new BitmapFactory.Options();
 						if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
 							opts.inPreferredConfig = Bitmap.Config.RGB_565;
+							ReflectUtil.set(opts, "inNativeAlloc", true);
 						}
 						opts.inPurgeable = true;
 						opts.inInputShareable = true;
@@ -332,9 +335,9 @@ public class ProxyResources extends Resources {
 				String file = value.string.toString();
 				if (file.endsWith(".xml")) {
 					try {
-						XmlResourceParser rp = invoke(this, "loadXmlResourceParser", new Class[] { String.class, int.class, int.class,
+						XmlResourceParser rp = invoke(res, "loadXmlResourceParser", new Class[] { String.class, int.class, int.class,
 								String.class }, file, id, value.assetCookie, "drawable");
-						result = ColorStateList.createFromXml(this, rp);
+						result = ColorStateList.createFromXml(res, rp);
 						rp.close();
 					} catch (Exception e) {
 						Log.e(TAG, e.getMessage());
