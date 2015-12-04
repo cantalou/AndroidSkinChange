@@ -22,7 +22,8 @@ Android换肤,基于插件式的资源切换方案
     dependencies {</br>
         compile 'com.cantalou:android-skin-change:1+@aar'</br>
     }</br>
-2. 在Activity的onCreate方法中添加如下代码</br>
+2. 代码集成:</br>
+    2.1 在BaseActivity(项目所有Activity的父类)或者所有的Activity的中添加如下代码</br>
     @Override</br>
 	protected void onCreate() {</br>
 	    SkinManager.getInstance().onAttach(this);</br>
