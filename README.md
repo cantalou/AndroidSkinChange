@@ -24,16 +24,16 @@ Android换肤,基于插件式的资源切换方案
     }</br>
 2. 在Activity的onCreate方法中添加如下代码</br>
     @Override</br>
-	protected void onCreate() {
-	    SkinManager.getInstance().onAttach(this);
-		super.onCreate();
-	}
+	protected void onCreate() {</br>
+	    SkinManager.getInstance().onAttach(this);</br>
+		super.onCreate();</br>
+	}</br>
 
-	@Override
-	protected void onDestroy() {
-		SkinManager.getInstance().onDestroy(this);
-		super.onDestroy();
-	}
+	@Override</br>
+	protected void onDestroy() {</br>
+		SkinManager.getInstance().onDestroy(this);</br>
+		super.onDestroy();</br>
+	}</br>
 
 #实现原理
 通过替换Activity的mResources和mTheme两个属性</br>
