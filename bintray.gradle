@@ -64,7 +64,7 @@ publishing {
             artifact javadocJar
             artifact sourcesJar
 
-            pom {
+            pom{
                 packaging 'aar'
             }
             pom.withXml {
@@ -94,8 +94,8 @@ afterEvaluate {
 }
 
 bintray {
-    user = hasProperty("bintrayUser") ? getProperty("bintrayUser") : getProperty("BINTRAY_USER")
-    key = hasProperty("bintrayKey") ? getProperty("bintrayKey") : getProperty("BINTRAY_KEY")
+    user = hasProperty("bintrayUser")?getProperty("bintrayUser"):getProperty("BINTRAY_USER") 
+    key = hasProperty("bintrayKey")?getProperty("bintrayKey"):getProperty("BINTRAY_KEY")
 
     publications = ['mavenJava']
     publish = true
