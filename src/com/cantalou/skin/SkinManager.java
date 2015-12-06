@@ -1,6 +1,7 @@
 package com.cantalou.skin;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.cantalou.skin.holder.AttrHolder;
+import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.resources.NightResources;
 import com.cantalou.skin.resources.ProxyResources;
 import com.cantalou.skin.resources.SkinResources;
@@ -39,8 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.cantalou.android.util.ReflectUtil.invoke;
-import static com.cantalou.android.util.ReflectUtil.set;
+import static com.cantalou.android.util.ReflectUtil.*;
 
 /**
  * 
@@ -101,11 +102,6 @@ public class SkinManager {
 	 */
 	private Factory viewFactory = new ViewFactory();
 
-	/**
-	 * Activity for reload resources
-	 */
-	private ArrayList<Class<?>> acticityForReloadResources = new ArrayList<Class<?>>();
-
 	private static class InstanceHolder {
 		static final SkinManager INSTANCE = new SkinManager();
 	}
@@ -117,8 +113,35 @@ public class SkinManager {
 		return InstanceHolder.INSTANCE;
 	}
 
-	public void init(Context cxt) {
-		// acticityForReloadResources.add(SkinActivity.class);
+	public void applicationOnCreate(Context cxt) {
+
+		if (Looper.getMainLooper() != Looper.myLooper()) {
+			throw new RuntimeException("applicationOnCreate method can only be called in the main thread");
+		}
+
+		Class<?> activityThreadClass = forName("android.app.ActivityThread");
+		if (activityThreadClass == null) {
+			Log.w("Fail to load class android.app.ActivityThread. Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+			return;
+		}
+
+		Object activityThread = invoke(activityThreadClass, "currentActivityThread");
+		if (activityThread == null) {
+			Log.w("Fail to get ActivityThread instance. Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+			return;
+		}
+
+		Instrumentation instrumentation = invoke(activityThreadClass, "getInstrumentation");
+		if (instrumentation == null) {
+			Log.w("Can not load class android.app.ActivityThread. Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+			return;
+		}
+
+		SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
+		if (!set(activityThread, "mInstrumentation", instrumentation)) {
+			Log.w("Fail to replace field named mInstrumentation . Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+		}
+
 	}
 
 	/**
@@ -319,9 +342,14 @@ public class SkinManager {
 			}
 		}
 
-		Window w = a.getWindow();
+		final Window w = a.getWindow();
 		if (w != null) {
-			onResourcesChange(w.getDecorView());
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					onResourcesChange(w.getDecorView());
+				}
+			});
 		}
 	}
 
@@ -331,13 +359,8 @@ public class SkinManager {
 		}
 
 		if (v instanceof OnResourcesChangeListener) {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					((OnResourcesChangeListener) v).onResourcesChange();
-					v.invalidate();
-				}
-			});
+			((OnResourcesChangeListener) v).onResourcesChange();
+			v.invalidate();
 		}
 
 		if (v instanceof AbsListView) {
@@ -370,7 +393,7 @@ public class SkinManager {
 	 * @param activity
 	 *            要更新皮肤的界面
 	 */
-	public void onAttach(Activity activity) {
+	public void onCreate(Activity activity) {
 
 		if (defaultResources == null) {
 			defaultResources = activity.getResources();
