@@ -73,67 +73,56 @@ public class SkinInstrumentation extends Instrumentation {
 
 	@Override
 	public ComponentName getComponentName() {
-
 		return targetInstrucmentation.getComponentName();
 	}
 
 	@Override
 	public Context getTargetContext() {
-
 		return targetInstrucmentation.getTargetContext();
 	}
 
 	@Override
 	public boolean isProfiling() {
-
 		return targetInstrucmentation.isProfiling();
 	}
 
 	@Override
 	public void addMonitor(ActivityMonitor monitor) {
-
 		targetInstrucmentation.addMonitor(monitor);
 	}
 
 	@Override
 	public ActivityMonitor addMonitor(IntentFilter filter, ActivityResult result, boolean block) {
-
 		return targetInstrucmentation.addMonitor(filter, result, block);
 	}
 
 	@Override
 	public ActivityMonitor addMonitor(String cls, ActivityResult result, boolean block) {
-
 		return targetInstrucmentation.addMonitor(cls, result, block);
 	}
 
 	@Override
 	public void callActivityOnNewIntent(Activity activity, Intent intent) {
-
 		targetInstrucmentation.callActivityOnNewIntent(activity, intent);
 	}
 
 	@Override
 	public void callActivityOnPause(Activity activity) {
-
 		targetInstrucmentation.callActivityOnPause(activity);
 	}
 
 	@Override
 	public void callActivityOnPostCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
-
 		targetInstrucmentation.callActivityOnPostCreate(activity, icicle, persistentState);
 	}
 
 	@Override
 	public void callActivityOnPostCreate(Activity activity, Bundle icicle) {
-
 		targetInstrucmentation.callActivityOnPostCreate(activity, icicle);
 	}
 
 	@Override
 	public void callActivityOnRestart(Activity activity) {
-
 		targetInstrucmentation.callActivityOnRestart(activity);
 	}
 
