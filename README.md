@@ -22,9 +22,9 @@ Android换肤,基于插件式的资源切换方案
     dependencies {</br>
         compile 'com.cantalou:android-skin-change:1+@aar'</br>
     }</br>
-2. 代码集成:</br>
-    2.1 在BaseActivity(项目所有Activity的父类)或者所有的Activity的中添加如下代码</br>
-    @Override</br>
+2. 代码集成的两种方式:</br>
+    2.1 在BaseActivity(项目所有Activity的父类)或者所有的Activity的中添加如下代码:</br>
+        @Override</br>
 	protected void onCreate() {</br>
 	    SkinManager.getInstance().onAttach(this);</br>
 		super.onCreate();</br>
@@ -34,7 +34,8 @@ Android换肤,基于插件式的资源切换方案
 	protected void onDestroy() {</br>
 		SkinManager.getInstance().onDestroy(this);</br>
 		super.onDestroy();</br>
-	}</br>
+	}</br> 
+     2.2 在自定义的Application的onCreate中添加如下代码:</br>
 
 #实现原理
 通过替换Activity的mResources和mTheme两个属性</br>

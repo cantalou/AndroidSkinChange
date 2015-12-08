@@ -1,6 +1,7 @@
 package com.cantalou.skin;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.cantalou.skin.holder.AttrHolder;
+import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.resources.NightResources;
 import com.cantalou.skin.resources.ProxyResources;
 import com.cantalou.skin.resources.SkinResources;
@@ -39,10 +41,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.cantalou.android.util.ReflectUtil.invoke;
-import static com.cantalou.android.util.ReflectUtil.set;
+import static com.cantalou.android.util.ReflectUtil.*;
 
 /**
+ * 皮肤资源Manager
  * 
  * @author LinZhiWei
  * @date 2015年10月31日 下午3:49:46
@@ -50,21 +52,14 @@ import static com.cantalou.android.util.ReflectUtil.set;
 public class SkinManager {
 
 	/**
-	 * 存放资源包目录
-	 */
-	private static final String SKIN_DIR = "/skin";
-
-	public static final String PREF_KEY_SKIN_NAME = "skinName";
-
-	/**
 	 * 默认皮肤
 	 */
-	public static final String DEFAULT_SKIN_NAME = "defaultSkinName";
+	public static final String DEFAULT_SKIN = "defaultSkin";
 
 	/**
 	 * 夜间模式皮肤资源名称, 夜间模式属于内置资源包
 	 */
-	public static final String DEFAULT_SKIN_NAME_NIGHT = "defaultSkinNameNight";
+	public static final String DEFAULT_SKIN_NIGHT = "defaultSkinNight";
 
 	/**
 	 * activity
@@ -87,9 +82,9 @@ public class SkinManager {
 	private Resources defaultResources;
 
 	/**
-	 * 资源名称
+	 * 资源
 	 */
-	String currentSkinName;
+	String currentSkin;
 
 	/**
 	 * 资源切换时提交View刷新任务到UI线程
@@ -102,9 +97,9 @@ public class SkinManager {
 	private Factory viewFactory = new ViewFactory();
 
 	/**
-	 * Activity for reload resources
+	 * 皮肤资源信息接口
 	 */
-	private ArrayList<Class<?>> acticityForReloadResources = new ArrayList<Class<?>>();
+	private SkinResourcesInfoListener skinResourcesInfoListener;
 
 	private static class InstanceHolder {
 		static final SkinManager INSTANCE = new SkinManager();
@@ -117,20 +112,39 @@ public class SkinManager {
 		return InstanceHolder.INSTANCE;
 	}
 
-	public void init(Context cxt) {
-		// acticityForReloadResources.add(SkinActivity.class);
-	}
-
 	/**
-	 * 获取存储皮肤文件目录
-	 *
-	 * @param cxt
-	 * @return 文件目录
+	 * 通过替换ActivityThread中的mInstrumentation属性, 拦截Activity的生命周期回调, 添加皮肤功能
+	 * 
 	 */
-	public File getSkinDir(Context cxt) {
-		File dir = new File(cxt.getFilesDir() + File.separator + SKIN_DIR);
-		dir.mkdirs();
-		return dir;
+	public void initByReplaceInstrumentation() {
+
+		if (Looper.getMainLooper() != Looper.myLooper()) {
+			throw new RuntimeException("applicationOnCreate method can only be called in the main thread");
+		}
+
+		Class<?> activityThreadClass = forName("android.app.ActivityThread");
+		if (activityThreadClass == null) {
+			Log.w("Fail to load class android.app.ActivityThread. Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+			return;
+		}
+
+		Object activityThread = invoke(activityThreadClass, "currentActivityThread");
+		if (activityThread == null) {
+			Log.w("Fail to get ActivityThread instance. Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+			return;
+		}
+
+		Instrumentation instrumentation = invoke(activityThreadClass, "getInstrumentation");
+		if (instrumentation == null) {
+			Log.w("Can not load class android.app.ActivityThread. Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+			return;
+		}
+
+		SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
+		if (!set(activityThread, "mInstrumentation", instrumentation)) {
+			Log.w("Fail to replace field named mInstrumentation . Try invoking onCreate in Activity.onCreate method before invoking super.onCreate");
+		}
+
 	}
 
 	/**
@@ -140,27 +154,26 @@ public class SkinManager {
 	 * @param skinName
 	 *            皮肤资源文件名
 	 * @return 皮肤资源对象
-	 * @throws FileNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
 	 */
-	private Resources createSkinResource(Context cxt, String skinName) throws FileNotFoundException, InstantiationException,
-			IllegalAccessException {
-		if (DEFAULT_SKIN_NAME_NIGHT.equals(skinName) || DEFAULT_SKIN_NAME.equals(skinName)) {
+	private Resources createSkinResource(String skinPath) {
+		if (DEFAULT_SKIN_NIGHT.equals(skinPath) || DEFAULT_SKIN.equals(skinPath)) {
 			return defaultResources;
 		}
 
 		Resources skinResources = null;
 
-		File skinFile = new File(getSkinDir(cxt), skinName);
+		File skinFile = new File(skinPath);
 		if (!skinFile.exists()) {
-			throw new FileNotFoundException(skinFile + " not found");
+			Log.e(new FileNotFoundException(skinFile + " does not exist"));
 		}
 
-		AssetManager am = AssetManager.class.newInstance();
-		invoke(am, "addAssetPath", new Class<?>[] { String.class }, skinFile.getAbsolutePath());
-		skinResources = new SkinResources(am, defaultResources, skinName);
-
+		try {
+			AssetManager am = AssetManager.class.newInstance();
+			invoke(am, "addAssetPath", new Class<?>[] { String.class }, skinFile.getAbsolutePath());
+			skinResources = new SkinResources(am, defaultResources, skinPath);
+		} catch (Exception e) {
+			Log.e(e);
+		}
 		return skinResources;
 	}
 
@@ -171,27 +184,23 @@ public class SkinManager {
 	 * @param skinName
 	 *            资源名称
 	 * @return 代理Resources
-	 * @throws FileNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
 	 */
-	private Resources createProxyResource(Context cxt, String skinName) throws FileNotFoundException, InstantiationException,
-			IllegalAccessException {
+	private Resources createProxyResource(Context cxt, String skinPath) {
 		Resources res = null;
-		WeakReference<Resources> resRef = cacheResources.get(skinName);
+		WeakReference<Resources> resRef = cacheResources.get(skinPath);
 		if (resRef != null) {
 			res = resRef.get();
 			if (res != null) {
 				return res;
 			}
 		}
-		if (DEFAULT_SKIN_NAME_NIGHT.equals(skinName)) {
-			res = new NightResources(cxt.getPackageName(), createSkinResource(cxt, skinName), defaultResources, skinName);
+		if (DEFAULT_SKIN_NIGHT.equals(skinPath)) {
+			res = new NightResources(cxt.getPackageName(), createSkinResource(skinPath), defaultResources, skinPath);
 		} else {
-			res = new ProxyResources(cxt.getPackageName(), createSkinResource(cxt, skinName), defaultResources, skinName);
+			res = new ProxyResources(cxt.getPackageName(), createSkinResource(skinPath), defaultResources, skinPath);
 		}
 		synchronized (this) {
-			cacheResources.put(skinName, new WeakReference<Resources>(res));
+			cacheResources.put(skinPath, new WeakReference<Resources>(res));
 		}
 		return res;
 	}
@@ -244,13 +253,13 @@ public class SkinManager {
 	 * 更换所有activity的皮肤资源
 	 * 
 	 * @param activity
-	 * @param skinName
+	 * @param skinPath
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean changeResources(Activity activity, final String skinName) {
-		if (StringUtils.isBlank(skinName)) {
-			throw new IllegalArgumentException("illegal argument ,skinName could not be null");
+	public boolean changeResources(Activity activity, final String skinPath) {
+		if (StringUtils.isBlank(skinPath)) {
+			throw new IllegalArgumentException("skinPath could not be empty");
 		}
 
 		// 在改变activity资源前截图用于渐变动画显示
@@ -261,7 +270,7 @@ public class SkinManager {
 			@Override
 			protected Boolean doInBackground(Void... params) {
 				try {
-					Resources res = createProxyResource(cxt, skinName);
+					Resources res = createProxyResource(cxt, skinPath);
 					List<Activity> temp = (List<Activity>) activitys.clone();
 					for (int i = temp.size() - 1; i >= 0; i--) {
 						change(temp.get(i), res);
@@ -276,8 +285,10 @@ public class SkinManager {
 			@Override
 			protected void onPostExecute(Boolean result) {
 				if (result) {
-					currentSkinName = skinName;
-					PrefUtil.setString(cxt, PREF_KEY_SKIN_NAME, skinName);
+					currentSkin = skinPath;
+					skinResourcesInfoListener.resourcesChangeResult(result, currentSkin);
+				} else {
+					skinResourcesInfoListener.resourcesChangeResult(result, null);
 				}
 			}
 		}.execute();
@@ -319,9 +330,14 @@ public class SkinManager {
 			}
 		}
 
-		Window w = a.getWindow();
+		final Window w = a.getWindow();
 		if (w != null) {
-			onResourcesChange(w.getDecorView());
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					onResourcesChange(w.getDecorView());
+				}
+			});
 		}
 	}
 
@@ -331,13 +347,8 @@ public class SkinManager {
 		}
 
 		if (v instanceof OnResourcesChangeListener) {
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					((OnResourcesChangeListener) v).onResourcesChange();
-					v.invalidate();
-				}
-			});
+			((OnResourcesChangeListener) v).onResourcesChange();
+			v.invalidate();
 		}
 
 		if (v instanceof AbsListView) {
@@ -370,30 +381,25 @@ public class SkinManager {
 	 * @param activity
 	 *            要更新皮肤的界面
 	 */
-	public void onAttach(Activity activity) {
+	public void onCreate(Activity activity) {
 
 		if (defaultResources == null) {
 			defaultResources = activity.getResources();
 		}
 
-		if (StringUtils.isBlank(currentSkinName) || DEFAULT_SKIN_NAME.equals(currentSkinName)) {
-			registerViewFactory(activity);
-		} else {
-			unregisterViewFactory(activity);
+		if (skinResourcesInfoListener == null) {
+			throw new NullPointerException("skinResourcesInfoListener can not be null");
 		}
-
+		currentSkin = skinResourcesInfoListener.getCurrentResourcesPath();
 		activitys.add(activity);
-
-		if (currentSkinName == null) {
-			currentSkinName = PrefUtil.getString(activity, PREF_KEY_SKIN_NAME);
-		}
-
-		if (StringUtils.isBlank(currentSkinName) || DEFAULT_SKIN_NAME.equals(currentSkinName)) {
+		registerViewFactory(activity);
+		
+		if (StringUtils.isBlank(currentSkin) || DEFAULT_SKIN.equals(currentSkin)) {
 			return;
 		}
 
 		try {
-			realChangeResources(activity, createProxyResource(activity, currentSkinName));
+			realChangeResources(activity, createProxyResource(activity, currentSkin));
 		} catch (Exception e) {
 			Log.e(e);
 		}
@@ -458,6 +464,7 @@ public class SkinManager {
 
 	public synchronized void onDestroy(Activity activity) {
 		activitys.remove(activity);
+		unregisterViewFactory(activity);
 	}
 
 	/**
