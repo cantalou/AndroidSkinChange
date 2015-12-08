@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/androidSkinChange.iml" filepath="$PROJECT_DIR$/androidSkinChange.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidSkinChange.iml" filepath="$PROJECT_DIR$/AndroidSkinChange.iml" />
     </modules>
   </component>
 </project>

@@ -1,2 +1,0 @@
-include ':AndroidUtil'
-project(':AndroidUtil').projectDir=new File('../AndroidUtil')
