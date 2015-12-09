@@ -5,7 +5,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-public class ImageViewHolder extends ViewHolder {
+import com.cantalou.skin.holder.ViewHolder;
+
+public class ImageViewHolder extends ViewHolder
+{
 
 	protected int src;
 
@@ -21,6 +24,6 @@ public class ImageViewHolder extends ViewHolder {
 	@Override
 	public boolean parse(AttributeSet attrs) {
 		src = getResourceId(attrs, "src");
-		return super.parse(attrs) && src != 0;
+		return super.parse(attrs) || src != 0;
 	}
 }

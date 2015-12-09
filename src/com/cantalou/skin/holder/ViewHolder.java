@@ -4,7 +4,10 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class ViewHolder extends AbstractHolder {
+import com.cantalou.skin.holder.AbstractHolder;
+
+public class ViewHolder extends AbstractHolder
+{
 
 	protected int background;
 
@@ -19,7 +22,7 @@ public class ViewHolder extends AbstractHolder {
 	@Override
 	public boolean parse(AttributeSet attrs) {
 		background = getResourceId(attrs, "background");
-		return super.parse(attrs) && background != 0;
+		return super.parse(attrs) || background != 0;
 	}
 
 }

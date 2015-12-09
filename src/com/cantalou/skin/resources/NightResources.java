@@ -1,7 +1,6 @@
 package com.cantalou.skin.resources;
 
 import android.content.res.Resources;
-import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ClipDrawable;
@@ -17,8 +16,10 @@ import android.util.SparseIntArray;
 import android.util.TypedValue;
 
 import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.skin.resources.ProxyResources;
 
-public class NightResources extends ProxyResources {
+public class NightResources extends ProxyResources
+{
 
 	/**
 	 * 夜间模式资源名称前缀

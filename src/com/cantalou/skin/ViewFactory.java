@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cantalou.skin.holder.AbstractHolder;
 import com.cantalou.skin.holder.AttrHolder;
 import com.cantalou.skin.holder.ImageViewHolder;
 import com.cantalou.skin.holder.ListViewHolder;
@@ -28,7 +29,7 @@ public class ViewFactory implements Factory {
 
 	private final String[] sClassPrefixList = { "android.widget.", "android.webkit.", "android.app." };
 
-	private final HashMap<Class<?>, AttrHolder> viewAttrHolder = new HashMap<Class<?>, AttrHolder>() {
+	private final HashMap<Class<?>, AbstractHolder> viewAttrHolder = new HashMap<Class<?>, AbstractHolder>() {
 		{
 			put(View.class, new ViewHolder());
 			put(TextView.class, new TextViewHolder());
@@ -72,10 +73,10 @@ public class ViewFactory implements Factory {
 		}
 	}
 
-	private AttrHolder getHolder(Class<?> clazz) {
-		AttrHolder attrHolder = viewAttrHolder.get(clazz);
+	private AttrHolder getHolder(Class<?> clazz) throws CloneNotSupportedException {
+		AbstractHolder attrHolder = viewAttrHolder.get(clazz);
 		if (attrHolder != null) {
-			return attrHolder;
+			return (AbstractHolder)attrHolder.clone();
 		} else {
 			return getHolder(clazz.getSuperclass());
 		}

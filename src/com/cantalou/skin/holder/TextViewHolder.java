@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.skin.holder.ViewHolder;
 
-public class TextViewHolder extends ViewHolder {
+public class TextViewHolder extends ViewHolder
+{
 
 	protected int textColorHighlight;
 	protected int textColor;
@@ -80,7 +82,7 @@ public class TextViewHolder extends ViewHolder {
 				textCursorDrawable = getResourceId(attrs, i);
 			}
 		}
-		return super.parse(attrs) && ( textColorHighlight | textColor | textColorHint | textColorLink | drawableLeft | drawableTop | drawableRight
+		return super.parse(attrs) || ( textColorHighlight | textColor | textColorHint | textColorLink | drawableLeft | drawableTop | drawableRight
 				| drawableBottom | shadowColor | textCursorDrawable) != 0;
 	}
 }
