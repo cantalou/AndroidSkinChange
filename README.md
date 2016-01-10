@@ -1,9 +1,9 @@
 # SkinChange
-Android换肤,基于插件式的资源切换方案
+Android换肤, 基于插件式的资源切换方案
 
 #特点
 1. 插件换肤</br>
-2. 对已有项目改动量少</br>
+2. 浸入性低</br>
 3. 支持重启或者不重启Activity</br>
 
 #缺陷
@@ -15,6 +15,7 @@ Android换肤,基于插件式的资源切换方案
 2. 不支持layout资源切换, 即layout资源只会使用app内自带的资源文件
 3. 不支持drawable中xml类型资源的切换, 不同版本间同一个xml文件不得修改
 4. 不支持padding, margin, textSize等类型的资源切换
+5. 获取LayoutInflater必须使用Activity.getLayoutInflater
 
 #使用方法
 ##集成
