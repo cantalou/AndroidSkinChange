@@ -45,7 +45,7 @@ Android换肤, 基于插件式的资源切换方案
   SkinManager.getInstance().changeResources(activityInsatance, "/filepath/red.apk");
 
 #效果
-
+![image](https://github.com/cantalou/androidSkinChange/blob/master/jdfw.gif)
 #实现原理
 通过替换Activity的mResources和mTheme两个属性</br>
 <a href="http://blog.csdn.net/cantalou/article/details/49708469">http://blog.csdn.net/cantalou/article/details/49708469</a>
