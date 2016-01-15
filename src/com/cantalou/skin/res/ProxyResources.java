@@ -310,6 +310,7 @@ public class ProxyResources extends Resources {
 	}
 
 	protected ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException {
+
 		ColorStateList csl = null;
 		if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
 			csl = ColorStateList.valueOf(value.data);
