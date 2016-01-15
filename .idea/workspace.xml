@@ -2,18 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f5b2611-4083-4afd-b19a-96ccd00ed3c7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/AbstractHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/AbstractHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidSkinChange.iml" afterPath="$PROJECT_DIR$/AndroidSkinChange.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ImageViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ImageViewHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ListViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ListViewHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/instrumentation/SkinInstrumentation.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/instrumentation/SkinInstrumentation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/TextViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/TextViewHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/ViewFactory.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/ViewFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ViewHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/array/ColorStateListLongSpareArray.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/array/ColorStateListSpareArray.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/array/DrawableLongSpareArray.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/res/NightResources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/res/ProxyResources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/res/SkinProxyResources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/res/SkinResources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/Skinnable.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/ViewFactoryAfterGingerbread.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\.idea\libraries\android_util_2_0_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_util_2_0_6.xml" />
     </list>
     <ignored path="AndroidSkinChange.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,92 +38,7 @@
     <favorites_list name="AndroidSkinChange" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="SkinManager.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.5139375">
-              <caret line="307" column="26" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
-              <folding>
-                <element signature="e#2100#2110#0" expanded="true" />
-                <element signature="e#2220#2259#0" expanded="true" />
-                <element signature="e#2732#2765#0" expanded="true" />
-                <element signature="e#2939#2948#0" expanded="true" />
-                <element signature="e#3058#3067#0" expanded="true" />
-                <element signature="e#3180#3189#0" expanded="true" />
-                <element signature="e#3472#3609#0" expanded="true" />
-                <element signature="e#3608#3609#0" expanded="true" />
-                <element signature="e#4057#4058#0" expanded="true" />
-                <element signature="e#4094#4095#0" expanded="true" />
-                <element signature="e#8726#8756#0" expanded="true" />
-                <element signature="e#9264#9265#0" expanded="true" />
-                <element signature="e#9298#9299#0" expanded="true" />
-                <element signature="e#10879#10986#0" expanded="true" />
-                <element signature="e#10985#10986#0" expanded="true" />
-                <element signature="e#11123#11353#0" expanded="true" />
-                <element signature="e#11352#11353#0" expanded="true" />
-                <element signature="e#11435#11542#0" expanded="true" />
-                <element signature="e#11541#11542#0" expanded="true" />
-                <element signature="e#13739#13852#0" expanded="true" />
-                <element signature="e#13851#13852#0" expanded="true" />
-                <element signature="e#14234#14447#0" expanded="true" />
-                <element signature="e#14446#14447#0" expanded="true" />
-                <element signature="e#14545#14546#0" expanded="true" />
-                <element signature="e#14578#14579#0" expanded="true" />
-                <element signature="e#16067#16068#0" expanded="true" />
-                <element signature="e#16097#16098#0" expanded="true" />
-                <element signature="e#16132#16133#0" expanded="true" />
-                <element signature="e#16161#16162#0" expanded="true" />
-                <element signature="e#16267#16268#0" expanded="true" />
-                <element signature="e#16320#16321#0" expanded="true" />
-                <element signature="e#16429#16430#0" expanded="true" />
-                <element signature="e#16485#16486#0" expanded="true" />
-                <element signature="e#16532#16533#0" expanded="true" />
-                <element signature="e#16566#16567#0" expanded="true" />
-                <element signature="e#16609#16610#0" expanded="true" />
-                <element signature="e#16639#16640#0" expanded="true" />
-                <element signature="e#16697#16698#0" expanded="true" />
-                <element signature="e#16727#16728#0" expanded="true" />
-                <element signature="e#16791#16792#0" expanded="true" />
-                <element signature="e#16827#16828#0" expanded="true" />
-                <element signature="e#16890#16891#0" expanded="true" />
-                <element signature="e#16925#16926#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.571428">
-              <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ArrayList.java" pinned="false" current-in-tab="false">
-        <entry file="file://D:/android/sources/android-21/java/util/ArrayList.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="278" column="28" selection-start-line="278" selection-start-column="28" selection-end-line="278" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OnResourcesChangeListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -1315,6 +1228,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="skin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -1477,7 +1408,13 @@
       <option name="project" value="LOCAL" />
       <updated>1449558913155</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="1">
+      <created>1452842192683</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1452842192683</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1485,7 +1422,7 @@
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1493,13 +1430,13 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.538376" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.189099" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1609808" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1609808" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -1630,6 +1567,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.022194821">
           <caret line="1" column="50" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="50" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1677,7 +1615,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.053892214">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
@@ -1693,16 +1631,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.571428">
+        <state vertical-scroll-proportion="0.48502994">
           <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.5139375">
-          <caret line="307" column="26" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
+        <state vertical-scroll-proportion="2.5898204">
+          <caret line="565" column="17" selection-start-line="565" selection-start-column="17" selection-end-line="565" selection-end-column="17" />
           <folding>
             <element signature="e#2100#2110#0" expanded="true" />
             <element signature="e#2220#2259#0" expanded="true" />
