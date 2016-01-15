@@ -1,17 +1,11 @@
 package com.cantalou.skin.instrumentation;
 
-import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.SkinManager;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
 import android.app.Instrumentation;
 import android.app.UiAutomation;
-import android.app.Instrumentation.ActivityMonitor;
-import android.app.Instrumentation.ActivityResult;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -20,16 +14,17 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PersistableBundle;
-import android.os.RemoteException;
-import android.util.AndroidRuntimeException;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+
+import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.skin.SkinManager;
 
 /**
  * 重写Instrumentation的callActivityOnCreate,callActivityOnCreate,
  * callActivityOnDestroy方法, 在调用Activity的生命周期方法前增加换肤功能回调
  *
- * @author LinZhiWei
+ * @author cantalou
  * @date 2015年12月5日 下午4:53:44
  */
 public class SkinInstrumentation extends Instrumentation {
@@ -45,13 +40,13 @@ public class SkinInstrumentation extends Instrumentation {
 
 	@Override
 	public void callActivityOnCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
-		skinManager.onCreate(activity);
+		skinManager.onAttach(activity);
 		targetInstrucmentation.callActivityOnCreate(activity, icicle, persistentState);
 	}
 
 	@Override
 	public void callActivityOnCreate(Activity activity, Bundle icicle) {
-		skinManager.onCreate(activity);
+		skinManager.onAttach(activity);
 		targetInstrucmentation.callActivityOnCreate(activity, icicle);
 	}
 
@@ -356,13 +351,11 @@ public class SkinInstrumentation extends Instrumentation {
 		return targetInstrucmentation.newActivity(cl, className, intent);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void startAllocCounting() {
 		targetInstrucmentation.startAllocCounting();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void stopAllocCounting() {
 		targetInstrucmentation.stopAllocCounting();

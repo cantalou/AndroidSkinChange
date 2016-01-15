@@ -2,7 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f5b2611-4083-4afd-b19a-96ccd00ed3c7" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/AbstractHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/AbstractHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidSkinChange.iml" afterPath="$PROJECT_DIR$/AndroidSkinChange.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ImageViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ImageViewHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ListViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ListViewHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/instrumentation/SkinInstrumentation.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/instrumentation/SkinInstrumentation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/TextViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/TextViewHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/ViewFactory.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/ViewFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/ViewHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\.idea\libraries\android_util_2_0_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_util_2_0_6.xml" />
     </list>
     <ignored path="AndroidSkinChange.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,22 +44,63 @@
       <file leaf-file-name="SkinManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.78">
-              <caret line="358" column="61" selection-start-line="358" selection-start-column="20" selection-end-line="358" selection-end-column="61" />
+            <state vertical-scroll-proportion="-7.5139375">
+              <caret line="307" column="26" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
               <folding>
-                <element signature="e#2585#2618#0" expanded="true" />
-                <element signature="e#2826#2827#0" expanded="true" />
-                <element signature="e#2872#2873#0" expanded="true" />
-                <element signature="e#8339#8369#0" expanded="true" />
-                <element signature="e#16203#16204#0" expanded="true" />
-                <element signature="e#16245#16246#0" expanded="true" />
-                <element signature="e#16359#16360#0" expanded="true" />
-                <element signature="e#16398#16399#0" expanded="true" />
-                <element signature="e#16587#16588#0" expanded="true" />
-                <element signature="e#16649#16650#0" expanded="true" />
-                <element signature="e#16765#16766#0" expanded="true" />
-                <element signature="e#16830#16831#0" expanded="true" />
+                <element signature="e#2100#2110#0" expanded="true" />
+                <element signature="e#2220#2259#0" expanded="true" />
+                <element signature="e#2732#2765#0" expanded="true" />
+                <element signature="e#2939#2948#0" expanded="true" />
+                <element signature="e#3058#3067#0" expanded="true" />
+                <element signature="e#3180#3189#0" expanded="true" />
+                <element signature="e#3472#3609#0" expanded="true" />
+                <element signature="e#3608#3609#0" expanded="true" />
+                <element signature="e#4057#4058#0" expanded="true" />
+                <element signature="e#4094#4095#0" expanded="true" />
+                <element signature="e#8726#8756#0" expanded="true" />
+                <element signature="e#9264#9265#0" expanded="true" />
+                <element signature="e#9298#9299#0" expanded="true" />
+                <element signature="e#10879#10986#0" expanded="true" />
+                <element signature="e#10985#10986#0" expanded="true" />
+                <element signature="e#11123#11353#0" expanded="true" />
+                <element signature="e#11352#11353#0" expanded="true" />
+                <element signature="e#11435#11542#0" expanded="true" />
+                <element signature="e#11541#11542#0" expanded="true" />
+                <element signature="e#13739#13852#0" expanded="true" />
+                <element signature="e#13851#13852#0" expanded="true" />
+                <element signature="e#14234#14447#0" expanded="true" />
+                <element signature="e#14446#14447#0" expanded="true" />
+                <element signature="e#14545#14546#0" expanded="true" />
+                <element signature="e#14578#14579#0" expanded="true" />
+                <element signature="e#16067#16068#0" expanded="true" />
+                <element signature="e#16097#16098#0" expanded="true" />
+                <element signature="e#16132#16133#0" expanded="true" />
+                <element signature="e#16161#16162#0" expanded="true" />
+                <element signature="e#16267#16268#0" expanded="true" />
+                <element signature="e#16320#16321#0" expanded="true" />
+                <element signature="e#16429#16430#0" expanded="true" />
+                <element signature="e#16485#16486#0" expanded="true" />
+                <element signature="e#16532#16533#0" expanded="true" />
+                <element signature="e#16566#16567#0" expanded="true" />
+                <element signature="e#16609#16610#0" expanded="true" />
+                <element signature="e#16639#16640#0" expanded="true" />
+                <element signature="e#16697#16698#0" expanded="true" />
+                <element signature="e#16727#16728#0" expanded="true" />
+                <element signature="e#16791#16792#0" expanded="true" />
+                <element signature="e#16827#16828#0" expanded="true" />
+                <element signature="e#16890#16891#0" expanded="true" />
+                <element signature="e#16925#16926#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.571428">
+              <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,7 +118,7 @@
       <file leaf-file-name="OnResourcesChangeListener.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.2857143">
+            <state vertical-scroll-proportion="0.0">
               <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
@@ -535,9 +587,9 @@
                 <option name="name" value="preReleaseUnitTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.cantalou:android-util:2.0.4" />
+                <option name="description" value="Prepare com.cantalou:android-util:2.0.6" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareComCantalouAndroidUtil204Library" />
+                <option name="name" value="prepareComCantalouAndroidUtil206Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
@@ -736,617 +788,11 @@
             </list>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../AndroidUtil">
-          <value>
-            <list>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the Android dependencies of the project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="androidDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Deploys artifacts + generated build-info metadata to Artifactory, using project publications." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="artifactoryPublish" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles all variants of all applications and secondary packages." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assemble" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles all the Test applications." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles all Debug builds." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleDebugUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleDefault" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles all Release builds." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Publishes artifacts to bintray.com." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="bintrayUpload" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="build" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="buildDependents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects it depends on." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="buildNeeded" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles a bundle containing the library in debug." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="bundleDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles a bundle containing the library in release." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="bundleRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs all checks." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="check" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="checkDebugManifest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="checkReleaseManifest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Deletes the build directory." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="clean" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugAidl" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugAndroidTestAidl" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugAndroidTestNdk" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugAndroidTestRenderscript" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugAndroidTestSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugJavaWithJavac" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugNdk" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugRenderscript" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugUnitTestJavaWithJavac" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileDebugUnitTestSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileLint" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseAidl" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseJavaWithJavac" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseNdk" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseRenderscript" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseUnitTestJavaWithJavac" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="compileReleaseUnitTestSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the components produced by project ':AndroidUtil'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="components" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Installs and runs instrumentation tests for all flavors on connected devices." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="connectedAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs all device checks on currently connected devices." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="connectedCheck" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Installs and runs the tests for debug on connected devices." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="connectedDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="copyDebugLint" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="copyReleaseLint" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all dependencies declared in project ':AndroidUtil'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="dependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the insight into a specific dependency in project ':AndroidUtil'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="dependencyInsight" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Installs and runs instrumentation tests using all Device Providers." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="deviceAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs all device checks using Device Providers and Test Servers." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="deviceCheck" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugAndroidTestAssets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugAndroidTestBuildConfig" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugAndroidTestResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugAndroidTestResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugAndroidTestSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugAssets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugBuildConfig" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateDebugSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates the Maven POM file for publication 'mavenJava'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generatePomFileForMavenJavaPublication" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateReleaseAssets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateReleaseBuildConfig" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateReleaseResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="generateReleaseSources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays a help message." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="help" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Installs the android (on device) tests for the Debug build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="installDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="javadoc" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="javadocJar" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs lint on all variants." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="lint" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs lint on the Debug build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="lintDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs lint on the Release build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="lintRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeDebugAndroidTestAssets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeDebugAndroidTestJniLibFolders" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeDebugAndroidTestResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeDebugAssets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeDebugJniLibFolders" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeDebugProguardFiles" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeReleaseAssets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeReleaseJniLibFolders" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mergeReleaseProguardFiles" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Creates a version of android.jar that's suitable for unit tests." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="mockableAndroidJar" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the configuration model of project ':AndroidUtil'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="model" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="packageDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="packageDebugRenderscript" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="packageDebugResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="packageReleaseRenderscript" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="packageReleaseResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="preBuild" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="preDebugAndroidTestBuild" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="preDebugBuild" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="preDebugUnitTestBuild" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="preReleaseBuild" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="preReleaseUnitTestBuild" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="prepareDebugAndroidTestDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="prepareDebugDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="prepareDebugUnitTestDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="prepareReleaseDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="prepareReleaseUnitTestDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugAndroidTestManifest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugAndroidTestResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugManifest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processDebugUnitTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processReleaseJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processReleaseManifest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processReleaseResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="processReleaseUnitTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the sub-projects of project ':AndroidUtil'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="projects" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the properties of project ':AndroidUtil'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="properties" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Publishes all publications produced by this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="publish" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Publishes Maven publication 'mavenJava' to the local Maven repository." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="publishMavenJavaPublicationToMavenLocal" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Publishes all Maven publications produced by this project to the local Maven cache." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="publishToMavenLocal" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the signing info for each variant." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="signingReport" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prints out all the source sets defined in this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="sourceSets" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="sourcesJar" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the tasks runnable from project ':AndroidUtil'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="tasks" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run unit tests for all variants." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="test" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run unit tests for the debug build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="testDebugUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run unit tests for the release build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="testReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformClassesAndResourcesWithSyncLibJarsForDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformClassesAndResourcesWithSyncLibJarsForRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformClassesWithDexForDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformNative_libsWithMergeJniLibsForDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformNative_libsWithMergeJniLibsForDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformNative_libsWithMergeJniLibsForRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformNative_libsWithSyncJniLibsForDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformNative_libsWithSyncJniLibsForRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformResourcesWithMergeJavaResForDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformResourcesWithMergeJavaResForDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformResourcesWithMergeJavaResForDebugUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformResourcesWithMergeJavaResForRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Uninstall all applications." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="uninstallAll" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Uninstalls the android (on device) tests for the Debug build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="uninstallDebugAndroidTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/../AndroidUtil" />
-                <option name="name" value="validateDebugSigning" />
-              </ExternalTaskPojo>
-            </list>
-          </value>
-        </entry>
       </map>
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$/../AndroidUtil" value="2898938577252" />
-        <entry key="D:\workspace\AndroidSkinChange" value="4348309114778" />
+        <entry key="D:\workspace\AndroidSkinChange" value="4351595645276" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1361,8 +807,8 @@
                       <ExternalModuleBuildClasspathPojo>
                         <option name="entries">
                           <list>
-                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/2.0.4/eee1997cc70cb46c995f1e4240834cca0a0c2460/android-util-2.0.4-sources.jar" />
-                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/2.0.4/87f2a526c460a13f6e3d1011969ba610ac9b7b3c/android-util-2.0.4.aar" />
+                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/2.0.6/c77cd54ea04ec558debfad87f4ef380648e63248/android-util-2.0.6-sources.jar" />
+                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/2.0.6/d82eab0d610bc7d00584cee325c7e36c83120dd7/android-util-2.0.6.aar" />
                             <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.jfrog.bintray.gradle/gradle-bintray-plugin/1.2/85566c4fd2f071635bca55847249587f34e2b13f/gradle-bintray-plugin-1.2-sources.jar" />
                             <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.jfrog.bintray.gradle/gradle-bintray-plugin/1.2/ae174b2aa348ae742cdc63496b66bcbc8f15d5e0/gradle-bintray-plugin-1.2.jar" />
                             <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/org.jfrog.buildinfo/build-info-extractor-gradle/3.1.1/47e542424f4f6e70ed5fde06ffb52d34d73aebb7/build-info-extractor-gradle-3.1.1-sources.jar" />
@@ -1790,12 +1236,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/gradle.properties" />
         <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java" />
         <option value="$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeFinishListener.java" />
         <option value="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
       </list>
     </option>
   </component>
@@ -1838,6 +1284,19 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1854,37 +1313,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="AndroidSkinChange" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidSkinChange" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidSkinChange" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="skin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidSkinChange" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -2057,34 +1485,34 @@
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.189099" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.189099" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1609808" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -2130,11 +1558,78 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#2100#2110#0" expanded="true" />
+            <element signature="e#2220#2259#0" expanded="true" />
+            <element signature="e#2732#2765#0" expanded="true" />
+            <element signature="e#2939#2948#0" expanded="true" />
+            <element signature="e#3058#3067#0" expanded="true" />
+            <element signature="e#3180#3189#0" expanded="true" />
+            <element signature="e#3472#3609#0" expanded="true" />
+            <element signature="e#3608#3609#0" expanded="true" />
+            <element signature="e#4057#4058#0" expanded="true" />
+            <element signature="e#4094#4095#0" expanded="true" />
+            <element signature="e#8726#8756#0" expanded="true" />
+            <element signature="e#9264#9265#0" expanded="true" />
+            <element signature="e#9298#9299#0" expanded="true" />
+            <element signature="e#10879#10986#0" expanded="true" />
+            <element signature="e#10985#10986#0" expanded="true" />
+            <element signature="e#11123#11353#0" expanded="true" />
+            <element signature="e#11352#11353#0" expanded="true" />
+            <element signature="e#11435#11542#0" expanded="true" />
+            <element signature="e#11541#11542#0" expanded="true" />
+            <element signature="e#13739#13852#0" expanded="true" />
+            <element signature="e#13851#13852#0" expanded="true" />
+            <element signature="e#14234#14447#0" expanded="true" />
+            <element signature="e#14446#14447#0" expanded="true" />
+            <element signature="e#14545#14546#0" expanded="true" />
+            <element signature="e#14578#14579#0" expanded="true" />
+            <element signature="e#16067#16068#0" expanded="true" />
+            <element signature="e#16097#16098#0" expanded="true" />
+            <element signature="e#16132#16133#0" expanded="true" />
+            <element signature="e#16161#16162#0" expanded="true" />
+            <element signature="e#16267#16268#0" expanded="true" />
+            <element signature="e#16320#16321#0" expanded="true" />
+            <element signature="e#16429#16430#0" expanded="true" />
+            <element signature="e#16485#16486#0" expanded="true" />
+            <element signature="e#16532#16533#0" expanded="true" />
+            <element signature="e#16566#16567#0" expanded="true" />
+            <element signature="e#16609#16610#0" expanded="true" />
+            <element signature="e#16639#16640#0" expanded="true" />
+            <element signature="e#16697#16698#0" expanded="true" />
+            <element signature="e#16727#16728#0" expanded="true" />
+            <element signature="e#16791#16792#0" expanded="true" />
+            <element signature="e#16827#16828#0" expanded="true" />
+            <element signature="e#16890#16891#0" expanded="true" />
+            <element signature="e#16925#16926#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/android/sources/android-21/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="278" column="28" selection-start-line="278" selection-start-column="28" selection-end-line="278" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AndroidSkinChange.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.022194821">
           <caret line="1" column="50" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2142,7 +1637,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2150,7 +1644,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2158,15 +1651,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4703833">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2174,7 +1658,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2182,7 +1665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4390244">
           <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2190,13 +1672,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.10285714">
           <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2857143">
+        <state vertical-scroll-proportion="0.0">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
@@ -2210,23 +1691,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.571428">
+          <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78">
-          <caret line="358" column="61" selection-start-line="358" selection-start-column="20" selection-end-line="358" selection-end-column="61" />
+        <state vertical-scroll-proportion="-7.5139375">
+          <caret line="307" column="26" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
           <folding>
-            <element signature="e#2585#2618#0" expanded="true" />
-            <element signature="e#2826#2827#0" expanded="true" />
-            <element signature="e#2872#2873#0" expanded="true" />
-            <element signature="e#8339#8369#0" expanded="true" />
-            <element signature="e#16203#16204#0" expanded="true" />
-            <element signature="e#16245#16246#0" expanded="true" />
-            <element signature="e#16359#16360#0" expanded="true" />
-            <element signature="e#16398#16399#0" expanded="true" />
-            <element signature="e#16587#16588#0" expanded="true" />
-            <element signature="e#16649#16650#0" expanded="true" />
-            <element signature="e#16765#16766#0" expanded="true" />
-            <element signature="e#16830#16831#0" expanded="true" />
+            <element signature="e#2100#2110#0" expanded="true" />
+            <element signature="e#2220#2259#0" expanded="true" />
+            <element signature="e#2732#2765#0" expanded="true" />
+            <element signature="e#2939#2948#0" expanded="true" />
+            <element signature="e#3058#3067#0" expanded="true" />
+            <element signature="e#3180#3189#0" expanded="true" />
+            <element signature="e#3472#3609#0" expanded="true" />
+            <element signature="e#3608#3609#0" expanded="true" />
+            <element signature="e#4057#4058#0" expanded="true" />
+            <element signature="e#4094#4095#0" expanded="true" />
+            <element signature="e#8726#8756#0" expanded="true" />
+            <element signature="e#9264#9265#0" expanded="true" />
+            <element signature="e#9298#9299#0" expanded="true" />
+            <element signature="e#10879#10986#0" expanded="true" />
+            <element signature="e#10985#10986#0" expanded="true" />
+            <element signature="e#11123#11353#0" expanded="true" />
+            <element signature="e#11352#11353#0" expanded="true" />
+            <element signature="e#11435#11542#0" expanded="true" />
+            <element signature="e#11541#11542#0" expanded="true" />
+            <element signature="e#13739#13852#0" expanded="true" />
+            <element signature="e#13851#13852#0" expanded="true" />
+            <element signature="e#14234#14447#0" expanded="true" />
+            <element signature="e#14446#14447#0" expanded="true" />
+            <element signature="e#14545#14546#0" expanded="true" />
+            <element signature="e#14578#14579#0" expanded="true" />
+            <element signature="e#16067#16068#0" expanded="true" />
+            <element signature="e#16097#16098#0" expanded="true" />
+            <element signature="e#16132#16133#0" expanded="true" />
+            <element signature="e#16161#16162#0" expanded="true" />
+            <element signature="e#16267#16268#0" expanded="true" />
+            <element signature="e#16320#16321#0" expanded="true" />
+            <element signature="e#16429#16430#0" expanded="true" />
+            <element signature="e#16485#16486#0" expanded="true" />
+            <element signature="e#16532#16533#0" expanded="true" />
+            <element signature="e#16566#16567#0" expanded="true" />
+            <element signature="e#16609#16610#0" expanded="true" />
+            <element signature="e#16639#16640#0" expanded="true" />
+            <element signature="e#16697#16698#0" expanded="true" />
+            <element signature="e#16727#16728#0" expanded="true" />
+            <element signature="e#16791#16792#0" expanded="true" />
+            <element signature="e#16827#16828#0" expanded="true" />
+            <element signature="e#16890#16891#0" expanded="true" />
+            <element signature="e#16925#16926#0" expanded="true" />
           </folding>
         </state>
       </provider>

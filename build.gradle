@@ -15,8 +15,7 @@ repositories {
   jcenter()
 }
 dependencies {
-    compile 'com.cantalou:android-util:2.0.4@aar'
-    //compile project(':AndroidUtil')
+    compile 'com.cantalou:android-util:2.0.6@aar'
 }
 
 android {

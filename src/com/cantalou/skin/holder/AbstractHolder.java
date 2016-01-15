@@ -1,59 +1,76 @@
 package com.cantalou.skin.holder;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.cantalou.skin.holder.AttrHolder;
+import com.cantalou.android.util.Log;
+import com.cantalou.skin.res.SkinProxyResources;
 
-public abstract class AbstractHolder implements AttrHolder, Cloneable {
+public abstract class AbstractHolder implements Cloneable {
 
-    /**
-     * 父类的parse是否有被调用
-     */
-    private boolean called = false;
+	public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
 
-    @Override
-    public final void parse(View view, AttributeSet attrs) {
-	called = false;
-	boolean result = parse(attrs);
-	if (!called) {
-	    throw new IllegalStateException("super parse(AttributeSet attrs) must be call");
+	/**
+	 * 父类的parse是否有被调用
+	 */
+	private boolean called = false;
+
+	public final AbstractHolder parse(AttributeSet attrs) {
+		called = false;
+		boolean result = parseAttr(attrs);
+		if (!called) {
+			throw new IllegalStateException("super parse(AttributeSet attrs) must be call");
+		}
+		return result ? this : null;
 	}
-	if (result) {
-	    view.setTag(ATTR_HOLDER_KEY, this);
+
+	/**
+	 * 重新加载资源
+	 *
+	 * @param view
+	 *            view对象
+	 * @param res
+	 *            资源对象
+	 */
+	public abstract void reload(View view, Resources res);
+
+	/**
+	 * 解析组件属性
+	 *
+	 * @param attrs
+	 * @return 组件使用app资源 true
+	 */
+	protected boolean parseAttr(AttributeSet attrs) {
+		called = true;
+		return false;
 	}
-    }
 
-    /**
-     * 解析组件属性
-     *
-     * @param attrs
-     * @return 组件使用app资源 true
-     */
-    protected boolean parse(AttributeSet attrs) {
-	called = true;
-	return false;
-    }
-
-    protected int getResourceId(AttributeSet attrs, String name) {
-	int len = attrs.getAttributeCount();
-	for (int i = 0; i < len; i++) {
-	    String attributeName = attrs.getAttributeName(i);
-	    if (name.equals(attributeName)) {
-		int id = attrs.getAttributeResourceValue(i, 0);
-		return (id & APP_RESOURCE_ID_PACKAGE) == APP_RESOURCE_ID_PACKAGE ? id : 0;
-	    }
+	protected int getResourceId(AttributeSet attrs, String name) {
+		int len = attrs.getAttributeCount();
+		for (int i = 0; i < len; i++) {
+			String attributeName = attrs.getAttributeName(i);
+			if (name.equals(attributeName)) {
+				int id = attrs.getAttributeResourceValue(i, 0);
+				return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
+			}
+		}
+		return 0;
 	}
-	return 0;
-    }
 
-    protected int getResourceId(AttributeSet attrs, int index) {
-	int id = attrs.getAttributeResourceValue(index, 0);
-	return (id & APP_RESOURCE_ID_PACKAGE) == APP_RESOURCE_ID_PACKAGE ? id : 0;
-    }
+	protected int getResourceId(AttributeSet attrs, int index) {
+		int id = attrs.getAttributeResourceValue(index, 0);
+		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
+	}
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-	return super.clone();
-    }
+	@Override
+	public AbstractHolder clone() {
+		try {
+			return (AbstractHolder) super.clone();
+		} catch (CloneNotSupportedException e) {
+			Log.w(e);
+			return null;
+		}
+	}
 }
