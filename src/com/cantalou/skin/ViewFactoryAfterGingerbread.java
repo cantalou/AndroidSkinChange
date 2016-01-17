@@ -34,17 +34,17 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
 
 	private Factory2 privateProxy;
 
-	public void register(LayoutInflater layoutInflater) {
-		super.register(layoutInflater);
+	public void register(LayoutInflater li) {
+		super.register(li);
 
-		factory2Proxy = layoutInflater.getFactory2();
+		factory2Proxy = li.getFactory2();
 		if (factory2Proxy != null) {
-			layoutInflater.setFactory2(this);
+			li.setFactory2(this);
 		}
 
-		privateProxy = ReflectUtil.get(layoutInflater, "mPrivateFactory");
+		privateProxy = ReflectUtil.get(li, "mPrivateFactory");
 		if (privateProxy != null) {
-			ReflectUtil.set(layoutInflater, "mPrivateFactory", this);
+			ReflectUtil.set(li, "mPrivateFactory", this);
 		}
 	}
 

@@ -46,10 +46,10 @@ public class ViewFactory implements Factory {
 
 	Factory factoryProxy;
 
-	public void register(LayoutInflater layoutInflater) {
-		this.layoutInflater = layoutInflater;
-		factoryProxy = layoutInflater.getFactory();
-		layoutInflater.setFactory(this);
+	public void register(LayoutInflater li) {
+		this.layoutInflater = li;
+		factoryProxy = li.getFactory();
+		li.setFactory(this);
 	}
 
 	@Override

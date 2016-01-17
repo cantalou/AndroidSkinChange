@@ -243,6 +243,14 @@ public class ProxyResources extends Resources {
 		}
 		return dr;
 	}
+	
+	
+
+	@Override
+	public XmlResourceParser getXml(int id) throws NotFoundException {
+		skinManager.registerXml(id);
+		return super.getXml(id);
+	}
 
 	@SuppressWarnings("deprecation")
 	protected Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {

@@ -14,7 +14,9 @@ import android.os.Looper;
 import android.util.AndroidRuntimeException;
 import android.util.LongSparseArray;
 import android.util.TypedValue;
+import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import com.cantalou.android.util.BinarySearchIntArray;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
+import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.holder.AbstractHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
@@ -34,6 +37,8 @@ import com.cantalou.skin.res.SkinResources;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +57,7 @@ import static com.cantalou.android.util.ReflectUtil.set;
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class SkinManager {
-	
+
 	/**
 	 * 当前皮肤存储key
 	 */
@@ -114,27 +119,28 @@ public class SkinManager {
 	private TypedValue cacheValue = new TypedValue();
 
 	/**
-	 * 资源id与key的映射
+	 * 资源缓存key与资源id的映射
 	 */
-	private LongSparseArray<Integer> drawableIdKeyMap = new LongSparseArray<Integer>();
+	private LongSparseArray<Integer> drawableCacheKeyIdMap = new LongSparseArray<Integer>();
 
 	/**
-	 * 颜色资源id与key的映射
+	 * 颜色缓存key与资源id的映射
 	 */
-	private LongSparseArray<Integer> colorDrawableIdKeyMap = new LongSparseArray<Integer>();
+	private LongSparseArray<Integer> colorDrawableCacheKeyIdMap = new LongSparseArray<Integer>();
 
 	/**
-	 * 文字颜色资源id与key的映射
+	 * 颜色StateList缓存key与资源id的映射
 	 */
-	private LongSparseArray<Integer> colorStateListIdKeyMap = new LongSparseArray<Integer>();
+	private LongSparseArray<Integer> colorStateListCacheKeyIdMap = new LongSparseArray<Integer>();
 
 	/**
-	 * 已注册的id与key的映射
+	 * 已处理过的资源id,包括图片,颜色,selector文件,xml文件
 	 */
-	private BinarySearchIntArray registeredIdKey = new BinarySearchIntArray();
+	private BinarySearchIntArray handledDrawableId = new BinarySearchIntArray();
 
 	ArrayDeque<Runnable> serialTasks = new ArrayDeque<Runnable>() {
 		Runnable mActive;
+
 		public synchronized boolean offer(final Runnable e) {
 			boolean result = super.offer(new Runnable() {
 				@Override
@@ -307,8 +313,7 @@ public class SkinManager {
 	 *
 	 * @param activity
 	 */
-	private void registerViewFactory(Activity activity) {
-		LayoutInflater li = activity.getLayoutInflater();
+	private void registerViewFactory(LayoutInflater li) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			new ViewFactory().register(li);
 		} else {
@@ -475,8 +480,6 @@ public class SkinManager {
 			Log.v("init defaultResources and registerViewFactory ");
 		}
 
-		registerViewFactory(activity);
-
 		activitys.add(activity);
 
 		String prefSkinPath = PrefUtil.getString(activity, PREF_KEY_CURRENT_SKIN);
@@ -560,7 +563,7 @@ public class SkinManager {
 			return;
 		}
 
-		if (registeredIdKey.contains(id)) {
+		if (handledDrawableId.contains(id)) {
 			Log.d("Had registered id:{}, ignore", id);
 			return;
 		}
@@ -572,15 +575,15 @@ public class SkinManager {
 			boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
 			key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
 			if (isColorDrawable) {
-				colorDrawableIdKeyMap.put(key, id);
+				colorDrawableCacheKeyIdMap.put(key, id);
 			} else {
-				drawableIdKeyMap.put(key, id);
+				drawableCacheKeyIdMap.put(key, id);
 			}
 		} else {
 			key = (((long) value.assetCookie) << 32) | value.data;
-			drawableIdKeyMap.put(key, id);
+			drawableCacheKeyIdMap.put(key, id);
 		}
-		registeredIdKey.put(id);
+		handledDrawableId.put(id);
 	}
 
 	/**
@@ -592,6 +595,11 @@ public class SkinManager {
 			return;
 		}
 
+		if (handledDrawableId.contains(id)) {
+			Log.d("Had registered id:{}, ignore", id);
+			return;
+		}
+
 		TypedValue value = cacheValue;
 		defaultResources.getValue(id, value, true);
 		long key;
@@ -600,7 +608,69 @@ public class SkinManager {
 		} else {
 			key = (value.assetCookie << 24) | value.data;
 		}
-		colorStateListIdKeyMap.put(key, id);
+		colorStateListCacheKeyIdMap.put(key, id);
+		handledDrawableId.put(id);
+	}
+
+	/**
+	 * 注册xml资源id
+	 * 
+	 * @param id
+	 */
+	public synchronized void registerXml(int id) {
+		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+			return;
+		}
+
+		if (handledDrawableId.contains(id)) {
+			return;
+		}
+		int size = activitys.size();
+		if (size == 0) {
+			return;
+		}
+		Activity activity = activitys.get(size - 1);
+		LayoutInflater li = activity.getLayoutInflater().cloneInContext(activity);
+		registerViewFactory(li);
+		try {
+			li.inflate(id, null);
+		} catch (Exception e) {
+
+			if (e.getCause() instanceof ClassNotFoundException) {
+				try {
+					// Native ics, appcompat, actionbarsherlock
+					Object menuInflater = invoke(activity, "getSupportMenuInflater");
+					if (menuInflater == null) {
+						menuInflater = invoke(activity, "getMenuInflater");
+					}
+
+					Method inflateMethod = null;
+					Class<?> menuBuilderKlass = null;
+					Method[] methods = menuInflater.getClass().getDeclaredMethods();
+					for (Method m : methods) {
+						if ("inflate".equals(m.getName())) {
+							inflateMethod = m;
+							menuBuilderKlass = m.getParameterTypes()[1];
+							break;
+						}
+					}
+
+					Object menu = menuBuilderKlass.getConstructor(Context.class).newInstance(activity);
+					inflateMethod.invoke(menuInflater, id, menu);
+
+					ArrayList<?> items = get(menu, "mItems");
+					for (Object menuItem : items) {
+						int iconResId = get(menuItem, "mIconResId");
+						registerDrawable(iconResId);
+					}
+
+				} catch (Exception e1) {
+					Log.w("ClassNotFoundException com.android.internal.view.menu.MenuBuilder");
+				}
+			}
+		}
+
+		handledDrawableId.put(id);
 	}
 
 	/**
@@ -633,15 +703,15 @@ public class SkinManager {
 	}
 
 	public LongSparseArray<Integer> getDrawableIdKeyMap() {
-		return drawableIdKeyMap;
+		return drawableCacheKeyIdMap;
 	}
 
 	public LongSparseArray<Integer> getColorStateListIdKeyMap() {
-		return colorStateListIdKeyMap;
+		return colorStateListCacheKeyIdMap;
 	}
 
 	public LongSparseArray<Integer> getColorDrawableIdKeyMap() {
-		return colorDrawableIdKeyMap;
+		return colorDrawableCacheKeyIdMap;
 	}
 
 }
