@@ -49,15 +49,14 @@ public abstract class AbstractHolder implements Cloneable {
 
 	protected int getResourceId(AttributeSet attrs, String name) {
 		int id = 0;
-		id = attrs.getAttributeResourceValue(null, name, 0);
-//		int len = attrs.getAttributeCount();
-//		for (int i = 0; i < len; i++) {
-//			String attributeName = attrs.getAttributeName(i);
-//			if (name.equals(attributeName)) {
-//				id = attrs.getAttributeResourceValue(i, 0);
-//				break;
-//			}
-//		}
+		int len = attrs.getAttributeCount();
+		for (int i = 0; i < len; i++) {
+			String attributeName = attrs.getAttributeName(i);
+			if (name.equals(attributeName)) {
+				id = attrs.getAttributeResourceValue(i, 0);
+				break;
+			}
+		}
 		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
 	}
 
