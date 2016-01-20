@@ -372,7 +372,7 @@ public class SkinManager
         {
             new ViewFactoryAfterGingerbread().register(li);
         }
-        Log.d("LayoutInflater:{} register custom factory:{", li);
+        Log.d("LayoutInflater:{} register custom factory:{}", li);
     }
 
     /**
@@ -823,14 +823,6 @@ public class SkinManager
             return;
         }
 
-        if (handledDrawableId.contains(id))
-        {
-            return;
-        }
-        handledDrawableId.put(id);
-
-        Log.v("register layout {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
-
         int size = activitys.size();
         if (size == 0)
         {
@@ -839,6 +831,16 @@ public class SkinManager
         Activity activity = activitys.get(size - 1);
         LayoutInflater li = activity.getLayoutInflater();
         registerViewFactory(li);
+        
+        if (handledDrawableId.contains(id))
+        {
+            return;
+        }
+        handledDrawableId.put(id);
+
+        Log.v("register layout {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
+
+
         try
         {
             li.inflate(id, null);
