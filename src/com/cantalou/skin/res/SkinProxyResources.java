@@ -42,6 +42,7 @@ import com.cantalou.skin.array.DrawableLongSpareArray;
  * @author cantalou
  * @date 2015年11月29日 下午3:15:02
  */
+@SuppressWarnings("deprecation")
 public class SkinProxyResources extends ProxyResources {
 
 	/**

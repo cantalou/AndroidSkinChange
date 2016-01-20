@@ -30,6 +30,8 @@ import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.holder.AbstractHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
+import com.cantalou.skin.layout.factory.ViewFactory;
+import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
 import com.cantalou.skin.res.NightResources;
 import com.cantalou.skin.res.ProxyResources;
 import com.cantalou.skin.res.SkinProxyResources;

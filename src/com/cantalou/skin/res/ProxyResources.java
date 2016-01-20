@@ -39,6 +39,7 @@ import android.util.TypedValue;
  * @author cantalou
  * @date 2015年12月12日 下午11:07:07
  */
+@SuppressWarnings("deprecation")
 public class ProxyResources extends Resources {
 
 	public static final boolean logEnable = true;
@@ -256,7 +257,6 @@ public class ProxyResources extends Resources {
 		return super.getLayout(id);
 	}
 
-	@SuppressWarnings("deprecation")
 	protected Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {
 		boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
 		Drawable dr = null;
