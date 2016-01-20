@@ -49,6 +49,7 @@ public class ViewFactory implements Factory {
 	public void register(LayoutInflater li) {
 		this.layoutInflater = li;
 		factoryProxy = li.getFactory();
+		ReflectUtil.set(li, "mFactorySet", false);
 		li.setFactory(this);
 	}
 

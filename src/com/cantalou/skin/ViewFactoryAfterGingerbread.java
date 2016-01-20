@@ -39,6 +39,7 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
 
 		factory2Proxy = li.getFactory2();
 		if (factory2Proxy != null) {
+			ReflectUtil.set(li, "mFactorySet", false);
 			li.setFactory2(this);
 		}
 

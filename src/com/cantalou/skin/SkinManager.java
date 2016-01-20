@@ -50,7 +50,6 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 import static com.cantalou.android.util.ReflectUtil.findByMethod;
 
-;
 
 /**
  * 皮肤资源Manager
