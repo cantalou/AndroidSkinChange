@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.cantalou.android.util.BinarySearchIntArray;
@@ -724,7 +725,8 @@ public class SkinManager {
 		Log.v("register layout {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
 
 		try {
-			li.inflate(id, null);
+			ViewGroup parent = new FrameLayout(activity);
+			li.inflate(id, parent);
 		} catch (Exception e) {
 			Log.e(e);
 			handledDrawableId.delete(id);
