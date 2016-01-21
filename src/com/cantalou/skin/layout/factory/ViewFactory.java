@@ -57,10 +57,6 @@ public class ViewFactory implements Factory {
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
 
 		View view = null;
-		if (name.contains("skin")) {
-			view = null;
-		}
-
 		AbstractHolder attrHolder = getHolder(name);
 		if (attrHolder != null) {
 			attrHolder.parse(attrs);
@@ -71,11 +67,24 @@ public class ViewFactory implements Factory {
 		}
 
 		if (view == null) {
+			// android.support.v4.app
+			// 在20.0.0及其以下版本中Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater()
+			// 在21.0.0以上版本中的Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater().cloneInContext(mActivity)
+			// 由于在21版本以后Activity和Fragment实例化布局用的LayoutInflater不是同一个对象,会导致Fragment在onCreateView方法中的layoutInflater参数与当前
+			// ViewFactory.onCreateView方法用到的成员变量layoutInflater不一致,而是mConstructorArgs没有得到初始化
+			Object[] constructorArgs = ReflectUtil.get(layoutInflater, "mConstructorArgs");
+			Object lastContext = constructorArgs[0];
+			if (lastContext == null) {
+				constructorArgs[0] = context;
+			}
 			try {
 				if (-1 == name.indexOf('.')) {
 					for (String prefix : sClassPrefixList) {
 						try {
 							view = layoutInflater.createView(name, prefix, attrs);
+							if (view != null) {
+								break;
+							}
 						} catch (ClassNotFoundException e) {
 						}
 					}
@@ -91,6 +100,10 @@ public class ViewFactory implements Factory {
 				InflateException ie = new InflateException(attrs.getPositionDescription() + ": Error inflating class " + name + ", cause " + e);
 				ie.initCause(e);
 				throw ie;
+			} finally {
+				if (lastContext != null) {
+					constructorArgs[0] = lastContext;
+				}
 			}
 		}
 
@@ -116,6 +129,9 @@ public class ViewFactory implements Factory {
 			for (String prefix : sClassPrefixList) {
 				try {
 					attrHolder = getHolder(getSuperClassName(prefix + name));
+					if (attrHolder != null) {
+						break;
+					}
 				} catch (ClassNotFoundException e) {
 				}
 			}
