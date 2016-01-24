@@ -8,7 +8,7 @@ import android.view.View;
 import com.cantalou.android.util.Log;
 import com.cantalou.skin.res.SkinProxyResources;
 
-public abstract class AbstractHolder implements Cloneable {
+abstract class AbstractHolder implements Cloneable {
 
 	public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
 
@@ -34,7 +34,25 @@ public abstract class AbstractHolder implements Cloneable {
 	 * @param res
 	 *            资源对象
 	 */
-	public abstract void reload(View view, Resources res);
+	public final void reloadAttr(View view, Resources res) {
+		called = false;
+		reload(view, res);
+		if (!called) {
+			throw new IllegalStateException("super reload(View view, Resources res) must be call");
+		}
+	}
+
+	/**
+	 * 重新加载资源
+	 *
+	 * @param view
+	 *            view对象
+	 * @param res
+	 *            资源对象
+	 */
+	protected void reload(View view, Resources res) {
+		called = true;
+	}
 
 	/**
 	 * 解析组件属性
@@ -47,7 +65,7 @@ public abstract class AbstractHolder implements Cloneable {
 		return false;
 	}
 
-	protected int getResourceId(AttributeSet attrs, String name) {
+	protected final int getResourceId(AttributeSet attrs, String name) {
 		int id = 0;
 		int len = attrs.getAttributeCount();
 		for (int i = 0; i < len; i++) {
@@ -60,18 +78,9 @@ public abstract class AbstractHolder implements Cloneable {
 		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
 	}
 
-	protected int getResourceId(AttributeSet attrs, int index) {
+	protected final int getResourceId(AttributeSet attrs, int index) {
 		int id = attrs.getAttributeResourceValue(index, 0);
 		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
 	}
 
-	@Override
-	public AbstractHolder clone() {
-		try {
-			return (AbstractHolder) super.clone();
-		} catch (CloneNotSupportedException e) {
-			Log.w(e);
-			return null;
-		}
-	}
 }

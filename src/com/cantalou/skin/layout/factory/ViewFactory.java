@@ -13,7 +13,9 @@ import android.view.View;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
-import com.cantalou.skin.holder.AbstractHolder;
+import com.cantalou.skin.holder.ActionBarContainerHolder;
+import com.cantalou.skin.holder.ActionBarViewHolder;
+import com.cantalou.skin.holder.ActionMenuItemViewHolder;
 import com.cantalou.skin.holder.ImageViewHolder;
 import com.cantalou.skin.holder.ListViewHolder;
 import com.cantalou.skin.holder.TextViewHolder;
@@ -33,13 +35,20 @@ public class ViewFactory implements Factory {
 
 	static final HashMap<String, String> superNameCache = new HashMap<String, String>();
 
-	static final HashMap<String, AbstractHolder> viewAttrHolder = new HashMap<String, AbstractHolder>();
+	static final HashMap<String, ViewHolder> viewAttrHolder = new HashMap<String, ViewHolder>();
 	static {
 		viewAttrHolder.put("android.view.View", new ViewHolder());// for super class
 		viewAttrHolder.put("View", new ViewHolder());// for layout file
 		viewAttrHolder.put("android.widget.TextView", new TextViewHolder());
 		viewAttrHolder.put("android.widget.ImageView", new ImageViewHolder());
 		viewAttrHolder.put("android.widget.ListView", new ListViewHolder());
+		
+		//compact actionbarsherlock
+		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
+		
+
 	}
 
 	LayoutInflater layoutInflater;
@@ -57,7 +66,7 @@ public class ViewFactory implements Factory {
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
 
 		View view = null;
-		AbstractHolder attrHolder = getHolder(name);
+		ViewHolder attrHolder = getHolder(name);
 		if (attrHolder != null) {
 			attrHolder.parse(attrs);
 		}
@@ -108,19 +117,19 @@ public class ViewFactory implements Factory {
 		}
 
 		if (view != null) {
-			view.setTag(AbstractHolder.ATTR_HOLDER_KEY, attrHolder);
+			view.setTag(ViewHolder.ATTR_HOLDER_KEY, attrHolder);
 		}
 
 		return view;
 	}
 
-	AbstractHolder getHolder(String name) {
+	ViewHolder getHolder(String name) {
 
 		if (StringUtils.isBlank(name)) {
 			return null;
 		}
 
-		AbstractHolder attrHolder = viewAttrHolder.get(name);
+		ViewHolder attrHolder = viewAttrHolder.get(name);
 		if (attrHolder != null) {
 			return attrHolder.clone();
 		}
@@ -160,7 +169,7 @@ public class ViewFactory implements Factory {
 		return superName;
 	}
 
-	public void registerAttrHolder(String name, AbstractHolder attrHolder) {
+	public void registerAttrHolder(String name, ViewHolder attrHolder) {
 		viewAttrHolder.put(name, attrHolder);
 	}
 }

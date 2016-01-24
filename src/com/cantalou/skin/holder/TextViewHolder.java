@@ -29,7 +29,7 @@ public class TextViewHolder extends ViewHolder
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void reload(View view, Resources res)
+    protected void reload(View view, Resources res)
     {
         super.reload(view, res);
 

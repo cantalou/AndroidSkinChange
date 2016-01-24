@@ -4,6 +4,11 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
 
+/**
+ *
+ * @author cantalou
+ * @date 2016年1月23日  下午11:30:39
+ */
 public interface AttrHolder {
 
 	public static final int APP_RESOURCE_ID_PACKAGE = 0x7F000000;

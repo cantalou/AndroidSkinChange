@@ -246,12 +246,6 @@ public class ProxyResources extends Resources {
 	}
 
 	@Override
-	public XmlResourceParser getXml(int id) throws NotFoundException {
-		skinManager.registerXml(id);
-		return super.getXml(id);
-	}
-
-	@Override
 	public XmlResourceParser getLayout(int id) throws NotFoundException {
 		skinManager.registerLayout(id);
 		return super.getLayout(id);

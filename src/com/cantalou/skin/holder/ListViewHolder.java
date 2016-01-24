@@ -16,7 +16,7 @@ public class ListViewHolder extends ViewHolder {
 	protected int divider;
 
 	@Override
-	public void reload(View view, Resources res) {
+	protected void reload(View view, Resources res) {
 		super.reload(view, res);
 		if (divider != 0) {
 			((ListView) view).setDivider(res.getDrawable(divider));

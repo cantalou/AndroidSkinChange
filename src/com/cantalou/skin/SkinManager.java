@@ -30,7 +30,7 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
-import com.cantalou.skin.holder.AbstractHolder;
+import com.cantalou.skin.holder.ViewHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
@@ -482,9 +482,9 @@ public class SkinManager {
 			v.invalidate();
 		}
 
-		Object tag = v.getTag(AbstractHolder.ATTR_HOLDER_KEY);
-		if (tag != null && tag instanceof AbstractHolder) {
-			((AbstractHolder) tag).reload(v, v.getContext().getResources());
+		Object tag = v.getTag(ViewHolder.ATTR_HOLDER_KEY);
+		if (tag != null && tag instanceof ViewHolder) {
+			((ViewHolder) tag).reloadAttr(v, v.getContext().getResources());
 		}
 
 		if (v instanceof ViewGroup) {
@@ -510,6 +510,8 @@ public class SkinManager {
 		}
 
 		activitys.add(activity);
+		LayoutInflater li = activity.getLayoutInflater();
+		registerViewFactory(li);
 
 		String prefSkinPath = PrefUtil.getString(activity, PREF_KEY_CURRENT_SKIN);
 		if (StringUtils.isNotBlank(prefSkinPath)) {
@@ -646,26 +648,27 @@ public class SkinManager {
 	}
 
 	/**
-	 * 注册xml资源id
+	 * 处理菜单布局文件解析
 	 *
 	 * @param id
 	 */
-	public synchronized void registerXml(int id) {
+	private synchronized void handleMenuInflate(int id) {
 		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+			return;
+		}
+
+		int size = activitys.size();
+		if (size == 0) {
 			return;
 		}
 
 		if (handledDrawableId.contains(id)) {
 			return;
 		}
-		handledDrawableId.put(id);
 
 		Log.v("register xml {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
+		handledDrawableId.put(id);
 
-		int size = activitys.size();
-		if (size == 0) {
-			return;
-		}
 		Activity activity = activitys.get(size - 1);
 
 		try {
@@ -713,24 +716,27 @@ public class SkinManager {
 		if (size == 0) {
 			return;
 		}
-		Activity activity = activitys.get(size - 1);
-		LayoutInflater li = activity.getLayoutInflater();
-		registerViewFactory(li);
 
 		if (handledDrawableId.contains(id)) {
 			return;
 		}
-		handledDrawableId.put(id);
 
 		Log.v("register layout {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
+		handledDrawableId.put(id);
+
+		Activity activity = activitys.get(size - 1);
+		LayoutInflater li = activity.getLayoutInflater();
 
 		try {
+			// 兼容layout包含有merge标签
 			ViewGroup parent = new FrameLayout(activity);
 			li.inflate(id, parent);
 		} catch (Exception e) {
 			Log.e(e);
 			handledDrawableId.delete(id);
-			registerXml(id);
+			if (e instanceof ClassNotFoundException) {
+				handleMenuInflate(id);
+			}
 		}
 	}
 
