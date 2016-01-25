@@ -1,4 +1,4 @@
-package com.cantalou.skin.res;
+package com.cantalou.skin.content.res;
 
 import android.content.res.Resources;
 import android.graphics.Color;

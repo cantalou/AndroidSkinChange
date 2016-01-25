@@ -8,8 +8,8 @@ import android.util.LongSparseArray;
 import android.util.TypedValue;
 
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.res.ProxyResources;
-import com.cantalou.skin.res.SkinProxyResources;
+import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.SkinProxyResources;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class ColorStateListLongSpareArray extends LongSparseArray<ColorStateList> {

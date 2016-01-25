@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.cantalou.android.util.Log;
-import com.cantalou.skin.res.SkinProxyResources;
+import com.cantalou.skin.content.res.SkinProxyResources;
 
 abstract class AbstractHolder implements Cloneable {
 

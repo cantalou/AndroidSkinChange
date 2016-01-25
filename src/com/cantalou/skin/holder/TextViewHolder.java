@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.res.SkinProxyResources;
+import com.cantalou.skin.content.res.SkinProxyResources;
 
 public class TextViewHolder extends ViewHolder
 {

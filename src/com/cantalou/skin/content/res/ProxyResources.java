@@ -1,4 +1,4 @@
-package com.cantalou.skin.res;
+package com.cantalou.skin.content.res;
 
 import static com.cantalou.android.util.ReflectUtil.get;
 import static com.cantalou.android.util.ReflectUtil.invoke;

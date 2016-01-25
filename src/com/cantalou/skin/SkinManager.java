@@ -30,14 +30,14 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
+import com.cantalou.skin.content.res.NightResources;
+import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.SkinProxyResources;
+import com.cantalou.skin.content.res.SkinResources;
 import com.cantalou.skin.holder.ViewHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
-import com.cantalou.skin.res.NightResources;
-import com.cantalou.skin.res.ProxyResources;
-import com.cantalou.skin.res.SkinProxyResources;
-import com.cantalou.skin.res.SkinResources;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

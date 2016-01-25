@@ -8,8 +8,8 @@ import android.util.LongSparseArray;
 import android.util.SparseArray;
 import android.util.TypedValue;
 
-import com.cantalou.skin.res.ProxyResources;
-import com.cantalou.skin.res.SkinProxyResources;
+import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.SkinProxyResources;
 
 public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
 
