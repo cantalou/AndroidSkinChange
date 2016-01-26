@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.cantalou.skin.SkinManager;
+
 import android.content.BroadcastReceiver;
 import android.content.ComponentCallbacks;
 import android.content.ComponentName;
@@ -36,17 +38,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.view.Display;
+import android.view.LayoutInflater;
 
 /**
  *
  * @author cantalou
  * @date 2016年1月25日 下午10:55:29
  */
-public class ProxyContext extends Context {
+public class SkinContextWrapper extends Context {
 
 	private Context delegate;
 
-	public ProxyContext(Context delegate) {
+	public SkinContextWrapper(Context delegate) {
 		super();
 		this.delegate = delegate;
 	}
@@ -88,7 +91,7 @@ public class ProxyContext extends Context {
 
 	@Override
 	public int checkCallingOrSelfUriPermission(Uri uri, int modeFlags) {
-		return delegate.checkCallingOrSelfUriPermission(uri, modeFlags)
+		return delegate.checkCallingOrSelfUriPermission(uri, modeFlags);
 	}
 
 	@Override
@@ -148,294 +151,261 @@ public class ProxyContext extends Context {
 
 	@Override
 	public File getCacheDir() {
-
-		return null;
+		return delegate.getCacheDir();
 	}
 
 	@Override
 	public String[] fileList() {
-
-		return null;
+		return delegate.fileList();
 	}
 
 	@Override
 	public File getDir(String name, int mode) {
-
-		return null;
+		return delegate.getDir(name, mode);
 	}
 
 	@Override
 	public boolean deleteDatabase(String name) {
-
-		return false;
+		return delegate.deleteDatabase(name);
 	}
 
 	@Override
 	public File getDatabasePath(String name) {
-
-		return null;
+		return delegate.getDatabasePath(name);
 	}
 
 	@Override
 	public String[] databaseList() {
-
-		return null;
+		return delegate.databaseList();
 	}
 
 	@Override
 	public void enforcePermission(String permission, int pid, int uid, String message) {
-
+		delegate.enforcePermission(permission, pid, uid, message);
 	}
 
 	@Override
 	public void enforceCallingPermission(String permission, String message) {
-
+		delegate.enforceCallingPermission(permission, message);
 	}
 
 	@Override
 	public void enforceCallingOrSelfPermission(String permission, String message) {
-
+		delegate.enforceCallingOrSelfPermission(permission, message);
 	}
 
 	@Override
 	public void enforceUriPermission(Uri uri, int pid, int uid, int modeFlags, String message) {
-
+		delegate.enforceUriPermission(uri, pid, uid, modeFlags, message);
 	}
 
 	@Override
 	public void enforceCallingUriPermission(Uri uri, int modeFlags, String message) {
-
+		delegate.enforceCallingUriPermission(uri, modeFlags, message);
 	}
 
 	@Override
 	public void enforceCallingOrSelfUriPermission(Uri uri, int modeFlags, String message) {
-
+		delegate.enforceCallingOrSelfUriPermission(uri, modeFlags, message);
 	}
 
 	@Override
 	public void enforceUriPermission(Uri uri, String readPermission, String writePermission, int pid, int uid, int modeFlags, String message) {
-
+		delegate.enforceUriPermission(uri, readPermission, writePermission, pid, uid, modeFlags, message);
 	}
 
 	@Override
 	public File getCodeCacheDir() {
-
-		return null;
+		return delegate.getCodeCacheDir();
 	}
 
 	@Override
 	public File getExternalCacheDir() {
-
-		return null;
+		return delegate.getExternalCacheDir();
 	}
 
 	@Override
 	public File[] getExternalCacheDirs() {
-
-		return null;
+		return delegate.getExternalCacheDirs();
 	}
 
 	@Override
 	public File getExternalFilesDir(String type) {
-
-		return null;
+		return delegate.getExternalFilesDir(type);
 	}
 
 	@Override
 	public File[] getExternalFilesDirs(String type) {
-
-		return null;
+		return delegate.getExternalFilesDirs(type);
 	}
 
 	@Override
 	public File[] getExternalMediaDirs() {
-
-		return null;
+		return delegate.getExternalMediaDirs();
 	}
 
 	@Override
 	public Resources getResources() {
-
-		return null;
+		return delegate.getResources();
 	}
 
 	@Override
 	public PackageManager getPackageManager() {
-
-		return null;
+		return delegate.getPackageManager();
 	}
 
 	@Override
 	public Looper getMainLooper() {
-
-		return null;
+		return delegate.getMainLooper();
 	}
 
 	@Override
 	public Theme getTheme() {
-
-		return null;
+		return delegate.getTheme();
 	}
 
 	@Override
 	public String getPackageName() {
-
-		return null;
+		return delegate.getPackageName();
 	}
 
 	@Override
 	public String getPackageResourcePath() {
-
-		return null;
+		return delegate.getPackageResourcePath();
 	}
 
 	@Override
 	public File getFileStreamPath(String name) {
-
-		return null;
+		return delegate.getFileStreamPath(name);
 	}
 
 	@Override
 	public File getFilesDir() {
-
-		return null;
+		return delegate.getFilesDir();
 	}
 
 	@Override
 	public File getNoBackupFilesDir() {
-
-		return null;
+		return delegate.getNoBackupFilesDir();
 	}
 
 	@Override
 	public File getObbDir() {
-
-		return null;
+		return delegate.getObbDir();
 	}
 
 	@Override
 	public File[] getObbDirs() {
-
-		return null;
+		return delegate.getObbDirs();
 	}
 
 	@Override
 	public String getPackageCodePath() {
-
-		return null;
+		return delegate.getPackageCodePath();
 	}
 
 	@Override
 	public SharedPreferences getSharedPreferences(String name, int mode) {
-
-		return null;
+		return delegate.getSharedPreferences(name, mode);
 	}
 
 	@Override
 	public Object getSystemService(String name) {
-
-		return null;
+		Object obj = delegate.getSystemService(name);
+		if (obj instanceof LayoutInflater) {
+			SkinManager.getInstance().registerViewFactory((LayoutInflater) obj);
+		}
+		return obj;
 	}
 
 	@Override
 	public String getSystemServiceName(Class<?> arg0) {
-
-		return null;
+		return delegate.getSystemServiceName(arg0);
 	}
 
 	@Override
 	public FileInputStream openFileInput(String name) throws FileNotFoundException {
-
-		return null;
+		return delegate.openFileInput(name);
 	}
 
 	@Override
 	public FileOutputStream openFileOutput(String name, int mode) throws FileNotFoundException {
-
-		return null;
+		return delegate.openFileOutput(name, mode);
 	}
 
 	@Override
 	public SQLiteDatabase openOrCreateDatabase(String name, int mode, CursorFactory factory) {
-
-		return null;
+		return delegate.openOrCreateDatabase(name, mode, factory);
 	}
 
 	@Override
 	public SQLiteDatabase openOrCreateDatabase(String name, int mode, CursorFactory factory, DatabaseErrorHandler errorHandler) {
-
-		return null;
+		return delegate.openOrCreateDatabase(name, mode, factory, errorHandler);
 	}
 
 	@Override
 	public Drawable getWallpaper() {
-
-		return null;
+		return delegate.getWallpaper();
 	}
 
 	@Override
 	public Drawable peekWallpaper() {
-
-		return null;
+		return delegate.peekWallpaper();
 	}
 
 	@Override
 	public int getWallpaperDesiredMinimumWidth() {
-
-		return 0;
+		return delegate.getWallpaperDesiredMinimumWidth();
 	}
 
 	@Override
 	public int getWallpaperDesiredMinimumHeight() {
-
-		return 0;
+		return delegate.getWallpaperDesiredMinimumHeight();
 	}
 
 	@Override
 	public void sendBroadcast(Intent intent) {
-
+		delegate.sendBroadcast(intent);
 	}
 
 	@Override
 	public void sendBroadcast(Intent intent, String receiverPermission) {
-
+		delegate.sendBroadcast(intent, receiverPermission);
 	}
 
 	@Override
 	public void removeStickyBroadcast(Intent intent) {
-
+		delegate.removeStickyBroadcast(intent);
 	}
 
 	@Override
 	public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
-
-		return null;
+		return delegate.registerReceiver(receiver, filter);
 	}
 
 	@Override
 	public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, String broadcastPermission, Handler scheduler) {
-
-		return null;
+		return delegate.registerReceiver(receiver, filter, broadcastPermission, scheduler);
 	}
 
 	@Override
 	public void grantUriPermission(String toPackage, Uri uri, int modeFlags) {
-
+		delegate.grantUriPermission(toPackage, uri, modeFlags);
 	}
 
 	@Override
 	public void removeStickyBroadcastAsUser(Intent intent, UserHandle user) {
-
+		delegate.removeStickyBroadcastAsUser(intent, user);
 	}
 
 	@Override
 	public void revokeUriPermission(Uri uri, int modeFlags) {
-
+		delegate.revokeUriPermission(uri, modeFlags);
 	}
 
 	@Override
 	public void sendBroadcastAsUser(Intent intent, UserHandle user, String receiverPermission) {
-
+		delegate.sendBroadcastAsUser(intent, user, receiverPermission);
 	}
 
 	@Override
@@ -467,7 +437,7 @@ public class ProxyContext extends Context {
 
 	@Override
 	public void sendStickyBroadcastAsUser(Intent intent, UserHandle user) {
-		delegate.sendBroadcastAsUser(intent, user);
+		delegate.sendStickyBroadcastAsUser(intent, user);
 	}
 
 	@Override
@@ -556,19 +526,16 @@ public class ProxyContext extends Context {
 
 	@Override
 	public void registerComponentCallbacks(ComponentCallbacks callback) {
-
 		delegate.registerComponentCallbacks(callback);
 	}
 
 	@Override
 	public void unregisterComponentCallbacks(ComponentCallbacks callback) {
-
 		delegate.unregisterComponentCallbacks(callback);
 	}
 
 	@Override
 	public boolean isRestricted() {
-
 		return delegate.isRestricted();
 	}
 

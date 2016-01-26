@@ -320,7 +320,7 @@ public class SkinManager {
 	 *
 	 * @param li
 	 */
-	private void registerViewFactory(LayoutInflater li) {
+	public void registerViewFactory(LayoutInflater li) {
 		Factory factory = li.getFactory();
 		if (factory instanceof ViewFactory) {
 			Log.w("Had register factory");
