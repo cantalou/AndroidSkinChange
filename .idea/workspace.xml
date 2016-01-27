@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8f5b2611-4083-4afd-b19a-96ccd00ed3c7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/holder/AbstractHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/AbstractHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidSkinChange.iml" afterPath="$PROJECT_DIR$/AndroidSkinChange.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/res/ProxyResources.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/res/ProxyResources.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/cantalou/skin/layout/factory/ViewFactory.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/layout/factory/ViewFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradle.properties" afterPath="$PROJECT_DIR$/gradle.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\.idea\libraries\android_util_2_0_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_util_2_0_8.xml" />
+      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\.idea\libraries\android_util_2_0_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_util_1_0_1.xml" />
+      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\src\com\cantalou\skin\holder\ActionBarContainerHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/SherlockActionBarContainerHolder.java" />
+      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\src\com\cantalou\skin\holder\ActionBarViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/SherlockActionBarViewHolder.java" />
+      <change type="MOVED" beforePath="D:\workspace\AndroidSkinChange\src\com\cantalou\skin\holder\ActionMenuItemViewHolder.java" afterPath="$PROJECT_DIR$/src/com/cantalou/skin/holder/SherlockActionMenuItemViewHolder.java" />
     </list>
     <ignored path="AndroidSkinChange.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,23 +42,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SkinManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
+      <file leaf-file-name="SherlockActionBarContainerHolder.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/holder/SherlockActionBarContainerHolder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="223" column="63" selection-start-line="223" selection-start-column="63" selection-end-line="223" selection-end-column="63" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gradle.properties" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/gradle.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.03522505">
-              <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.592068">
+              <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -522,9 +514,9 @@
                 <option name="name" value="preReleaseUnitTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.cantalou:android-util:2.0.8" />
+                <option name="description" value="Prepare com.cantalou:android-util:1.0.1" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareComCantalouAndroidUtil208Library" />
+                <option name="name" value="prepareComCantalouAndroidUtil101Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
@@ -727,7 +719,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="D:\workspace\AndroidSkinChange" value="4351953097795" />
+        <entry key="D:\workspace\AndroidSkinChange" value="4352641509608" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -742,8 +734,8 @@
                       <ExternalModuleBuildClasspathPojo>
                         <option name="entries">
                           <list>
-                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/2.0.8/168bc1ac0c3230e21cd351841412ddf549bff5d3/android-util-2.0.8-sources.jar" />
-                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/2.0.8/2a0d119ff6b7b15e48779197e2de8140f8bb1b6/android-util-2.0.8.aar" />
+                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/1.0.1/c6fa92de1d3673b812956fa14f01f368dfcf5103/android-util-1.0.1-sources.jar" />
+                            <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/1.0.1/77286bee156a0bd7f1c2b2a299ca03d9ad9d9412/android-util-1.0.1.aar" />
                             <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.jfrog.bintray.gradle/gradle-bintray-plugin/1.2/85566c4fd2f071635bca55847249587f34e2b13f/gradle-bintray-plugin-1.2-sources.jar" />
                             <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.jfrog.bintray.gradle/gradle-bintray-plugin/1.2/ae174b2aa348ae742cdc63496b66bcbc8f15d5e0/gradle-bintray-plugin-1.2.jar" />
                             <option value="D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/org.jfrog.buildinfo/build-info-extractor-gradle/3.1.1/47e542424f4f6e70ed5fde06ffb52d34d73aebb7/build-info-extractor-gradle-3.1.1-sources.jar" />
@@ -1175,9 +1167,11 @@
         <option value="$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeListener.java" />
         <option value="$PROJECT_DIR$/src/com/cantalou/skin/OnResourcesChangeFinishListener.java" />
         <option value="$PROJECT_DIR$/src/com/cantalou/skin/res/ProxyResources.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" />
         <option value="$PROJECT_DIR$/gradle.properties" />
+        <option value="$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/com/cantalou/skin/holder/ActionBarSherlockContainerHolder.java" />
+        <option value="$PROJECT_DIR$/src/com/cantalou/skin/holder/SherlockActionBarContainerHolder.java" />
       </list>
     </option>
   </component>
@@ -1220,19 +1214,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AndroidSkinChange" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1249,6 +1231,58 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="AndroidSkinChange" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="skin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="skin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="holder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AndroidSkinChange" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1451,7 +1485,13 @@
       <option name="project" value="LOCAL" />
       <updated>1452855605752</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="1">
+      <created>1453202528490</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1453202528490</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1466,14 +1506,14 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21579532" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39933258" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27030033" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18242492" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25139043" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18283582" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19296375" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -1532,70 +1572,125 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bintray.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
-          <folding />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2589#2599#0" expanded="true" />
+            <element signature="e#2709#2748#0" expanded="true" />
+            <element signature="e#3221#3254#0" expanded="true" />
+            <element signature="e#3437#3446#0" expanded="true" />
+            <element signature="e#3563#3572#0" expanded="true" />
+            <element signature="e#3699#3708#0" expanded="true" />
+            <element signature="e#4015#4152#0" expanded="true" />
+            <element signature="e#4151#4152#0" expanded="true" />
+            <element signature="e#4604#4605#0" expanded="true" />
+            <element signature="e#4641#4642#0" expanded="true" />
+            <element signature="e#9483#9513#0" expanded="true" />
+            <element signature="e#10021#10022#0" expanded="true" />
+            <element signature="e#10055#10056#0" expanded="true" />
+            <element signature="e#11636#11743#0" expanded="true" />
+            <element signature="e#11742#11743#0" expanded="true" />
+            <element signature="e#11880#12110#0" expanded="true" />
+            <element signature="e#12109#12110#0" expanded="true" />
+            <element signature="e#12192#12299#0" expanded="true" />
+            <element signature="e#12298#12299#0" expanded="true" />
+            <element signature="e#12342#12490#0" expanded="true" />
+            <element signature="e#12489#12490#0" expanded="true" />
+            <element signature="e#14714#14827#0" expanded="true" />
+            <element signature="e#14826#14827#0" expanded="true" />
+            <element signature="e#15209#15422#0" expanded="true" />
+            <element signature="e#15421#15422#0" expanded="true" />
+            <element signature="e#15520#15521#0" expanded="true" />
+            <element signature="e#15553#15554#0" expanded="true" />
+            <element signature="e#19736#19737#0" expanded="true" />
+            <element signature="e#19766#19767#0" expanded="true" />
+            <element signature="e#19801#19802#0" expanded="true" />
+            <element signature="e#19830#19831#0" expanded="true" />
+            <element signature="e#19936#19937#0" expanded="true" />
+            <element signature="e#19989#19990#0" expanded="true" />
+            <element signature="e#20098#20099#0" expanded="true" />
+            <element signature="e#20154#20155#0" expanded="true" />
+            <element signature="e#20201#20202#0" expanded="true" />
+            <element signature="e#20235#20236#0" expanded="true" />
+            <element signature="e#20278#20279#0" expanded="true" />
+            <element signature="e#20308#20309#0" expanded="true" />
+            <element signature="e#20366#20367#0" expanded="true" />
+            <element signature="e#20401#20402#0" expanded="true" />
+            <element signature="e#20465#20466#0" expanded="true" />
+            <element signature="e#20506#20507#0" expanded="true" />
+            <element signature="e#20569#20570#0" expanded="true" />
+            <element signature="e#20609#20610#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bintray.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
-          <folding />
+          <caret line="223" column="63" selection-start-line="223" selection-start-column="63" selection-end-line="223" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2589#2599#0" expanded="true" />
+            <element signature="e#2709#2748#0" expanded="true" />
+            <element signature="e#3221#3254#0" expanded="true" />
+            <element signature="e#3437#3446#0" expanded="true" />
+            <element signature="e#3563#3572#0" expanded="true" />
+            <element signature="e#3699#3708#0" expanded="true" />
+            <element signature="e#4015#4152#0" expanded="true" />
+            <element signature="e#4151#4152#0" expanded="true" />
+            <element signature="e#4604#4605#0" expanded="true" />
+            <element signature="e#4641#4642#0" expanded="true" />
+            <element signature="e#9483#9513#0" expanded="true" />
+            <element signature="e#10021#10022#0" expanded="true" />
+            <element signature="e#10055#10056#0" expanded="true" />
+            <element signature="e#11636#11743#0" expanded="true" />
+            <element signature="e#11742#11743#0" expanded="true" />
+            <element signature="e#11880#12110#0" expanded="true" />
+            <element signature="e#12109#12110#0" expanded="true" />
+            <element signature="e#12192#12299#0" expanded="true" />
+            <element signature="e#12298#12299#0" expanded="true" />
+            <element signature="e#12342#12490#0" expanded="true" />
+            <element signature="e#12489#12490#0" expanded="true" />
+            <element signature="e#14714#14827#0" expanded="true" />
+            <element signature="e#14826#14827#0" expanded="true" />
+            <element signature="e#15209#15422#0" expanded="true" />
+            <element signature="e#15421#15422#0" expanded="true" />
+            <element signature="e#15520#15521#0" expanded="true" />
+            <element signature="e#15553#15554#0" expanded="true" />
+            <element signature="e#19736#19737#0" expanded="true" />
+            <element signature="e#19766#19767#0" expanded="true" />
+            <element signature="e#19801#19802#0" expanded="true" />
+            <element signature="e#19830#19831#0" expanded="true" />
+            <element signature="e#19936#19937#0" expanded="true" />
+            <element signature="e#19989#19990#0" expanded="true" />
+            <element signature="e#20098#20099#0" expanded="true" />
+            <element signature="e#20154#20155#0" expanded="true" />
+            <element signature="e#20201#20202#0" expanded="true" />
+            <element signature="e#20235#20236#0" expanded="true" />
+            <element signature="e#20278#20279#0" expanded="true" />
+            <element signature="e#20308#20309#0" expanded="true" />
+            <element signature="e#20366#20367#0" expanded="true" />
+            <element signature="e#20401#20402#0" expanded="true" />
+            <element signature="e#20465#20466#0" expanded="true" />
+            <element signature="e#20506#20507#0" expanded="true" />
+            <element signature="e#20569#20570#0" expanded="true" />
+            <element signature="e#20609#20610#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gradle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/res/NightResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="127" column="38" selection-start-line="127" selection-start-column="24" selection-end-line="127" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bintray.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1606,9 +1701,175 @@
     <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="223" column="63" selection-start-line="223" selection-start-column="63" selection-end-line="223" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2589#2599#0" expanded="true" />
+            <element signature="e#2709#2748#0" expanded="true" />
+            <element signature="e#3221#3254#0" expanded="true" />
+            <element signature="e#3437#3446#0" expanded="true" />
+            <element signature="e#3563#3572#0" expanded="true" />
+            <element signature="e#3699#3708#0" expanded="true" />
+            <element signature="e#4015#4152#0" expanded="true" />
+            <element signature="e#4151#4152#0" expanded="true" />
+            <element signature="e#4604#4605#0" expanded="true" />
+            <element signature="e#4641#4642#0" expanded="true" />
+            <element signature="e#9483#9513#0" expanded="true" />
+            <element signature="e#10021#10022#0" expanded="true" />
+            <element signature="e#10055#10056#0" expanded="true" />
+            <element signature="e#11636#11743#0" expanded="true" />
+            <element signature="e#11742#11743#0" expanded="true" />
+            <element signature="e#11880#12110#0" expanded="true" />
+            <element signature="e#12109#12110#0" expanded="true" />
+            <element signature="e#12192#12299#0" expanded="true" />
+            <element signature="e#12298#12299#0" expanded="true" />
+            <element signature="e#12342#12490#0" expanded="true" />
+            <element signature="e#12489#12490#0" expanded="true" />
+            <element signature="e#14714#14827#0" expanded="true" />
+            <element signature="e#14826#14827#0" expanded="true" />
+            <element signature="e#15209#15422#0" expanded="true" />
+            <element signature="e#15421#15422#0" expanded="true" />
+            <element signature="e#15520#15521#0" expanded="true" />
+            <element signature="e#15553#15554#0" expanded="true" />
+            <element signature="e#19736#19737#0" expanded="true" />
+            <element signature="e#19766#19767#0" expanded="true" />
+            <element signature="e#19801#19802#0" expanded="true" />
+            <element signature="e#19830#19831#0" expanded="true" />
+            <element signature="e#19936#19937#0" expanded="true" />
+            <element signature="e#19989#19990#0" expanded="true" />
+            <element signature="e#20098#20099#0" expanded="true" />
+            <element signature="e#20154#20155#0" expanded="true" />
+            <element signature="e#20201#20202#0" expanded="true" />
+            <element signature="e#20235#20236#0" expanded="true" />
+            <element signature="e#20278#20279#0" expanded="true" />
+            <element signature="e#20308#20309#0" expanded="true" />
+            <element signature="e#20366#20367#0" expanded="true" />
+            <element signature="e#20401#20402#0" expanded="true" />
+            <element signature="e#20465#20466#0" expanded="true" />
+            <element signature="e#20506#20507#0" expanded="true" />
+            <element signature="e#20569#20570#0" expanded="true" />
+            <element signature="e#20609#20610#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bintray.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bintray.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bintray.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2589#2599#0" expanded="true" />
+            <element signature="e#2709#2748#0" expanded="true" />
+            <element signature="e#3221#3254#0" expanded="true" />
+            <element signature="e#3437#3446#0" expanded="true" />
+            <element signature="e#3563#3572#0" expanded="true" />
+            <element signature="e#3699#3708#0" expanded="true" />
+            <element signature="e#4015#4152#0" expanded="true" />
+            <element signature="e#4151#4152#0" expanded="true" />
+            <element signature="e#4604#4605#0" expanded="true" />
+            <element signature="e#4641#4642#0" expanded="true" />
+            <element signature="e#9483#9513#0" expanded="true" />
+            <element signature="e#10021#10022#0" expanded="true" />
+            <element signature="e#10055#10056#0" expanded="true" />
+            <element signature="e#11636#11743#0" expanded="true" />
+            <element signature="e#11742#11743#0" expanded="true" />
+            <element signature="e#11880#12110#0" expanded="true" />
+            <element signature="e#12109#12110#0" expanded="true" />
+            <element signature="e#12192#12299#0" expanded="true" />
+            <element signature="e#12298#12299#0" expanded="true" />
+            <element signature="e#12342#12490#0" expanded="true" />
+            <element signature="e#12489#12490#0" expanded="true" />
+            <element signature="e#14714#14827#0" expanded="true" />
+            <element signature="e#14826#14827#0" expanded="true" />
+            <element signature="e#15209#15422#0" expanded="true" />
+            <element signature="e#15421#15422#0" expanded="true" />
+            <element signature="e#15520#15521#0" expanded="true" />
+            <element signature="e#15553#15554#0" expanded="true" />
+            <element signature="e#19736#19737#0" expanded="true" />
+            <element signature="e#19766#19767#0" expanded="true" />
+            <element signature="e#19801#19802#0" expanded="true" />
+            <element signature="e#19830#19831#0" expanded="true" />
+            <element signature="e#19936#19937#0" expanded="true" />
+            <element signature="e#19989#19990#0" expanded="true" />
+            <element signature="e#20098#20099#0" expanded="true" />
+            <element signature="e#20154#20155#0" expanded="true" />
+            <element signature="e#20201#20202#0" expanded="true" />
+            <element signature="e#20235#20236#0" expanded="true" />
+            <element signature="e#20278#20279#0" expanded="true" />
+            <element signature="e#20308#20309#0" expanded="true" />
+            <element signature="e#20366#20367#0" expanded="true" />
+            <element signature="e#20401#20402#0" expanded="true" />
+            <element signature="e#20465#20466#0" expanded="true" />
+            <element signature="e#20506#20507#0" expanded="true" />
+            <element signature="e#20569#20570#0" expanded="true" />
+            <element signature="e#20609#20610#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1617,7 +1878,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="278" column="28" selection-start-line="278" selection-start-column="28" selection-end-line="278" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1667,7 +1927,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="278" column="28" selection-start-line="278" selection-start-column="28" selection-end-line="278" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1692,7 +1951,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1710,13 +1968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/res/SkinProxyResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="216" column="45" selection-start-line="216" selection-start-column="45" selection-end-line="216" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/android/sources/android-21/android/content/res/Resources.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.983051">
@@ -1724,50 +1975,88 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/res/ProxyResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.982609">
-          <caret line="41" column="41" selection-start-line="41" selection-start-column="41" selection-end-line="41" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/res/NightResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="127" column="38" selection-start-line="127" selection-start-column="24" selection-end-line="127" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bintray.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31724137">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/SkinManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="223" column="63" selection-start-line="223" selection-start-column="63" selection-end-line="223" selection-end-column="63" />
+        <state vertical-scroll-proportion="1.4532578">
+          <caret line="254" column="9" selection-start-line="254" selection-start-column="9" selection-end-line="254" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2589#2599#0" expanded="true" />
+            <element signature="e#2709#2748#0" expanded="true" />
+            <element signature="e#3221#3254#0" expanded="true" />
+            <element signature="e#3437#3446#0" expanded="true" />
+            <element signature="e#3563#3572#0" expanded="true" />
+            <element signature="e#3699#3708#0" expanded="true" />
+            <element signature="e#4015#4152#0" expanded="true" />
+            <element signature="e#4151#4152#0" expanded="true" />
+            <element signature="e#4604#4605#0" expanded="true" />
+            <element signature="e#4641#4642#0" expanded="true" />
+            <element signature="e#9483#9513#0" expanded="true" />
+            <element signature="e#10021#10022#0" expanded="true" />
+            <element signature="e#10055#10056#0" expanded="true" />
+            <element signature="e#11636#11743#0" expanded="true" />
+            <element signature="e#11742#11743#0" expanded="true" />
+            <element signature="e#11880#12110#0" expanded="true" />
+            <element signature="e#12109#12110#0" expanded="true" />
+            <element signature="e#12192#12299#0" expanded="true" />
+            <element signature="e#12298#12299#0" expanded="true" />
+            <element signature="e#12342#12490#0" expanded="true" />
+            <element signature="e#12489#12490#0" expanded="true" />
+            <element signature="e#14714#14827#0" expanded="true" />
+            <element signature="e#14826#14827#0" expanded="true" />
+            <element signature="e#15209#15422#0" expanded="true" />
+            <element signature="e#15421#15422#0" expanded="true" />
+            <element signature="e#15520#15521#0" expanded="true" />
+            <element signature="e#15553#15554#0" expanded="true" />
+            <element signature="e#19736#19737#0" expanded="true" />
+            <element signature="e#19766#19767#0" expanded="true" />
+            <element signature="e#19801#19802#0" expanded="true" />
+            <element signature="e#19830#19831#0" expanded="true" />
+            <element signature="e#19936#19937#0" expanded="true" />
+            <element signature="e#19989#19990#0" expanded="true" />
+            <element signature="e#20098#20099#0" expanded="true" />
+            <element signature="e#20154#20155#0" expanded="true" />
+            <element signature="e#20201#20202#0" expanded="true" />
+            <element signature="e#20235#20236#0" expanded="true" />
+            <element signature="e#20278#20279#0" expanded="true" />
+            <element signature="e#20308#20309#0" expanded="true" />
+            <element signature="e#20366#20367#0" expanded="true" />
+            <element signature="e#20401#20402#0" expanded="true" />
+            <element signature="e#20465#20466#0" expanded="true" />
+            <element signature="e#20506#20507#0" expanded="true" />
+            <element signature="e#20569#20570#0" expanded="true" />
+            <element signature="e#20609#20610#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gradle.properties">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03522505">
-          <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.43342775">
+          <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/cantalou/skin/holder/SherlockActionBarContainerHolder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.592068">
+          <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
           <folding />
         </state>
       </provider>

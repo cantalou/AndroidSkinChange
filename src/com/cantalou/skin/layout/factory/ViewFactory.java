@@ -1,21 +1,18 @@
 package com.cantalou.skin.layout.factory;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory;
-import android.view.LayoutInflater.Factory2;
 import android.view.View;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
-import com.cantalou.skin.holder.ActionBarContainerHolder;
-import com.cantalou.skin.holder.ActionBarViewHolder;
-import com.cantalou.skin.holder.ActionMenuItemViewHolder;
+import com.cantalou.skin.holder.SherlockActionBarContainerHolder;
+import com.cantalou.skin.holder.SherlockActionBarViewHolder;
+import com.cantalou.skin.holder.SherlockActionMenuItemViewHolder;
 import com.cantalou.skin.holder.ImageViewHolder;
 import com.cantalou.skin.holder.ListViewHolder;
 import com.cantalou.skin.holder.TextViewHolder;
@@ -44,9 +41,9 @@ public class ViewFactory implements Factory {
 		viewAttrHolder.put("android.widget.ListView", new ListViewHolder());
 		
 		//compact actionbarsherlock
-		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new SherlockActionBarContainerHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new SherlockActionMenuItemViewHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new SherlockActionBarViewHolder());
 		
 
 	}

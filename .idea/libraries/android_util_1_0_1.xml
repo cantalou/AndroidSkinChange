@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="android-util-1.0.1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/build/intermediates/exploded-aar/com.cantalou/android-util/1.0.1/res" />
+      <root url="jar://$PROJECT_DIR$/build/intermediates/exploded-aar/com.cantalou/android-util/1.0.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://D:/Program Files (x86)/gradle-2.8/caches/modules-2/files-2.1/com.cantalou/android-util/1.0.1/c6fa92de1d3673b812956fa14f01f368dfcf5103/android-util-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
