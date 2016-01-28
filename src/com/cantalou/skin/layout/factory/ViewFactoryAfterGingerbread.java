@@ -13,6 +13,7 @@ import android.view.View;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
+import com.cantalou.skin.holder.AbstractHolder;
 import com.cantalou.skin.holder.ImageViewHolder;
 import com.cantalou.skin.holder.ListViewHolder;
 import com.cantalou.skin.holder.TextViewHolder;
@@ -59,7 +60,7 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
 		}
 
 		if (view != null) {
-			ViewHolder attrHolder = getHolder(name);
+			AbstractHolder attrHolder = getHolder(name);
 			if (attrHolder != null) {
 				attrHolder.parse(attrs);
 			}

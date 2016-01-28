@@ -36,13 +36,4 @@ public class ViewHolder extends AbstractHolder
         return super.parseAttr(attrs) || background != 0;
     }
 
-	@Override
-	public final ViewHolder clone() {
-		try {
-			return (ViewHolder) super.clone();
-		} catch (CloneNotSupportedException e) {
-			Log.w(e);
-			return null;
-		}
-	}
 }

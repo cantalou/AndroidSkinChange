@@ -8,7 +8,7 @@ import android.view.View;
 import com.cantalou.android.util.Log;
 import com.cantalou.skin.content.res.SkinProxyResources;
 
-abstract class AbstractHolder implements Cloneable {
+public abstract class AbstractHolder implements Cloneable {
 
 	public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
 
@@ -83,4 +83,13 @@ abstract class AbstractHolder implements Cloneable {
 		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
 	}
 
+	@Override
+	public final ViewHolder clone() {
+		try {
+			return (ViewHolder) super.clone();
+		} catch (CloneNotSupportedException e) {
+			Log.w(e);
+			return null;
+		}
+	}
 }
