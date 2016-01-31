@@ -35,6 +35,7 @@ import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
+import com.cantalou.skin.holder.AbstractHolder;
 import com.cantalou.skin.holder.ViewHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
@@ -433,14 +434,6 @@ public class SkinManager {
 			});
 		}
 
-		// ActionBar
-		serialTasks.offer(new Runnable() {
-			@Override
-			public void run() {
-				invoke(a, "invalidateOptionsMenu");
-				invoke(a, "supportInvalidateOptionsMenu");
-			}
-		});
 	}
 
 	/**
@@ -465,7 +458,12 @@ public class SkinManager {
 
 		Object tag = v.getTag(ViewHolder.ATTR_HOLDER_KEY);
 		if (tag != null && tag instanceof ViewHolder) {
-			((ViewHolder) tag).reloadAttr(v, v.getContext().getResources());
+			((AbstractHolder) tag).reloadAttr(v, v.getContext().getResources());
+		} else {
+			AbstractHolder ah = ViewFactory.getHolder(v.getClass().getName());
+			if(ah != null){
+				ah.reloadAttr(v, v.getContext().getResources());
+			}
 		}
 
 		if (v instanceof ViewGroup) {

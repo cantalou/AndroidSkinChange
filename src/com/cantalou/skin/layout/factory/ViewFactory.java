@@ -130,7 +130,7 @@ public class ViewFactory implements Factory {
 		return view;
 	}
 
-	AbstractHolder getHolder(String name) {
+	public static AbstractHolder getHolder(String name) {
 
 		if (StringUtils.isBlank(name)) {
 			return null;
@@ -172,7 +172,7 @@ public class ViewFactory implements Factory {
 		return attrHolder.clone();
 	}
 
-	private String getSuperClassName(String name) throws ClassNotFoundException {
+	private static String getSuperClassName(String name) throws ClassNotFoundException {
 		String superName = null;
 		Class<?> clazz = Class.forName(name);
 		if (clazz != null && clazz.getSuperclass() != null) {
@@ -181,7 +181,7 @@ public class ViewFactory implements Factory {
 		return superName;
 	}
 
-	public void registerAttrHolder(String name, ViewHolder attrHolder) {
+	public static void registerAttrHolder(String name, ViewHolder attrHolder) {
 		viewAttrHolder.put(name, attrHolder);
 	}
 }
