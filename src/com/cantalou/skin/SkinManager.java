@@ -497,8 +497,8 @@ public class SkinManager {
 			Log.v("replace Activity baseContext to :{} ", baseContext);
 		}
 
-		// LayoutInflater li = activity.getLayoutInflater();
-		// registerViewFactory(li);
+		 LayoutInflater li = activity.getLayoutInflater();
+		 registerViewFactory(li);
 
 		String prefSkinPath = PrefUtil.getString(activity, PREF_KEY_CURRENT_SKIN);
 		if (StringUtils.isNotBlank(prefSkinPath)) {
