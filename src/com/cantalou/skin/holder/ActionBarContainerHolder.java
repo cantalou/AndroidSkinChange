@@ -18,7 +18,7 @@ import com.cantalou.skin.SkinManager;
  * @date 2016年1月23日 下午11:30:25
  */
 @SuppressWarnings("deprecation")
-public class SherlockActionBarContainerHolder extends ViewHolder {
+public class ActionBarContainerHolder extends ViewHolder {
 
 	private int background;
 
@@ -27,7 +27,7 @@ public class SherlockActionBarContainerHolder extends ViewHolder {
 	@Override
 	protected void reload(View view, Resources res) {
 		super.reload(view, res);
-		ReflectUtil.set(view, "mBackground", res.getDrawable(background));
+		ReflectUtil.invokeByMethodName(view, "setPrimaryBackground", res.getDrawable(background));
 
 		// Fix for issue #379
 		Drawable stackBackgroundDrawable = res.getDrawable(stackedBackground);
@@ -35,7 +35,7 @@ public class SherlockActionBarContainerHolder extends ViewHolder {
 			stackBackgroundDrawable = ReflectUtil.newInstance("com.actionbarsherlock.internal.widget.IcsColorDrawable", stackBackgroundDrawable);
 		}
 		if (stackBackgroundDrawable != null) {
-			ReflectUtil.set(view, "mStackedBackground", stackBackgroundDrawable);
+			ReflectUtil.invokeByMethodName(view, "setStackedBackground", stackBackgroundDrawable);
 		}
 
 	}
@@ -45,12 +45,12 @@ public class SherlockActionBarContainerHolder extends ViewHolder {
 
 		background = getResourceId(attrs, "background");
 		if (background != 0) {
-			SkinManager.getInstance().registerDrawable(background);
+			cacheKeyAndIdManager.registerDrawable(background);
 		}
 
 		stackedBackground = getResourceId(attrs, "backgroundStacked");
 		if (stackedBackground != 0) {
-			SkinManager.getInstance().registerDrawable(stackedBackground);
+			cacheKeyAndIdManager.registerDrawable(stackedBackground);
 		}
 
 		return super.parseAttr(attrs) || background != 0 || stackedBackground != 0;

@@ -41,16 +41,15 @@ public class AppCompactToolBarHolder extends AbstractHolder {
 
 	@Override
 	protected boolean parseAttr(AttributeSet attrs) {
-		SkinManager skinManager = SkinManager.getInstance();
 
 		collapseIcon = getResourceId(attrs, "collapseIcon");
 		if (collapseIcon != 0) {
-			skinManager.registerDrawable(collapseIcon);
+			cacheKeyAndIdManager.registerDrawable(collapseIcon);
 		}
 
 		navIcon = getResourceId(attrs, "navigationIcon");
 		if (navIcon != 0) {
-			skinManager.registerDrawable(navIcon);
+			cacheKeyAndIdManager.registerDrawable(navIcon);
 		}
 
 		return super.parseAttr(attrs) || collapseIcon != 0 || navIcon != 0;

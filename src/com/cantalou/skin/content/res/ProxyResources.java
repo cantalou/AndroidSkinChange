@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.skin.CacheKeyAndIdManager;
 import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.array.ColorStateListLongSpareArray;
 import com.cantalou.skin.array.ColorStateListSpareArray;
@@ -103,7 +104,7 @@ public class ProxyResources extends Resources {
 		}
 	}
 
-	protected SkinManager skinManager;
+	protected CacheKeyAndIdManager cacheKeyAndIdManager;
 
 	protected static TypedValue logValue = new TypedValue();
 
@@ -111,42 +112,42 @@ public class ProxyResources extends Resources {
 
 	public ProxyResources(Resources res) {
 		super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
-		skinManager = SkinManager.getInstance();
+		cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
 	}
 
 	@Override
 	public int getColor(int id) throws NotFoundException {
-		skinManager.registerDrawable(id);
+		cacheKeyAndIdManager.registerDrawable(id);
 		return super.getColor(id);
 	}
 
 	@Override
 	public ColorStateList getColorStateList(int id) throws NotFoundException {
-		skinManager.registerColorStateList(id);
+		cacheKeyAndIdManager.registerColorStateList(id);
 		return super.getColorStateList(id);
 	}
 
 	@Override
 	public Drawable getDrawable(int id, Theme theme) throws NotFoundException {
-		skinManager.registerDrawable(id);
+		cacheKeyAndIdManager.registerDrawable(id);
 		return super.getDrawable(id, theme);
 	}
 
 	@Override
 	public Drawable getDrawable(int id) throws NotFoundException {
-		skinManager.registerDrawable(id);
+		cacheKeyAndIdManager.registerDrawable(id);
 		return super.getDrawable(id);
 	}
 
 	@Override
 	public Drawable getDrawableForDensity(int id, int density, Theme theme) {
-		skinManager.registerDrawable(id);
+		cacheKeyAndIdManager.registerDrawable(id);
 		return super.getDrawableForDensity(id, density, theme);
 	}
 
 	@Override
 	public Drawable getDrawableForDensity(int id, int density) throws NotFoundException {
-		skinManager.registerDrawable(id);
+		cacheKeyAndIdManager.registerDrawable(id);
 		return super.getDrawableForDensity(id, density);
 	}
 
@@ -157,7 +158,7 @@ public class ProxyResources extends Resources {
 
 		// drawable
 		if (proxyPreloadedDrawables == null) {
-			proxyPreloadedDrawables = new DrawableLongSpareArray(this, preloadedDrawables, skinManager.getDrawableIdKeyMap());
+			proxyPreloadedDrawables = new DrawableLongSpareArray(this, preloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
 		}
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
@@ -168,7 +169,7 @@ public class ProxyResources extends Resources {
 
 		// colorDrawable
 		if (proxyPreloadedColorDrawables == null) {
-			proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, preloadedColorDrawables, skinManager.getColorDrawableIdKeyMap());
+			proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, preloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
 		}
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
 			set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
@@ -178,12 +179,12 @@ public class ProxyResources extends Resources {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			if (proxyPreloadedColorStateLists16 == null) {
 				proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(this, preloadedColorStateLists16,
-						skinManager.getColorStateListIdKeyMap());
+						cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
 			}
 			set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
 		} else {
 			if (proxyPreloadedColorStateLists == null) {
-				proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, preloadedColorStateLists, skinManager.getColorStateListIdKeyMap());
+				proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, preloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
 			}
 			set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
 		}
@@ -247,7 +248,7 @@ public class ProxyResources extends Resources {
 
 	@Override
 	public XmlResourceParser getLayout(int id) throws NotFoundException {
-		skinManager.registerLayout(id);
+		cacheKeyAndIdManager.registerLayout(id);
 		return super.getLayout(id);
 	}
 

@@ -11,9 +11,9 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.holder.AppCompactToolBarHolder;
-import com.cantalou.skin.holder.SherlockActionBarContainerHolder;
-import com.cantalou.skin.holder.SherlockActionBarViewHolder;
-import com.cantalou.skin.holder.SherlockActionMenuItemViewHolder;
+import com.cantalou.skin.holder.ActionBarContainerHolder;
+import com.cantalou.skin.holder.ActionBarViewHolder;
+import com.cantalou.skin.holder.ActionMenuItemViewHolder;
 import com.cantalou.skin.holder.ImageViewHolder;
 import com.cantalou.skin.holder.ListViewHolder;
 import com.cantalou.skin.holder.TextViewHolder;
@@ -42,14 +42,20 @@ public class ViewFactory implements Factory {
 		viewAttrHolder.put("android.widget.ImageView", new ImageViewHolder());
 		viewAttrHolder.put("android.widget.ListView", new ListViewHolder());
 
-		// compact actionbarsherlock
-		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new SherlockActionBarContainerHolder());
-		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new SherlockActionMenuItemViewHolder());
-		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new SherlockActionBarViewHolder());
+		// ActionBarSherlock
+		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
+		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
+		
+		// native actionbar
+		viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+		viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
+		viewAttrHolder.put("com.android.internal.widget.ActionBarView", new ActionBarViewHolder());
 
-		// app compact actionbar
+		// AppCompact actionbar
+		viewAttrHolder.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+		viewAttrHolder.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
 		viewAttrHolder.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHolder());
-
 	}
 
 	LayoutInflater layoutInflater;
