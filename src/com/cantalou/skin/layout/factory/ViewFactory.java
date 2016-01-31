@@ -138,6 +138,7 @@ public class ViewFactory implements Factory {
 
 		AbstractHolder attrHolder = viewAttrHolder.get(name);
 		if (attrHolder != null) {
+			Log.d("found {} viewHolder {}", name, attrHolder);
 			return attrHolder.clone();
 		}
 
