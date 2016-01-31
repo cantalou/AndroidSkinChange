@@ -211,7 +211,9 @@ public final class CacheKeyAndIdManager {
 		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
 			return;
 		}
-
+		if(skinManager == null){
+			skinManager = SkinManager.getInstance();
+		}
 		ArrayList<Activity> activitys = skinManager.getActivitys();
 		int size = activitys.size();
 		if (size == 0) {
@@ -220,9 +222,6 @@ public final class CacheKeyAndIdManager {
 
 		if (handledDrawableId.contains(id)) {
 			return;
-		}
-		if(skinManager == null){
-			skinManager = SkinManager.getInstance();
 		}
 		Resources defaultResources = skinManager.getDefaultResources();
 		Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));

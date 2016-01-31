@@ -27,17 +27,22 @@ public class ActionBarContainerHolder extends ViewHolder {
 	@Override
 	protected void reload(View view, Resources res) {
 		super.reload(view, res);
-		ReflectUtil.invokeByMethodName(view, "setPrimaryBackground", res.getDrawable(background));
 
-		// Fix for issue #379
-		Drawable stackBackgroundDrawable = res.getDrawable(stackedBackground);
-		if (stackBackgroundDrawable instanceof ColorDrawable && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			stackBackgroundDrawable = ReflectUtil.newInstance("com.actionbarsherlock.internal.widget.IcsColorDrawable", stackBackgroundDrawable);
-		}
-		if (stackBackgroundDrawable != null) {
-			ReflectUtil.invokeByMethodName(view, "setStackedBackground", stackBackgroundDrawable);
+		if (background != 0) {
+			ReflectUtil.invokeByMethodName(view, "setPrimaryBackground", res.getDrawable(background));
 		}
 
+		if (stackedBackground != 0) {
+			// Fix for issue #379
+			Drawable stackBackgroundDrawable = res.getDrawable(stackedBackground);
+			if (stackBackgroundDrawable instanceof ColorDrawable && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+				stackBackgroundDrawable = ReflectUtil.newInstance("com.actionbarsherlock.internal.widget.IcsColorDrawable", stackBackgroundDrawable);
+			}
+			if (stackBackgroundDrawable != null) {
+				ReflectUtil.invokeByMethodName(view, "setStackedBackground", stackBackgroundDrawable);
+			}
+
+		}
 	}
 
 	@Override
