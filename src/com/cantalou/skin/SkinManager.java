@@ -123,7 +123,7 @@ public class SkinManager {
 	/**
 	 * 资源缓存key和资源id管理对象
 	 */
-	private CacheKeyAndIdManager cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+	private CacheKeyAndIdManager cacheKeyAndIdManager;
 
 	ArrayDeque<Runnable> serialTasks = new ArrayDeque<Runnable>() {
 		Runnable mActive;
@@ -160,6 +160,7 @@ public class SkinManager {
 	}
 
 	private SkinManager() {
+		cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
 	}
 
 	public static com.cantalou.skin.SkinManager getInstance() {
@@ -461,7 +462,7 @@ public class SkinManager {
 			((AbstractHolder) tag).reloadAttr(v, v.getContext().getResources());
 		} else {
 			AbstractHolder ah = ViewFactory.getHolder(v.getClass().getName());
-			if(ah != null){
+			if (ah != null) {
 				ah.reloadAttr(v, v.getContext().getResources());
 			}
 		}

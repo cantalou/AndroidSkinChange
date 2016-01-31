@@ -61,7 +61,7 @@ public final class CacheKeyAndIdManager {
 	/**
 	 * 资源管理对象
 	 */
-	private SkinManager skinManager = SkinManager.getInstance();
+	private SkinManager skinManager ;
 
 	private static class InstanceHolder {
 		static final CacheKeyAndIdManager INSTANCE = new CacheKeyAndIdManager();
@@ -88,6 +88,9 @@ public final class CacheKeyAndIdManager {
 			return;
 		}
 
+		if(skinManager == null){
+			skinManager = SkinManager.getInstance();
+		}
 		Resources defaultResources = skinManager.getDefaultResources();
 		Log.v("register drawable {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
 
@@ -122,7 +125,9 @@ public final class CacheKeyAndIdManager {
 			Log.d("Had registered id:{}, ignore", id);
 			return;
 		}
-
+		if(skinManager == null){
+			skinManager = SkinManager.getInstance();
+		}
 		Resources defaultResources = skinManager.getDefaultResources();
 		Log.v("register ColorStateList {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
 
@@ -147,7 +152,9 @@ public final class CacheKeyAndIdManager {
 		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
 			return;
 		}
-
+		if(skinManager == null){
+			skinManager = SkinManager.getInstance();
+		}
 		ArrayList<Activity> activitys = skinManager.getActivitys();
 		int size = activitys.size();
 		if (size == 0) {
@@ -214,7 +221,9 @@ public final class CacheKeyAndIdManager {
 		if (handledDrawableId.contains(id)) {
 			return;
 		}
-
+		if(skinManager == null){
+			skinManager = SkinManager.getInstance();
+		}
 		Resources defaultResources = skinManager.getDefaultResources();
 		Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
 		handledDrawableId.put(id);
