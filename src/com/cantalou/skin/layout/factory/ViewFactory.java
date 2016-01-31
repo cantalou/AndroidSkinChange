@@ -46,7 +46,7 @@ public class ViewFactory implements Factory {
 		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
 		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
 		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
-		
+
 		// native actionbar
 		viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
 		viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
@@ -142,11 +142,15 @@ public class ViewFactory implements Factory {
 		}
 
 		if (-1 == name.indexOf('.')) {
-			for (String prefix : sClassPrefixList) {
+			outer: for (String prefix : sClassPrefixList) {
 				try {
-					attrHolder = getHolder(getSuperClassName(prefix + name));
-					if (attrHolder != null) {
-						break;
+					String superClassName = getSuperClassName(prefix + name);
+					while (superClassName != null) {
+						attrHolder = getHolder(superClassName);
+						if (attrHolder != null) {
+							break outer;
+						}
+						superClassName = getSuperClassName(superClassName);
 					}
 				} catch (ClassNotFoundException e) {
 				}

@@ -228,10 +228,6 @@ public final class CacheKeyAndIdManager {
 			li.inflate(id, parent);
 		} catch (Exception e) {
 			Log.e(e);
-			handledDrawableId.delete(id);
-			if (e instanceof ClassNotFoundException) {
-				handleMenuInflate(id);
-			}
 		}
 	}
 
