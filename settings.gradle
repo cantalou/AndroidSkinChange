@@ -1,2 +1,2 @@
-//include ':AndroidUtil'
-//project(':AndroidUtil').projectDir=new File('../AndroidUtil')
+include ':androidUtil'
+project(':androidUtil').projectDir=new File('../AndroidUtil')
