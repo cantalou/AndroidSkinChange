@@ -15,7 +15,7 @@ import static com.cantalou.android.util.ReflectUtil.*;
  * @date 2016年1月23日 下午11:30:17
  */
 @SuppressWarnings("deprecation")
-public class SherlockActionMenuItemViewHolder extends ViewHolder {
+public class ActionMenuItemViewHolder extends ViewHolder {
 
 	@Override
 	protected void reload(View view, Resources res) {

@@ -99,7 +99,7 @@ public class SkinProxyResources extends ProxyResources {
 
 	@Override
 	public int getColor(int id) throws NotFoundException {
-		skinManager.registerDrawable(id);
+		cacheKeyAndIdManager.registerDrawable(id);
 		Resources res;
 		int skinId;
 		if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {

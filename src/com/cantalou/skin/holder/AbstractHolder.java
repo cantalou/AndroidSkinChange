@@ -6,9 +6,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.cantalou.android.util.Log;
+import com.cantalou.skin.CacheKeyAndIdManager;
+import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.SkinProxyResources;
 
-abstract class AbstractHolder implements Cloneable {
+public abstract class AbstractHolder implements Cloneable {
 
 	public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
 
@@ -16,6 +18,8 @@ abstract class AbstractHolder implements Cloneable {
 	 * 父类的parse是否有被调用
 	 */
 	private boolean called = false;
+
+	protected CacheKeyAndIdManager cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
 
 	public final AbstractHolder parse(AttributeSet attrs) {
 		called = false;
@@ -65,7 +69,7 @@ abstract class AbstractHolder implements Cloneable {
 		return false;
 	}
 
-	protected final int getResourceId(AttributeSet attrs, String name) {
+	public final int getResourceId(AttributeSet attrs, String name) {
 		int id = 0;
 		int len = attrs.getAttributeCount();
 		for (int i = 0; i < len; i++) {
@@ -78,9 +82,18 @@ abstract class AbstractHolder implements Cloneable {
 		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
 	}
 
-	protected final int getResourceId(AttributeSet attrs, int index) {
+	public final int getResourceId(AttributeSet attrs, int index) {
 		int id = attrs.getAttributeResourceValue(index, 0);
 		return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
 	}
 
+	@Override
+	public final ViewHolder clone() {
+		try {
+			return (ViewHolder) super.clone();
+		} catch (CloneNotSupportedException e) {
+			Log.w(e);
+			return null;
+		}
+	}
 }

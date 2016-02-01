@@ -35,7 +35,7 @@ public class ListViewHolder extends ViewHolder {
 	public boolean parseAttr(AttributeSet attrs) {
 		divider = getResourceId(attrs, "divider");
 		if (divider != 0) {
-			SkinManager.getInstance().registerDrawable(divider);
+			cacheKeyAndIdManager.registerDrawable(divider);
 		}
 		return super.parseAttr(attrs) || divider != 0;
 	}

@@ -29,7 +29,7 @@ public class ImageViewHolder extends ViewHolder {
 	public boolean parseAttr(AttributeSet attrs) {
 		src = getResourceId(attrs, "src");
 		if (src != 0) {
-			SkinManager.getInstance().registerDrawable(src);
+			cacheKeyAndIdManager.registerDrawable(src);
 		}
 		return super.parseAttr(attrs) || src != 0;
 	}

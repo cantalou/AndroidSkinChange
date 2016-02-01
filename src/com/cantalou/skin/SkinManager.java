@@ -30,10 +30,12 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
+import com.cantalou.skin.content.SkinContextWrapper;
 import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
+import com.cantalou.skin.holder.AbstractHolder;
 import com.cantalou.skin.holder.ViewHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
@@ -119,29 +121,9 @@ public class SkinManager {
 	private ArrayList<OnResourcesChangeFinishListener> onResourcesChangeFinishListeners = new ArrayList<OnResourcesChangeFinishListener>();
 
 	/**
-	 * 缓存对象
+	 * 资源缓存key和资源id管理对象
 	 */
-	private TypedValue cacheValue = new TypedValue();
-
-	/**
-	 * 资源缓存key与资源id的映射
-	 */
-	private LongSparseArray<Integer> drawableCacheKeyIdMap = new LongSparseArray<Integer>();
-
-	/**
-	 * 颜色缓存key与资源id的映射
-	 */
-	private LongSparseArray<Integer> colorDrawableCacheKeyIdMap = new LongSparseArray<Integer>();
-
-	/**
-	 * 颜色StateList缓存key与资源id的映射
-	 */
-	private LongSparseArray<Integer> colorStateListCacheKeyIdMap = new LongSparseArray<Integer>();
-
-	/**
-	 * 已处理过的资源id,包括图片,颜色,selector文件,xml文件
-	 */
-	private BinarySearchIntArray handledDrawableId = new BinarySearchIntArray();
+	private CacheKeyAndIdManager cacheKeyAndIdManager;
 
 	ArrayDeque<Runnable> serialTasks = new ArrayDeque<Runnable>() {
 		Runnable mActive;
@@ -178,6 +160,7 @@ public class SkinManager {
 	}
 
 	private SkinManager() {
+		cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
 	}
 
 	public static com.cantalou.skin.SkinManager getInstance() {
@@ -452,14 +435,6 @@ public class SkinManager {
 			});
 		}
 
-		// ActionBar
-		serialTasks.offer(new Runnable() {
-			@Override
-			public void run() {
-				invoke(a, "invalidateOptionsMenu");
-				invoke(a, "supportInvalidateOptionsMenu");
-			}
-		});
 	}
 
 	/**
@@ -484,7 +459,12 @@ public class SkinManager {
 
 		Object tag = v.getTag(ViewHolder.ATTR_HOLDER_KEY);
 		if (tag != null && tag instanceof ViewHolder) {
-			((ViewHolder) tag).reloadAttr(v, v.getContext().getResources());
+			((AbstractHolder) tag).reloadAttr(v, v.getContext().getResources());
+		} else {
+			AbstractHolder ah = ViewFactory.getHolder(v.getClass().getName());
+			if (ah != null) {
+				ah.reloadAttr(v, v.getContext().getResources());
+			}
 		}
 
 		if (v instanceof ViewGroup) {
@@ -510,8 +490,15 @@ public class SkinManager {
 		}
 
 		activitys.add(activity);
-		LayoutInflater li = activity.getLayoutInflater();
-		registerViewFactory(li);
+
+		Context baseContext = activity.getBaseContext();
+		if (!(baseContext instanceof SkinContextWrapper)) {
+			set(activity, "mBase", new SkinContextWrapper(baseContext));
+			Log.v("replace Activity baseContext to :{} ", baseContext);
+		}
+
+		 LayoutInflater li = activity.getLayoutInflater();
+		 registerViewFactory(li);
 
 		String prefSkinPath = PrefUtil.getString(activity, PREF_KEY_CURRENT_SKIN);
 		if (StringUtils.isNotBlank(prefSkinPath)) {
@@ -586,161 +573,6 @@ public class SkinManager {
 	}
 
 	/**
-	 * 注册图片资源id
-	 */
-	public synchronized void registerDrawable(int id) {
-
-		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-			return;
-		}
-
-		if (handledDrawableId.contains(id)) {
-			Log.d("Had registered id:{}, ignore", id);
-			return;
-		}
-
-		Log.v("register drawable {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
-
-		TypedValue value = cacheValue;
-		defaultResources.getValue(id, value, true);
-		long key = 0;
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-			boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
-			key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
-			if (isColorDrawable) {
-				colorDrawableCacheKeyIdMap.put(key, id);
-			} else {
-				drawableCacheKeyIdMap.put(key, id);
-			}
-		} else {
-			key = (((long) value.assetCookie) << 32) | value.data;
-			drawableCacheKeyIdMap.put(key, id);
-		}
-		handledDrawableId.put(id);
-	}
-
-	/**
-	 * 注册资源id
-	 */
-	public synchronized void registerColorStateList(int id) {
-
-		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-			return;
-		}
-
-		if (handledDrawableId.contains(id)) {
-			Log.d("Had registered id:{}, ignore", id);
-			return;
-		}
-
-		Log.v("register ColorStateList {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
-
-		TypedValue value = cacheValue;
-		defaultResources.getValue(id, value, true);
-		long key;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			key = (((long) value.assetCookie) << 32) | value.data;
-		} else {
-			key = (value.assetCookie << 24) | value.data;
-		}
-		colorStateListCacheKeyIdMap.put(key, id);
-		handledDrawableId.put(id);
-	}
-
-	/**
-	 * 处理菜单布局文件解析
-	 *
-	 * @param id
-	 */
-	private synchronized void handleMenuInflate(int id) {
-		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-			return;
-		}
-
-		int size = activitys.size();
-		if (size == 0) {
-			return;
-		}
-
-		if (handledDrawableId.contains(id)) {
-			return;
-		}
-
-		Log.v("register xml {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
-		handledDrawableId.put(id);
-
-		Activity activity = activitys.get(size - 1);
-
-		try {
-			// Native ics, appcompat, actionbarsherlock
-			Object menuInflater = invoke(activity, "getSupportMenuInflater");
-			if (menuInflater == null) {
-				menuInflater = invoke(activity, "getMenuInflater");
-			}
-
-			Class<?> menuBuilderKlass = forName("com.android.internal.view.menu.MenuBuilder");
-			if (menuBuilderKlass == null) {
-				menuBuilderKlass = forName("android.support.v7.view.menu.MenuBuilder");
-			}
-			if (menuBuilderKlass == null) {
-				menuBuilderKlass = forName("com.actionbarsherlock.internal.view.menu.MenuBuilder");
-			}
-
-			Object menu = menuBuilderKlass.getConstructor(Context.class).newInstance(activity);
-			findByMethod(menuInflater.getClass(), "inflate").invoke(menuInflater, id, menu);
-			ArrayList<?> items = get(menu, "mItems");
-			for (Object menuItem : items) {
-				int iconResId = get(menuItem, "mIconResId");
-				if (iconResId > 0) {
-					set(menuItem, "mIconDrawable", null);
-					registerDrawable(iconResId);
-				}
-			}
-		} catch (Exception e1) {
-			Log.e(e1);
-		}
-
-	}
-
-	/**
-	 * 注册layout资源id
-	 *
-	 * @param id
-	 */
-	public synchronized void registerLayout(int id) {
-		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-			return;
-		}
-
-		int size = activitys.size();
-		if (size == 0) {
-			return;
-		}
-
-		if (handledDrawableId.contains(id)) {
-			return;
-		}
-
-		Log.v("register layout {} 0x{}", currentSkinResources.getResourceName(id), Integer.toHexString(id));
-		handledDrawableId.put(id);
-
-		Activity activity = activitys.get(size - 1);
-		LayoutInflater li = activity.getLayoutInflater();
-
-		try {
-			// 兼容layout包含有merge标签
-			ViewGroup parent = new FrameLayout(activity);
-			li.inflate(id, parent);
-		} catch (Exception e) {
-			Log.e(e);
-			handledDrawableId.delete(id);
-			if (e instanceof ClassNotFoundException) {
-				handleMenuInflate(id);
-			}
-		}
-	}
-
-	/**
 	 * 当前是否正在切换资源
 	 *
 	 * @return 是 true
@@ -769,16 +601,7 @@ public class SkinManager {
 		return defaultResources;
 	}
 
-	public LongSparseArray<Integer> getDrawableIdKeyMap() {
-		return drawableCacheKeyIdMap;
+	public ArrayList<Activity> getActivitys() {
+		return activitys;
 	}
-
-	public LongSparseArray<Integer> getColorStateListIdKeyMap() {
-		return colorStateListCacheKeyIdMap;
-	}
-
-	public LongSparseArray<Integer> getColorDrawableIdKeyMap() {
-		return colorDrawableCacheKeyIdMap;
-	}
-
 }

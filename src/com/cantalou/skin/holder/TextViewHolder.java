@@ -70,7 +70,6 @@ public class TextViewHolder extends ViewHolder
     @Override
     public boolean parseAttr(AttributeSet attrs)
     {
-        SkinManager skinManager = SkinManager.getInstance();
         for (int i = 0; i < attrs.getAttributeCount(); i++)
         {
             String name = attrs.getAttributeName(i);
@@ -79,7 +78,7 @@ public class TextViewHolder extends ViewHolder
                 textColorHighlight = getResourceId(attrs, i);
                 if (textColorHighlight != 0)
                 {
-                    skinManager.registerColorStateList(textColorHighlight);
+                    cacheKeyAndIdManager.registerColorStateList(textColorHighlight);
                 }
             }
             else if ("textColor".equals(name))
@@ -87,7 +86,7 @@ public class TextViewHolder extends ViewHolder
                 textColor = getResourceId(attrs, i);
                 if (textColor != 0)
                 {
-                    skinManager.registerColorStateList(textColor);
+                    cacheKeyAndIdManager.registerColorStateList(textColor);
                 }
             }
             else if ("textColorHint".equals(name))
@@ -95,7 +94,7 @@ public class TextViewHolder extends ViewHolder
                 textColorHint = getResourceId(attrs, i);
                 if (textColorHint != 0)
                 {
-                    skinManager.registerColorStateList(textColorHint);
+                    cacheKeyAndIdManager.registerColorStateList(textColorHint);
                 }
             }
             else if ("textColorLink".equals(name))
@@ -103,7 +102,7 @@ public class TextViewHolder extends ViewHolder
                 textColorLink = getResourceId(attrs, i);
                 if (textColorLink != 0)
                 {
-                    skinManager.registerColorStateList(textColorLink);
+                    cacheKeyAndIdManager.registerColorStateList(textColorLink);
                 }
             }
             else if ("drawableLeft".equals(name))
@@ -111,7 +110,7 @@ public class TextViewHolder extends ViewHolder
                 drawableLeft = getResourceId(attrs, i);
                 if (drawableLeft != 0)
                 {
-                    skinManager.registerDrawable(drawableLeft);
+                    cacheKeyAndIdManager.registerDrawable(drawableLeft);
                 }
             }
             else if ("drawableTop".equals(name))
@@ -119,7 +118,7 @@ public class TextViewHolder extends ViewHolder
                 drawableTop = getResourceId(attrs, i);
                 if (drawableTop != 0)
                 {
-                    skinManager.registerDrawable(drawableTop);
+                    cacheKeyAndIdManager.registerDrawable(drawableTop);
                 }
             }
             else if ("drawableRight".equals(name))
@@ -127,7 +126,7 @@ public class TextViewHolder extends ViewHolder
                 drawableRight = getResourceId(attrs, i);
                 if (drawableRight != 0)
                 {
-                    skinManager.registerDrawable(drawableRight);
+                    cacheKeyAndIdManager.registerDrawable(drawableRight);
                 }
             }
             else if ("drawableBottom".equals(name))
@@ -135,7 +134,7 @@ public class TextViewHolder extends ViewHolder
                 drawableBottom = getResourceId(attrs, i);
                 if (drawableBottom != 0)
                 {
-                    skinManager.registerDrawable(drawableBottom);
+                    cacheKeyAndIdManager.registerDrawable(drawableBottom);
                 }
             }
             else if ("shadowColor".equals(name))
@@ -143,7 +142,7 @@ public class TextViewHolder extends ViewHolder
                 shadowColor = getResourceId(attrs, i);
                 if (shadowColor != 0)
                 {
-                    skinManager.registerColorStateList(shadowColor);
+                    cacheKeyAndIdManager.registerColorStateList(shadowColor);
                 }
             }
             else if ("textCursorDrawable".equals(name))
@@ -151,7 +150,7 @@ public class TextViewHolder extends ViewHolder
                 textCursorDrawable = getResourceId(attrs, i);
                 if (textCursorDrawable != 0)
                 {
-                    skinManager.registerDrawable(textCursorDrawable);
+                    cacheKeyAndIdManager.registerDrawable(textCursorDrawable);
                 }
             }
         }

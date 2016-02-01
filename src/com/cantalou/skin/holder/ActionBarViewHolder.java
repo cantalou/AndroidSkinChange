@@ -16,7 +16,7 @@ import android.view.View;
  * @date 2016年1月24日 上午12:03:49
  */
 @SuppressWarnings("deprecation")
-public class SherlockActionBarViewHolder extends ViewHolder {
+public class ActionBarViewHolder extends ViewHolder {
 
 	private int logo;
 
@@ -38,12 +38,12 @@ public class SherlockActionBarViewHolder extends ViewHolder {
 
 		logo = getResourceId(attrs, "logo");
 		if (logo != 0) {
-			SkinManager.getInstance().registerDrawable(logo);
+			cacheKeyAndIdManager.registerDrawable(logo);
 		}
 
 		icon = getResourceId(attrs, "icon");
 		if (icon != 0) {
-			SkinManager.getInstance().registerDrawable(icon);
+			cacheKeyAndIdManager.registerDrawable(icon);
 		}
 
 		return super.parseAttr(attrs) || logo != 0 || icon != 0;
