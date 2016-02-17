@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.cantalou.android.util.ReflectUtil;
@@ -54,18 +55,20 @@ public class ActionBarContainerHolder extends ViewHolder
     @Override
     public boolean parseAttr(Context context, AttributeSet attrs)
     {
-
         TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.ActionBar);
-        a.getDrawable(com.android.internal.R.styleable.ActionBar_background);
-        a.getDrawable(com.android.internal.R.styleable.ActionBar_backgroundStacked);
 
-        background = getResourceId(attrs, "background");
+        TypedValue value = new TypedValue();
+
+
+        a.getValue(com.android.internal.R.styleable.ActionBar_background, value);
+        background = value.resourceId;
         if (background != 0)
         {
             cacheKeyAndIdManager.registerDrawable(background);
         }
 
-        stackedBackground = getResourceId(attrs, "backgroundStacked");
+        a.getValue(com.android.internal.R.styleable.ActionBar_backgroundStacked, value);
+        stackedBackground = value.resourceId;
         if (stackedBackground != 0)
         {
             cacheKeyAndIdManager.registerDrawable(stackedBackground);
