@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.SkinProxyResources;
 
 public class TextViewHolder extends ViewHolder
@@ -68,7 +67,7 @@ public class TextViewHolder extends ViewHolder
     }
 
     @Override
-    public boolean parseAttr(AttributeSet attrs)
+    public boolean parseAttr(Context context, AttributeSet attrs)
     {
         for (int i = 0; i < attrs.getAttributeCount(); i++)
         {
@@ -154,7 +153,7 @@ public class TextViewHolder extends ViewHolder
                 }
             }
         }
-        return super.parseAttr(
-                attrs) || (textColorHighlight | textColor | textColorHint | textColorLink | drawableLeft | drawableTop | drawableRight | drawableBottom | shadowColor | textCursorDrawable) != 0;
+        return super.parseAttr(context, attrs) || (textColorHighlight | textColor | textColorHint | textColorLink | drawableLeft | drawableTop | drawableRight | drawableBottom |
+                shadowColor | textCursorDrawable) != 0;
     }
 }

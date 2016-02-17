@@ -1,5 +1,6 @@
 package com.cantalou.skin.holder;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
@@ -20,14 +21,14 @@ public interface AttrHolder {
 	 * 
 	 * @param view
 	 */
-	public void reload(View view, Resources res);
+	public void reloadAttr(View view, Resources res);
 
 	/**
 	 * 解析组件内的app资源属性
 	 * 
-	 * @param view
+	 * @param context
 	 * @param attrs
 	 */
-	public void parse(View view, AttributeSet attrs);
+	public void parse(Context context, AttributeSet attrs);
 
 }

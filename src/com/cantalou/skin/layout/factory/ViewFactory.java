@@ -28,160 +28,209 @@ import java.util.HashMap;
  * @author cantalou
  * @date 2015年11月29日 下午10:22:41
  */
-public class ViewFactory implements Factory {
+public class ViewFactory implements Factory
+{
 
-	static final String[] sClassPrefixList = { "android.widget.", "android.webkit.", "android.app." };
+    static final String[] sClassPrefixList = {"android.widget.", "android.webkit.", "android.app."};
 
-	static final HashMap<String, String> superNameCache = new HashMap<String, String>();
+    static final HashMap<String, String> superNameCache = new HashMap<String, String>();
 
-	static final HashMap<String, AbstractHolder> viewAttrHolder = new HashMap<String, AbstractHolder>();
-	static {
-		viewAttrHolder.put("android.view.View", new ViewHolder());// for super class
-		viewAttrHolder.put("View", new ViewHolder());// for layout file
-		viewAttrHolder.put("android.widget.TextView", new TextViewHolder());
-		viewAttrHolder.put("android.widget.ImageView", new ImageViewHolder());
-		viewAttrHolder.put("android.widget.ListView", new ListViewHolder());
+    static final HashMap<String, AbstractHolder> viewAttrHolder = new HashMap<String, AbstractHolder>();
 
-		// ActionBarSherlock
-		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-		viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-		viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
+    static
+    {
+        viewAttrHolder.put("android.view.View", new ViewHolder());// for super class
+        viewAttrHolder.put("View", new ViewHolder());// for layout file
+        viewAttrHolder.put("android.widget.TextView", new TextViewHolder());
+        viewAttrHolder.put("android.widget.ImageView", new ImageViewHolder());
+        viewAttrHolder.put("android.widget.ListView", new ListViewHolder());
 
-		// native actionbar
-		viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-		viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-		viewAttrHolder.put("com.android.internal.widget.ActionBarView", new ActionBarViewHolder());
+        // ActionBarSherlock
+        viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+        viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
+        viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
 
-		// AppCompact actionbar
-		viewAttrHolder.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-		viewAttrHolder.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-		viewAttrHolder.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHolder());
-	}
+        // native actionbar
+        viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+        viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
+        viewAttrHolder.put("com.android.internal.widget.ActionBarView", new ActionBarViewHolder());
 
-	LayoutInflater layoutInflater;
+        // AppCompact actionbar
+        viewAttrHolder.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
+        viewAttrHolder.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
+        viewAttrHolder.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHolder());
+    }
 
-	Factory factoryProxy;
+    LayoutInflater layoutInflater;
 
-	public void register(LayoutInflater li) {
-		this.layoutInflater = li;
-		factoryProxy = li.getFactory();
-		ReflectUtil.set(li, "mFactorySet", false);
-		li.setFactory(this);
-	}
+    Factory factoryProxy;
 
-	@Override
-	public View onCreateView(String name, Context context, AttributeSet attrs) {
+    public void register(LayoutInflater li)
+    {
+        this.layoutInflater = li;
+        factoryProxy = li.getFactory();
+        ReflectUtil.set(li, "mFactorySet", false);
+        li.setFactory(this);
+    }
 
-		View view = null;
-		AbstractHolder attrHolder = getHolder(name);
-		if (attrHolder != null) {
-			attrHolder.parse(attrs);
-		}
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs)
+    {
 
-		if (factoryProxy != null) {
-			view = factoryProxy.onCreateView(name, context, attrs);
-		}
+        View view = null;
+        AbstractHolder attrHolder = getHolder(name);
+        if (attrHolder != null)
+        {
+            attrHolder.parse(context, attrs);
+        }
 
-		if (view == null) {
-			// android.support.v4.app
-			// 在20.0.0及其以下版本中Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater()
-			// 在21.0.0以上版本中的Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater().cloneInContext(mActivity)
-			// 由于在21版本以后Activity和Fragment实例化布局用的LayoutInflater不是同一个对象,会导致Fragment在onCreateView方法中的layoutInflater参数与当前
-			// ViewFactory.onCreateView方法用到的成员变量layoutInflater不一致,而是mConstructorArgs没有得到初始化
-			Object[] constructorArgs = ReflectUtil.get(layoutInflater, "mConstructorArgs");
-			Object lastContext = constructorArgs[0];
-			if (lastContext == null) {
-				constructorArgs[0] = context;
-			}
-			try {
-				if (-1 == name.indexOf('.')) {
-					for (String prefix : sClassPrefixList) {
-						try {
-							view = layoutInflater.createView(name, prefix, attrs);
-							if (view != null) {
-								break;
-							}
-						} catch (ClassNotFoundException e) {
-						}
-					}
-					if (view == null) {
-						view = layoutInflater.createView(name, "android.view.", attrs);
-					}
-				} else {
-					view = layoutInflater.createView(name, null, attrs);
-				}
-			} catch (InflateException e) {
-				throw e;
-			} catch (Exception e) {
-				InflateException ie = new InflateException(attrs.getPositionDescription() + ": Error inflating class " + name + ", cause " + e);
-				ie.initCause(e);
-				throw ie;
-			} finally {
-				if (lastContext != null) {
-					constructorArgs[0] = lastContext;
-				}
-			}
-		}
+        if (factoryProxy != null)
+        {
+            view = factoryProxy.onCreateView(name, context, attrs);
+        }
 
-		if (view != null) {
-			view.setTag(ViewHolder.ATTR_HOLDER_KEY, attrHolder);
-		}
+        if (view == null)
+        {
+            // android.support.v4.app
+            // 在20.0.0及其以下版本中Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater()
+            // 在21.0.0以上版本中的Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater().cloneInContext(mActivity)
+            // 由于在21版本以后Activity和Fragment实例化布局用的LayoutInflater不是同一个对象,会导致Fragment在onCreateView方法中的layoutInflater参数与当前
+            // ViewFactory.onCreateView方法用到的成员变量layoutInflater不一致,而是mConstructorArgs没有得到初始化
+            Object[] constructorArgs = ReflectUtil.get(layoutInflater, "mConstructorArgs");
+            Object lastContext = constructorArgs[0];
+            if (lastContext == null)
+            {
+                constructorArgs[0] = context;
+            }
+            try
+            {
+                if (-1 == name.indexOf('.'))
+                {
+                    for (String prefix : sClassPrefixList)
+                    {
+                        try
+                        {
+                            view = layoutInflater.createView(name, prefix, attrs);
+                            if (view != null)
+                            {
+                                break;
+                            }
+                        }
+                        catch (ClassNotFoundException e)
+                        {
+                        }
+                    }
+                    if (view == null)
+                    {
+                        view = layoutInflater.createView(name, "android.view.", attrs);
+                    }
+                }
+                else
+                {
+                    view = layoutInflater.createView(name, null, attrs);
+                }
+            }
+            catch (InflateException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                InflateException ie = new InflateException(attrs.getPositionDescription() + ": Error inflating class " + name + ", cause " + e);
+                ie.initCause(e);
+                throw ie;
+            }
+            finally
+            {
+                if (lastContext != null)
+                {
+                    constructorArgs[0] = lastContext;
+                }
+            }
+        }
 
-		return view;
-	}
+        if (view != null)
+        {
+            view.setTag(ViewHolder.ATTR_HOLDER_KEY, attrHolder);
+        }
 
-	public static AbstractHolder getHolder(String name) {
+        return view;
+    }
 
-		if (StringUtils.isBlank(name)) {
-			return null;
-		}
+    public static AbstractHolder getHolder(String name)
+    {
 
-		AbstractHolder attrHolder = viewAttrHolder.get(name);
-		if (attrHolder != null) {
-			Log.d("found {} viewHolder {}", name, attrHolder);
-			return attrHolder.clone();
-		}
+        if (StringUtils.isBlank(name))
+        {
+            return null;
+        }
 
-		if (-1 == name.indexOf('.')) {
-			outer: for (String prefix : sClassPrefixList) {
-				try {
-					String superClassName = getSuperClassName(prefix + name);
-					while (superClassName != null) {
-						attrHolder = getHolder(superClassName);
-						if (attrHolder != null) {
-							break outer;
-						}
-						superClassName = getSuperClassName(superClassName);
-					}
-				} catch (ClassNotFoundException e) {
-				}
-			}
-		} else {
-			try {
-				attrHolder = getHolder(getSuperClassName(name));
-			} catch (ClassNotFoundException e) {
-			}
-		}
+        AbstractHolder attrHolder = viewAttrHolder.get(name);
+        if (attrHolder != null)
+        {
+            return attrHolder.clone();
+        }
 
-		if (attrHolder == null) {
-			Log.w("can not find a AttrHolder associated with name :{}", name);
-			return null;
-		} else {
-			viewAttrHolder.put(name, attrHolder);
-		}
-		return attrHolder.clone();
-	}
+        if (-1 == name.indexOf('.'))
+        {
+            outer:
+            for (String prefix : sClassPrefixList)
+            {
+                try
+                {
+                    String superClassName = getSuperClassName(prefix + name);
+                    while (superClassName != null)
+                    {
+                        attrHolder = getHolder(superClassName);
+                        if (attrHolder != null)
+                        {
+                            break outer;
+                        }
+                        superClassName = getSuperClassName(superClassName);
+                    }
+                }
+                catch (ClassNotFoundException e)
+                {
+                }
+            }
+        }
+        else
+        {
+            try
+            {
+                attrHolder = getHolder(getSuperClassName(name));
+            }
+            catch (ClassNotFoundException e)
+            {
+            }
+        }
 
-	private static String getSuperClassName(String name) throws ClassNotFoundException {
-		String superName = null;
-		Class<?> clazz = Class.forName(name);
-		if (clazz != null && clazz.getSuperclass() != null) {
-			superName = clazz.getSuperclass().getName();
-		}
-		return superName;
-	}
+        if (attrHolder == null)
+        {
+            Log.w("can not find a AttrHolder associated with name :{}", name);
+            return null;
+        }
+        else
+        {
+            viewAttrHolder.put(name, attrHolder);
+        }
+        return attrHolder.clone();
+    }
 
-	public static void registerAttrHolder(String name, ViewHolder attrHolder) {
-		viewAttrHolder.put(name, attrHolder);
-	}
+    private static String getSuperClassName(String name) throws ClassNotFoundException
+    {
+        String superName = null;
+        Class<?> clazz = Class.forName(name);
+        if (clazz != null && clazz.getSuperclass() != null)
+        {
+            superName = clazz.getSuperclass()
+                             .getName();
+        }
+        return superName;
+    }
+
+    public static void registerAttrHolder(String name, ViewHolder attrHolder)
+    {
+        viewAttrHolder.put(name, attrHolder);
+    }
 }
