@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.holder.actionbar;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,7 +15,7 @@ import static com.cantalou.android.util.ReflectUtil.invokeByMethodName;
  * @date 2016年1月23日 下午11:30:17
  */
 @SuppressWarnings("deprecation")
-public class ActionMenuItemViewHolder extends ViewHolder
+public class ActionMenuItemViewHolder extends ActionBarHolder
 {
 
     @Override

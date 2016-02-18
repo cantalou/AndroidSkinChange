@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.cantalou.android.util.Log;
+import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.skin.CacheKeyAndIdManager;
 import com.cantalou.skin.content.res.SkinProxyResources;
 
@@ -105,5 +106,44 @@ public abstract class AbstractHolder implements Cloneable
             Log.w(e);
             return null;
         }
+    }
+
+    protected String bestCompactR = null;
+
+    /**
+     * 获取R类的常量值
+     *
+     * @param type
+     * @param attrNames
+     * @param <T>
+     * @return
+     */
+    protected <T> T getCompactValue(String type, String... attrNames)
+    {
+        T result = null;
+        if (bestCompactR != null)
+        {
+            for (String attrName : attrNames)
+            {
+                result = ReflectUtil.get(bestCompactR + "$" + type, attrName);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+        }
+        for (String compactRName : new String[]{"com.android.internal.R", "android.support.v7.appcompat.R", "com.actionbarsherlock.R"})
+        {
+            for (String attrName : attrNames)
+            {
+                result = ReflectUtil.get(compactRName + "$" + type, attrName);
+                if (result != null)
+                {
+                    bestCompactR = compactRName;
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 }

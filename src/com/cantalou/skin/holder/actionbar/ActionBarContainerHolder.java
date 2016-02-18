@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.holder.actionbar;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -19,12 +19,18 @@ import com.cantalou.android.util.ReflectUtil;
  * @date 2016年1月23日 下午11:30:25
  */
 @SuppressWarnings("deprecation")
-public class ActionBarContainerHolder extends ViewHolder
+public class ActionBarContainerHolder extends ActionBarHolder
 {
 
     private int background;
 
     private int stackedBackground;
+
+    private int[] actionBarAttr;
+
+    private Integer actionBarBackground;
+
+    private Integer actionBarBackgroundStacked;
 
     @Override
     protected void reload(View view, Resources res)
@@ -55,19 +61,34 @@ public class ActionBarContainerHolder extends ViewHolder
     @Override
     public boolean parseAttr(Context context, AttributeSet attrs)
     {
-        TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.ActionBar);
 
         TypedValue value = new TypedValue();
 
+        //com.android.internal.R.styleable.ActionBar
+        if (actionBarAttr == null)
+        {
+            actionBarAttr = getCompactValue("styleable", "ActionBar", "SherlockActionBar");
+        }
+        TypedArray a = context.obtainStyledAttributes(attrs, actionBarAttr);
 
-        a.getValue(com.android.internal.R.styleable.ActionBar_background, value);
+        //com.android.internal.R.styleable.ActionBar_background
+        if (actionBarBackground == null)
+        {
+            actionBarBackground = getCompactValue("styleable", "ActionBar_background", "SherlockActionBar_background");
+        }
+        a.getValue(actionBarBackground, value);
         background = value.resourceId;
         if (background != 0)
         {
             cacheKeyAndIdManager.registerDrawable(background);
         }
 
-        a.getValue(com.android.internal.R.styleable.ActionBar_backgroundStacked, value);
+        //com.android.internal.R.styleable.ActionBar_backgroundStacked
+        if (actionBarBackgroundStacked == null)
+        {
+            actionBarBackgroundStacked = getCompactValue("styleable", "ActionBar_backgroundStacked", "SherlockActionBar_backgroundStacked");
+        }
+        a.getValue(actionBarBackgroundStacked, value);
         stackedBackground = value.resourceId;
         if (stackedBackground != 0)
         {
