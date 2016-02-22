@@ -95,7 +95,7 @@ public class ViewFactory implements Factory
             // 在20.0.0及其以下版本中Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater()
             // 在21.0.0以上版本中的Fragment.getLayoutInflater()返回的是Activity.getLayoutInflater().cloneInContext(mActivity)
             // 由于在21版本以后Activity和Fragment实例化布局用的LayoutInflater不是同一个对象,会导致Fragment在onCreateView方法中的layoutInflater参数与当前
-            // ViewFactory.onCreateView方法用到的成员变量layoutInflater不一致,而是mConstructorArgs没有得到初始化
+            // ViewFactory.onCreateView方法用到的成员变量layoutInflater不一致,而使mConstructorArgs没有得到初始化
             Object[] constructorArgs = ReflectUtil.get(layoutInflater, "mConstructorArgs");
             Object lastContext = constructorArgs[0];
             if (lastContext == null)

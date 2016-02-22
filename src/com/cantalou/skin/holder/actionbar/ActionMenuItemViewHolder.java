@@ -3,6 +3,7 @@ package com.cantalou.skin.holder.actionbar;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 
 import static com.cantalou.android.util.ReflectUtil.get;
@@ -22,18 +23,29 @@ public class ActionMenuItemViewHolder extends ActionBarHolder
     protected void reload(View view, Resources res)
     {
         super.reload(view, res);
-        Object itemData = get(view, "mItemData");
-        int id = get(view, "mItemData.mIconResId");
-        if (id != 0)
+        MenuItem itemData = get(view, "mItemData");
+        if (itemData == null)
         {
-            invokeByMethodName(view, "setIcon", res.getDrawable(id));
+            return;
+        }
+
+        int itemId = itemData.getItemId();
+        if (itemId == 0)
+        {
+            return;
+        }
+
+        int iconResId = cacheKeyAndIdManager.getMenuItemIdAndIconIdMap()
+                                            .get(itemId);
+        if (iconResId != 0)
+        {
+            invokeByMethodName(view, "setIcon", res.getDrawable(iconResId));
         }
     }
 
     @Override
     public boolean parseAttr(Context context, AttributeSet attrs)
     {
-        return super.parseAttr(context, attrs) || true;
+        return super.parseAttr(context, attrs);
     }
-
 }

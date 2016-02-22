@@ -70,7 +70,7 @@ public class ActionBarViewHolder extends ActionBarHolder
         }
         TypedArray a = context.obtainStyledAttributes(attrs, actionBarAttr, actionBarStyle, 0);
 
-
+        //com.android.internal.R.styleable.ActionBar_logo
         if (actionBarLogo == null)
         {
             actionBarLogo = getCompactValue("styleable", "ActionBar_logo", "SherlockActionBar_logo");
