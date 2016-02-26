@@ -21,7 +21,7 @@ Android换肤, 基于插件式的资源切换方案
 ##集成
 1. 添加依赖文件:</br>
     dependencies {</br>
-        compile 'com.cantalou:android-skin-change:1+@aar'</br>
+        compile 'com.cantalou:android-skin-change:1+'</br>
     }</br>
 
 2. 代码集成的两种方式:</br>
