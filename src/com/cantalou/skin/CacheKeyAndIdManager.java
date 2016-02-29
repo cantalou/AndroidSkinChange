@@ -196,10 +196,9 @@ public final class CacheKeyAndIdManager {
 		    menuItemIdAndIconIdMap.put(itemId, iconResId);
 		}
 	    }
-	} catch (Exception e1) {
-	    Log.e(e1);
+	} catch (Exception e) {
+	    Log.e(e);
 	}
-
     }
 
     /**
@@ -244,7 +243,7 @@ public final class CacheKeyAndIdManager {
     }
 
     /**
-     * 判断当前layout是否为菜单layout
+     * 判断当前layout文件类型是否为菜单
      *
      * @param defaultResources
      * @param resId

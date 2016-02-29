@@ -12,10 +12,10 @@ buildscript {
 apply plugin: 'com.android.library'
 
 repositories {
-  jcenter()
+    jcenter()
 }
 dependencies {
-    //compile 'com.cantalou:android-util:1.0.1'
+    //compile 'com.cantalou:android-util:1.0.2'
     compile project(':androidUtil')
 }
 
@@ -47,7 +47,7 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
-    
+
 }
 
 apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/bintray.gradle'
