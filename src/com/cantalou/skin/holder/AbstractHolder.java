@@ -10,8 +10,14 @@ import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.skin.CacheKeyAndIdManager;
 import com.cantalou.skin.content.res.SkinProxyResources;
 
-public abstract class AbstractHolder implements Cloneable
-{
+/**
+ * 
+ *
+ * 
+ * @author cantalou
+ * @date 2016年2月29日 上午10:48:21
+ */
+public abstract class AbstractHolder implements Cloneable {
 
     public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
 
@@ -22,42 +28,41 @@ public abstract class AbstractHolder implements Cloneable
 
     protected CacheKeyAndIdManager cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
 
-    public final AbstractHolder parse(Context context, AttributeSet attrs)
-    {
-        called = false;
-        boolean result = parseAttr(context, attrs);
-        if (!called)
-        {
-            throw new IllegalStateException("super parse(AttributeSet attrs) must be call");
-        }
-        return result ? this : null;
+    public final AbstractHolder parse(Context context, AttributeSet attrs) {
+	called = false;
+	boolean result = parseAttr(context, attrs);
+	if (!called) {
+	    throw new IllegalStateException("super parse(AttributeSet attrs) must be call");
+	}
+	return result ? this : null;
     }
 
     /**
      * 重新加载资源
      *
-     * @param view view对象
-     * @param res  资源对象
+     * @param view
+     *            view对象
+     * @param res
+     *            资源对象
      */
-    public final void reloadAttr(View view, Resources res)
-    {
-        called = false;
-        reload(view, res);
-        if (!called)
-        {
-            throw new IllegalStateException("super reload(View view, Resources res) must be call");
-        }
+    public final void reloadAttr(View view, Resources res) {
+	called = false;
+	reload(view, res);
+	if (!called) {
+	    throw new IllegalStateException("super reload(View view, Resources res) must be call");
+	}
     }
 
     /**
      * 重新加载资源
      *
-     * @param view view对象
-     * @param res  资源对象
+     * @param view
+     *            view对象
+     * @param res
+     *            资源对象
      */
-    protected void reload(View view, Resources res)
-    {
-        called = true;
+    protected void reload(View view, Resources res) {
+	called = true;
     }
 
     /**
@@ -66,46 +71,37 @@ public abstract class AbstractHolder implements Cloneable
      * @param attrs
      * @return 组件使用app资源 true
      */
-    protected boolean parseAttr(Context context, AttributeSet attrs)
-    {
-        called = true;
-        return false;
+    protected boolean parseAttr(Context context, AttributeSet attrs) {
+	called = true;
+	return false;
     }
 
-    public final int getResourceId(AttributeSet attrs, String name)
-    {
-        int id = 0;
-        int len = attrs.getAttributeCount();
-        for (int i = 0; i < len; i++)
-        {
-            String attributeName = attrs.getAttributeName(i);
-            if (name.equals(attributeName))
-            {
-                id = attrs.getAttributeResourceValue(i, 0);
-                break;
-            }
-        }
-        return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
+    public final int getResourceId(AttributeSet attrs, String name) {
+	int id = 0;
+	int len = attrs.getAttributeCount();
+	for (int i = 0; i < len; i++) {
+	    String attributeName = attrs.getAttributeName(i);
+	    if (name.equals(attributeName)) {
+		id = attrs.getAttributeResourceValue(i, 0);
+		break;
+	    }
+	}
+	return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
     }
 
-    public final int getResourceId(AttributeSet attrs, int index)
-    {
-        int id = attrs.getAttributeResourceValue(index, 0);
-        return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
+    public final int getResourceId(AttributeSet attrs, int index) {
+	int id = attrs.getAttributeResourceValue(index, 0);
+	return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
     }
 
     @Override
-    public final ViewHolder clone()
-    {
-        try
-        {
-            return (ViewHolder) super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            Log.w(e);
-            return null;
-        }
+    public final ViewHolder clone() {
+	try {
+	    return (ViewHolder) super.clone();
+	} catch (CloneNotSupportedException e) {
+	    Log.w(e);
+	    return null;
+	}
     }
 
     protected String bestCompactR = null;
@@ -118,32 +114,25 @@ public abstract class AbstractHolder implements Cloneable
      * @param <T>
      * @return
      */
-    protected <T> T getCompactValue(String type, String... attrNames)
-    {
-        T result = null;
-        if (bestCompactR != null)
-        {
-            for (String attrName : attrNames)
-            {
-                result = ReflectUtil.get(bestCompactR + "$" + type, attrName);
-                if (result != null)
-                {
-                    return result;
-                }
-            }
-        }
-        for (String compactRName : new String[]{"com.android.internal.R", "android.support.v7.appcompat.R", "com.actionbarsherlock.R"})
-        {
-            for (String attrName : attrNames)
-            {
-                result = ReflectUtil.get(compactRName + "$" + type, attrName);
-                if (result != null)
-                {
-                    bestCompactR = compactRName;
-                    return result;
-                }
-            }
-        }
-        return null;
+    protected <T> T getCompactValue(String type, String... attrNames) {
+	T result = null;
+	if (bestCompactR != null) {
+	    for (String attrName : attrNames) {
+		result = ReflectUtil.get(bestCompactR + "$" + type, attrName);
+		if (result != null) {
+		    return result;
+		}
+	    }
+	}
+	for (String compactRName : new String[] { "com.android.internal.R", "android.support.v7.appcompat.R", "com.actionbarsherlock.R" }) {
+	    for (String attrName : attrNames) {
+		result = ReflectUtil.get(compactRName + "$" + type, attrName);
+		if (result != null) {
+		    bestCompactR = compactRName;
+		    return result;
+		}
+	    }
+	}
+	return null;
     }
 }

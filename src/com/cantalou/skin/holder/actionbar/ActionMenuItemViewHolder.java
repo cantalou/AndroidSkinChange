@@ -16,36 +16,29 @@ import static com.cantalou.android.util.ReflectUtil.invokeByMethodName;
  * @date 2016年1月23日 下午11:30:17
  */
 @SuppressWarnings("deprecation")
-public class ActionMenuItemViewHolder extends ActionBarHolder
-{
+public class ActionMenuItemViewHolder extends ActionBarHolder {
 
     @Override
-    protected void reload(View view, Resources res)
-    {
-        super.reload(view, res);
-        MenuItem itemData = get(view, "mItemData");
-        if (itemData == null)
-        {
-            return;
-        }
+    protected void reload(View view, Resources res) {
+	super.reload(view, res);
+	MenuItem itemData = get(view, "mItemData");
+	if (itemData == null) {
+	    return;
+	}
 
-        int itemId = itemData.getItemId();
-        if (itemId == 0)
-        {
-            return;
-        }
+	int itemId = itemData.getItemId();
+	if (itemId == 0) {
+	    return;
+	}
 
-        int iconResId = cacheKeyAndIdManager.getMenuItemIdAndIconIdMap()
-                                            .get(itemId);
-        if (iconResId != 0)
-        {
-            invokeByMethodName(view, "setIcon", res.getDrawable(iconResId));
-        }
+	int iconResId = cacheKeyAndIdManager.getMenuItemIdAndIconIdMap().get(itemId);
+	if (iconResId != 0) {
+	    invokeByMethodName(view, "setIcon", res.getDrawable(iconResId));
+	}
     }
 
     @Override
-    public boolean parseAttr(Context context, AttributeSet attrs)
-    {
-        return super.parseAttr(context, attrs);
+    public boolean parseAttr(Context context, AttributeSet attrs) {
+	return super.parseAttr(context, attrs);
     }
 }

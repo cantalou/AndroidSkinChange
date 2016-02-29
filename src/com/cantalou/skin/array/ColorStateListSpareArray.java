@@ -1,16 +1,12 @@
 package com.cantalou.skin.array;
 
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.os.Build;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
-import android.util.TypedValue;
-
 import com.cantalou.skin.content.res.ProxyResources;
-import com.cantalou.skin.content.res.SkinProxyResources;
 
+@SuppressLint("NewApi")
 public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
 
 	private LongSparseArray<Integer> resourceIdKeyMap;;

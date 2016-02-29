@@ -34,8 +34,7 @@ import static com.cantalou.android.util.ReflectUtil.set;
  * @date 2015年12月12日 下午11:07:07
  */
 @SuppressWarnings("deprecation")
-public class ProxyResources extends Resources
-{
+public class ProxyResources extends Resources {
 
     public static final boolean logEnable = true;
 
@@ -49,9 +48,9 @@ public class ProxyResources extends Resources
      */
     public static final int RESOURCE_NAME_CACHE_SIZE = 31;
 
-    protected static final Class<?>[] loadXmlResourceParserParam = new Class[]{String.class, int.class, int.class, String.class};
+    protected static final Class<?>[] loadXmlResourceParserParam = new Class[] { String.class, int.class, int.class, String.class };
 
-    protected static final Class<?>[] openNonAssetParam = new Class[]{int.class, String.class, int.class};
+    protected static final Class<?>[] openNonAssetParam = new Class[] { int.class, String.class, int.class };
 
     /**
      * 资源名称缓存id
@@ -79,31 +78,23 @@ public class ProxyResources extends Resources
 
     protected SparseArray<ColorStateList> proxyPreloadedColorStateLists;
 
-    static
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-        {
-            LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-            preloadedDrawables = sPreloadedDrawablesArray[0];
-        }
-        else
-        {
-            preloadedDrawables = get(Resources.class, "sPreloadedDrawables");
-        }
+    static {
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
+	    preloadedDrawables = sPreloadedDrawablesArray[0];
+	} else {
+	    preloadedDrawables = get(Resources.class, "sPreloadedDrawables");
+	}
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2)
-        {
-            preloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
-        }
+	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
+	    preloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
+	}
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
-            preloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
-        }
-        else
-        {
-            preloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
-        }
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+	    preloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
+	} else {
+	    preloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
+	}
     }
 
     protected CacheKeyAndIdManager cacheKeyAndIdManager;
@@ -112,181 +103,146 @@ public class ProxyResources extends Resources
 
     protected final TypedValue typedValueCache = new TypedValue();
 
-    public ProxyResources(Resources res)
-    {
-        super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
-        cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+    public ProxyResources(Resources res) {
+	super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
+	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
     }
 
     @Override
-    public int getColor(int id) throws NotFoundException
-    {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getColor(id);
+    public int getColor(int id) throws NotFoundException {
+	cacheKeyAndIdManager.registerDrawable(id);
+	return super.getColor(id);
     }
 
     @Override
-    public ColorStateList getColorStateList(int id) throws NotFoundException
-    {
-        cacheKeyAndIdManager.registerColorStateList(id);
-        return super.getColorStateList(id);
+    public ColorStateList getColorStateList(int id) throws NotFoundException {
+	cacheKeyAndIdManager.registerColorStateList(id);
+	return super.getColorStateList(id);
     }
 
     @Override
-    public Drawable getDrawable(int id, Theme theme) throws NotFoundException
-    {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawable(id, theme);
+    public Drawable getDrawable(int id, Theme theme) throws NotFoundException {
+	cacheKeyAndIdManager.registerDrawable(id);
+	return super.getDrawable(id, theme);
     }
 
     @Override
-    public Drawable getDrawable(int id) throws NotFoundException
-    {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawable(id);
+    public Drawable getDrawable(int id) throws NotFoundException {
+	cacheKeyAndIdManager.registerDrawable(id);
+	return super.getDrawable(id);
     }
 
     @Override
-    public Drawable getDrawableForDensity(int id, int density, Theme theme)
-    {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawableForDensity(id, density, theme);
+    public Drawable getDrawableForDensity(int id, int density, Theme theme) {
+	cacheKeyAndIdManager.registerDrawable(id);
+	return super.getDrawableForDensity(id, density, theme);
     }
 
     @Override
-    public Drawable getDrawableForDensity(int id, int density) throws NotFoundException
-    {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawableForDensity(id, density);
+    public Drawable getDrawableForDensity(int id, int density) throws NotFoundException {
+	cacheKeyAndIdManager.registerDrawable(id);
+	return super.getDrawableForDensity(id, density);
     }
 
     /**
-     * 将 sPreloadedDrawables, sPreloadedColorDrawables, sPreloadedColorStateLists 替换成自定义的对象
+     * 将 sPreloadedDrawables, sPreloadedColorDrawables,
+     * sPreloadedColorStateLists 替换成自定义的对象
      */
-    public void replacePreloadCache()
-    {
+    public void replacePreloadCache() {
 
-        // drawable
-        if (proxyPreloadedDrawables == null)
-        {
-            proxyPreloadedDrawables = new DrawableLongSpareArray(this, preloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-        {
-            LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-            sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
-        }
-        else
-        {
-            set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
-        }
+	// drawable
+	if (proxyPreloadedDrawables == null) {
+	    proxyPreloadedDrawables = new DrawableLongSpareArray(this, preloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
+	}
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
+	    sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
+	} else {
+	    set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
+	}
 
-        // colorDrawable
-        if (proxyPreloadedColorDrawables == null)
-        {
-            proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, preloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
-        }
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2)
-        {
-            set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
-        }
+	// colorDrawable
+	if (proxyPreloadedColorDrawables == null) {
+	    proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, preloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
+	}
+	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
+	    set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
+	}
 
-        // colorStateList
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
-            if (proxyPreloadedColorStateLists16 == null)
-            {
-                proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(this, preloadedColorStateLists16, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
-            }
-            set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
-        }
-        else
-        {
-            if (proxyPreloadedColorStateLists == null)
-            {
-                proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, preloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
-            }
-            set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
-        }
+	// colorStateList
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+	    if (proxyPreloadedColorStateLists16 == null) {
+		proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(this, preloadedColorStateLists16, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+	    }
+	    set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
+	} else {
+	    if (proxyPreloadedColorStateLists == null) {
+		proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, preloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+	    }
+	    set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
+	}
     }
 
-    protected String toString(TypedValue value)
-    {
-        logValue.setTo(value);
-        logValue.string = getResourceName(value.resourceId);
-        return logValue.toString();
+    protected String toString(TypedValue value) {
+	logValue.setTo(value);
+	logValue.string = getResourceName(value.resourceId);
+	return logValue.toString();
     }
 
-    protected String toHex(int id)
-    {
-        return "0x" + Integer.toHexString(id);
+    protected String toHex(int id) {
+	return "0x" + Integer.toHexString(id);
     }
 
-    protected String toHex(Object id)
-    {
-        if (id == null)
-        {
-            return "null";
-        }
-        if (id instanceof Number)
-        {
-            return "0x" + Integer.toHexString(((Number) id).intValue());
-        }
-        else
-        {
-            return id.toString();
-        }
+    protected String toHex(Object id) {
+	if (id == null) {
+	    return "null";
+	}
+	if (id instanceof Number) {
+	    return "0x" + Integer.toHexString(((Number) id).intValue());
+	} else {
+	    return id.toString();
+	}
     }
 
     @Override
-    public synchronized String getResourceName(int resId) throws NotFoundException
-    {
+    public synchronized String getResourceName(int resId) throws NotFoundException {
 
-        if (resId == 0)
-        {
-            return "";
-        }
+	if (resId == 0) {
+	    return "";
+	}
 
-        int index = resId & RESOURCE_NAME_CACHE_SIZE;
-        if (resourceNameIdCache[index] == resId)
-        {
-            return resourceNameCache[index];
-        }
+	int index = resId & RESOURCE_NAME_CACHE_SIZE;
+	if (resourceNameIdCache[index] == resId) {
+	    return resourceNameCache[index];
+	}
 
-        try
-        {
-            String name = super.getResourceName(resId);
-            resourceNameIdCache[index] = resId;
-            resourceNameCache[index] = name;
-            return name;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+	try {
+	    String name = super.getResourceName(resId);
+	    resourceNameIdCache[index] = resId;
+	    resourceNameCache[index] = name;
+	    return name;
+	} catch (Exception e) {
+	    return null;
+	}
     }
 
-    public Drawable loadDrawable(int id) throws NotFoundException
-    {
-        TypedValue value = typedValueCache;
-        this.getValue(id, value, true);
-        Drawable dr = loadDrawable(this, value, id);
-        if (dr == null)
-        {
-            dr = getDrawable(id);
-            if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK)
-            {
-                Log.v("loadDrawable(Resources, TypedValue, int) return null, retry load value:{} from :{} result:{} ", toString(value), this, dr);
-            }
-        }
-        return dr;
+    public Drawable loadDrawable(int id) throws NotFoundException {
+	TypedValue value = typedValueCache;
+	this.getValue(id, value, true);
+	Drawable dr = loadDrawable(this, value, id);
+	if (dr == null) {
+	    dr = getDrawable(id);
+	    if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+		Log.v("loadDrawable(Resources, TypedValue, int) return null, retry load value:{} from :{} result:{} ", toString(value), this, dr);
+	    }
+	}
+	return dr;
     }
 
     @Override
-    public XmlResourceParser getLayout(int id) throws NotFoundException
-    {
-        cacheKeyAndIdManager.registerLayout(id);
-        return super.getLayout(id);
+    public XmlResourceParser getLayout(int id) throws NotFoundException {
+	cacheKeyAndIdManager.registerLayout(id);
+	return super.getLayout(id);
     }
 
     /**
@@ -298,134 +254,103 @@ public class ProxyResources extends Resources
      * @return
      * @throws NotFoundException
      */
-    protected Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException
-    {
-        boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
-        Drawable dr = null;
-        if (isColorDrawable)
-        {
-            dr = new ColorDrawable(value.data);
-        }
-        else
-        {
-            if (value.string == null)
-            {
-                throw new NotFoundException("Resource is not a Drawable (color or path): " + value);
-            }
+    protected Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {
+	boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
+	Drawable dr = null;
+	if (isColorDrawable) {
+	    dr = new ColorDrawable(value.data);
+	} else {
+	    if (value.string == null) {
+		throw new NotFoundException("Resource is not a Drawable (color or path): " + value);
+	    }
 
-            String file = value.string.toString();
-            if (file.endsWith(".xml"))
-            {
-                try
-                {
-                    XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
-                    dr = Drawable.createFromXml(res, rp);
-                    rp.close();
-                }
-                catch (Exception e)
-                {
-                    Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), this);
-                }
-            }
-            else
-            {
-                try
-                {
-                    InputStream is = invoke(res.getAssets(), "openNonAsset", openNonAssetParam, value.assetCookie, file, AssetManager.ACCESS_STREAMING);
-                    BitmapFactory.Options opts = new BitmapFactory.Options();
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    {
-                        opts.inPreferredConfig = Bitmap.Config.RGB_565;
-                        ReflectUtil.set(opts, "inNativeAlloc", true);
-                    }
-                    opts.inPurgeable = true;
-                    opts.inInputShareable = true;
-                    dr = Drawable.createFromResourceStream(res, value, is, file, opts);
-                    is.close();
-                }
-                catch (Exception e)
-                {
-                    Log.w("File :{} from drawable resource ID #0x{} not found in :{}", file, Integer.toHexString(id), res);
-                    Log.w(e);
-                }
-            }
-        }
+	    String file = value.string.toString();
+	    if (file.endsWith(".xml")) {
+		try {
+		    XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
+		    dr = Drawable.createFromXml(res, rp);
+		    rp.close();
+		} catch (Exception e) {
+		    Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), this);
+		}
+	    } else {
+		try {
+		    InputStream is = invoke(res.getAssets(), "openNonAsset", openNonAssetParam, value.assetCookie, file, AssetManager.ACCESS_STREAMING);
+		    BitmapFactory.Options opts = new BitmapFactory.Options();
+		    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			opts.inPreferredConfig = Bitmap.Config.RGB_565;
+			ReflectUtil.set(opts, "inNativeAlloc", true);
+		    }
+		    opts.inPurgeable = true;
+		    opts.inInputShareable = true;
+		    dr = Drawable.createFromResourceStream(res, value, is, file, opts);
+		    is.close();
+		} catch (Exception e) {
+		    Log.w("File :{} from drawable resource ID #0x{} not found in :{}", file, Integer.toHexString(id), res);
+		    Log.w(e);
+		}
+	    }
+	}
 
-        if (dr != null)
-        {
-            dr.setChangingConfigurations(value.changingConfigurations);
-        }
+	if (dr != null) {
+	    dr.setChangingConfigurations(value.changingConfigurations);
+	}
 
-        if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK)
-        {
-            Log.v("load value:{} from :{} result:{} ", toString(value), res, dr);
-        }
-        return dr;
+	if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+	    Log.v("load value:{} from :{} result:{} ", toString(value), res, dr);
+	}
+	return dr;
     }
 
-    public ColorStateList loadColorStateList(int id) throws NotFoundException
-    {
-        TypedValue value = typedValueCache;
-        this.getValue(id, value, true);
-        ColorStateList csl = loadColorStateList(this, value, id);
-        if (csl == null)
-        {
-            csl = getColorStateList(id);
-            if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK)
-            {
-                Log.v("loadColorStateList(Resources, TypedValue, int) return null, retry load value:{} from :{} result:{} ", toString(value), this, csl);
-            }
-        }
-        return csl;
+    public ColorStateList loadColorStateList(int id) throws NotFoundException {
+	TypedValue value = typedValueCache;
+	this.getValue(id, value, true);
+	ColorStateList csl = loadColorStateList(this, value, id);
+	if (csl == null) {
+	    csl = getColorStateList(id);
+	    if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+		Log.v("loadColorStateList(Resources, TypedValue, int) return null, retry load value:{} from :{} result:{} ", toString(value), this, csl);
+	    }
+	}
+	return csl;
     }
 
-    protected ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException
-    {
+    protected ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException {
 
-        ColorStateList csl = null;
-        if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT)
-        {
-            csl = ColorStateList.valueOf(value.data);
-            return csl;
-        }
+	ColorStateList csl = null;
+	if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+	    csl = ColorStateList.valueOf(value.data);
+	    return csl;
+	}
 
-        if (value.string == null)
-        {
-            throw new NotFoundException("Resource is not a ColorStateList (color or path): " + value);
-        }
+	if (value.string == null) {
+	    throw new NotFoundException("Resource is not a ColorStateList (color or path): " + value);
+	}
 
-        String file = value.string.toString();
+	String file = value.string.toString();
 
-        if (file.endsWith(".xml"))
-        {
-            try
-            {
-                XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
-                csl = ColorStateList.createFromXml(res, rp);
-                rp.close();
-            }
-            catch (Exception e)
-            {
-                Log.w("File {} from color state list resource ID #0x{} not found in {}", file, Integer.toHexString(id), res);
-                Log.w(e);
-            }
-        }
-        else
-        {
-            throw new NotFoundException("File " + file + " from drawable resource ID #0x" + Integer.toHexString(id) + ": .xml extension required");
-        }
+	if (file.endsWith(".xml")) {
+	    try {
+		XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
+		csl = ColorStateList.createFromXml(res, rp);
+		rp.close();
+	    } catch (Exception e) {
+		Log.w("File {} from color state list resource ID #0x{} not found in {}", file, Integer.toHexString(id), res);
+		Log.w(e);
+	    }
+	} else {
+	    throw new NotFoundException("File " + file + " from drawable resource ID #0x" + Integer.toHexString(id) + ": .xml extension required");
+	}
 
-        if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK)
-        {
-            Log.v("load value:{} from :{} result:{} ", toString(value), res, csl);
-        }
+	if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+	    Log.v("load value:{} from :{} result:{} ", toString(value), res, csl);
+	}
 
-        return csl;
+	return csl;
     }
 
-    public void clearCache()
-    {
-        resourceNameIdCache = new int[RESOURCE_NAME_CACHE_SIZE];
-        resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
+    public void clearCache() {
+	resourceNameIdCache = new int[RESOURCE_NAME_CACHE_SIZE];
+	resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
     }
 }

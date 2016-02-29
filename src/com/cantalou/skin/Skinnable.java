@@ -9,8 +9,8 @@ package com.cantalou.skin;
  */
 public interface Skinnable {
 
-	/**
-	 * 资源切换
-	 */
-	public void onResourcesChange();
+    /**
+     * 资源切换
+     */
+    public void onResourcesChange();
 }
