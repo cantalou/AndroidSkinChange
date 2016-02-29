@@ -105,7 +105,6 @@ public class SkinProxyResources extends ProxyResources
             return 0;
         }
 
-        // 如果皮肤资源包不存在当前资源项, 直接返回0
         if (notFoundedSkinIds.contains(id))
         {
             Log.v("resource id :{} toSkinId not found ", toHex(id));
