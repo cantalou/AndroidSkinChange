@@ -14,27 +14,27 @@ import android.view.LayoutInflater;
  */
 public class SkinContextWrapper extends ContextWrapper {
 
-    public SkinContextWrapper(Context base) {
-	super(base);
-    }
-
-    @Override
-    public void registerComponentCallbacks(ComponentCallbacks callback) {
-	getBaseContext().registerComponentCallbacks(callback);
-    }
-
-    @Override
-    public void unregisterComponentCallbacks(ComponentCallbacks callback) {
-	getBaseContext().unregisterComponentCallbacks(callback);
-    }
-
-    @Override
-    public Object getSystemService(String name) {
-	Object obj = super.getSystemService(name);
-	if (obj instanceof LayoutInflater) {
-	    SkinManager.getInstance().registerViewFactory((LayoutInflater) obj);
+	public SkinContextWrapper(Context base) {
+		super(base);
 	}
-	return obj;
-    }
+
+	@Override
+	public void registerComponentCallbacks(ComponentCallbacks callback) {
+		getBaseContext().registerComponentCallbacks(callback);
+	}
+
+	@Override
+	public void unregisterComponentCallbacks(ComponentCallbacks callback) {
+		getBaseContext().unregisterComponentCallbacks(callback);
+	}
+
+	@Override
+	public Object getSystemService(String name) {
+		Object obj = super.getSystemService(name);
+		if (obj instanceof LayoutInflater) {
+			SkinManager.getInstance().registerViewFactory((LayoutInflater) obj);
+		}
+		return obj;
+	}
 
 }

@@ -22,6 +22,7 @@ import com.cantalou.skin.content.res.SkinProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -72,6 +73,10 @@ public final class CacheKeyAndIdManager {
 	 */
 	private SkinManager skinManager;
 
+	private Constructor<?> menuBuilderKlassConstructor;
+
+	private Object menuInflater;
+
 	private static class InstanceHolder {
 		static final CacheKeyAndIdManager INSTANCE = new CacheKeyAndIdManager();
 	}
@@ -86,15 +91,15 @@ public final class CacheKeyAndIdManager {
 	/**
 	 * 注册图片资源id
 	 */
-	public synchronized void registerDrawable(int id) {
+	public synchronized boolean registerDrawable(int id) {
 
 		if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-			return;
+			return false;
 		}
 
 		if (handledDrawableId.contains(id)) {
 			Log.d("Had registered id:{}, ignore", id);
-			return;
+			return false;
 		}
 
 		if (skinManager == null) {
@@ -119,6 +124,7 @@ public final class CacheKeyAndIdManager {
 			drawableCacheKeyIdMap.put(key, id);
 		}
 		handledDrawableId.put(id);
+		return true;
 	}
 
 	/**
@@ -173,30 +179,34 @@ public final class CacheKeyAndIdManager {
 		Activity activity = activities.get(size - 1);
 		try {
 			// Native ics, appcompat, actionbarsherlock
-			Object menuInflater = invoke(activity, "getSupportMenuInflater");
 			if (menuInflater == null) {
-				menuInflater = invoke(activity, "getMenuInflater");
+				menuInflater = invoke(activity, "getSupportMenuInflater");
+				if (menuInflater == null) {
+					menuInflater = invoke(activity, "getMenuInflater");
+				}
 			}
 
 			Method inflateMethod = findByMethod(menuInflater.getClass(), "inflate");
 
-			Class<?>[] parameterTypes = inflateMethod.getParameterTypes();
-			Class<?> menuBuilderKlass = forName("com.android.internal.view.menu.MenuBuilder");
-			if (menuBuilderKlass == null || !parameterTypes[1].isAssignableFrom(menuBuilderKlass)) {
-				menuBuilderKlass = forName("android.support.v7.view.menu.MenuBuilder");
-			}
-			if (menuBuilderKlass == null || !parameterTypes[1].isAssignableFrom(menuBuilderKlass)) {
-				menuBuilderKlass = forName("com.actionbarsherlock.internal.view.menu.MenuBuilder");
+			if (menuBuilderKlassConstructor == null) {
+				Class<?>[] parameterTypes = inflateMethod.getParameterTypes();
+				Class<?> menuBuilderKlass = forName("com.android.internal.view.menu.MenuBuilder");
+				if (menuBuilderKlass == null || !parameterTypes[1].isAssignableFrom(menuBuilderKlass)) {
+					menuBuilderKlass = forName("android.support.v7.view.menu.MenuBuilder");
+				}
+				if (menuBuilderKlass == null || !parameterTypes[1].isAssignableFrom(menuBuilderKlass)) {
+					menuBuilderKlass = forName("com.actionbarsherlock.internal.view.menu.MenuBuilder");
+				}
+				menuBuilderKlassConstructor = menuBuilderKlass.getConstructors()[0];
 			}
 
-			Object menu = menuBuilderKlass.getConstructors()[0].newInstance(activity);
+			Object menu = menuBuilderKlassConstructor.newInstance(activity);
 			inflateMethod.invoke(menuInflater, id, menu);
 			ArrayList<?> items = get(menu, "mItems");
 			for (Object menuItem : items) {
 				int iconResId = get(menuItem, "mIconResId");
-				int itemId = get(menuItem, "mId");
-				if (iconResId > 0) {
-					registerDrawable(iconResId);
+				if (iconResId > 0 && registerDrawable(iconResId)) {
+					int itemId = get(menuItem, "mId");
 					menuItemIdAndIconIdMap.put(itemId, iconResId);
 				}
 			}
@@ -226,6 +236,7 @@ public final class CacheKeyAndIdManager {
 		if (handledDrawableId.contains(id)) {
 			return;
 		}
+		
 		Resources defaultResources = skinManager.getDefaultResources();
 		Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
 		handledDrawableId.put(id);
@@ -247,7 +258,7 @@ public final class CacheKeyAndIdManager {
 	}
 
 	/**
-	 * 判断当前layout文件类型是否为菜单
+	 * 判断当前layout文件类型是否为菜单布局文件
 	 *
 	 * @param defaultResources
 	 * @param resId
@@ -255,7 +266,6 @@ public final class CacheKeyAndIdManager {
 	 */
 	private boolean isMenuLayout(Resources defaultResources, int resId) {
 		XmlResourceParser parser = null;
-		boolean isMenuLayout = false;
 		try {
 			parser = defaultResources.getLayout(resId);
 			int eventType = parser.getEventType();
@@ -265,8 +275,7 @@ public final class CacheKeyAndIdManager {
 				if (eventType == XmlPullParser.START_TAG) {
 					tagName = parser.getName();
 					if (tagName.equals("menu")) {
-						isMenuLayout = true;
-						break;
+						return true;
 					}
 				}
 				eventType = parser.next();
@@ -278,7 +287,7 @@ public final class CacheKeyAndIdManager {
 				parser.close();
 			}
 		}
-		return isMenuLayout;
+		return false;
 	}
 
 	public LongSparseArray<Integer> getDrawableCacheKeyIdMap() {
