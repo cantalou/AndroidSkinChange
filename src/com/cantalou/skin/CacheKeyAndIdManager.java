@@ -22,6 +22,7 @@ import com.cantalou.skin.content.res.SkinProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import static com.cantalou.android.util.ReflectUtil.findByMethod;
@@ -177,16 +178,19 @@ public final class CacheKeyAndIdManager {
 		menuInflater = invoke(activity, "getMenuInflater");
 	    }
 
+	    Method inflateMethod = findByMethod(menuInflater.getClass(), "inflate");
+
+	    Class<?>[] parameterTypes = inflateMethod.getParameterTypes();
 	    Class<?> menuBuilderKlass = forName("com.android.internal.view.menu.MenuBuilder");
-	    if (menuBuilderKlass == null) {
+	    if (menuBuilderKlass == null || !parameterTypes[1].isAssignableFrom(menuBuilderKlass)) {
 		menuBuilderKlass = forName("android.support.v7.view.menu.MenuBuilder");
 	    }
-	    if (menuBuilderKlass == null) {
+	    if (menuBuilderKlass == null || !parameterTypes[1].isAssignableFrom(menuBuilderKlass)) {
 		menuBuilderKlass = forName("com.actionbarsherlock.internal.view.menu.MenuBuilder");
 	    }
 
-	    Object menu = menuBuilderKlass.getConstructor(Context.class).newInstance(activity);
-	    findByMethod(menuInflater.getClass(), "inflate").invoke(menuInflater, id, menu);
+	    Object menu = menuBuilderKlass.getConstructors()[0].newInstance(activity);
+	    inflateMethod.invoke(menuInflater, id, menu);
 	    ArrayList<?> items = get(menu, "mItems");
 	    for (Object menuItem : items) {
 		int iconResId = get(menuItem, "mIconResId");
