@@ -39,15 +39,21 @@ public class SkinInstrumentation extends Instrumentation {
 	this.targetInstrucmentation = target;
     }
 
+
+    @Override
+    public Activity newActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	return targetInstrucmentation.newActivity(cl, className, intent);
+    }
+    
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
-	skinManager.onAttach(activity);
+	skinManager.callActivityOnCreate(activity);
 	targetInstrucmentation.callActivityOnCreate(activity, icicle, persistentState);
     }
 
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle) {
-	skinManager.onAttach(activity);
+	skinManager.callActivityOnCreate(activity);
 	targetInstrucmentation.callActivityOnCreate(activity, icicle);
     }
 
@@ -341,11 +347,6 @@ public class SkinInstrumentation extends Instrumentation {
     public Activity newActivity(Class<?> clazz, Context context, IBinder token, Application application, Intent intent, ActivityInfo info, CharSequence title, Activity parent,
 	    String id, Object lastNonConfigurationInstance) throws InstantiationException, IllegalAccessException {
 	return targetInstrucmentation.newActivity(clazz, context, token, application, intent, info, title, parent, id, lastNonConfigurationInstance);
-    }
-
-    @Override
-    public Activity newActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-	return targetInstrucmentation.newActivity(cl, className, intent);
     }
 
     @Override
