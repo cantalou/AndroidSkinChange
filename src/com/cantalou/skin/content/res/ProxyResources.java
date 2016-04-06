@@ -62,13 +62,13 @@ public class ProxyResources extends Resources {
      */
     protected String[] resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE + 1];
 
-    protected static LongSparseArray<ConstantState> preloadedDrawables;
+    protected static LongSparseArray<ConstantState> originalPreloadedDrawables;
 
-    protected static LongSparseArray<ConstantState> preloadedColorDrawables;
+    protected static LongSparseArray<ConstantState> originalPreloadedColorDrawables;
 
-    protected static LongSparseArray<ColorStateList> preloadedColorStateLists16;
+    protected static LongSparseArray<ColorStateList> originalPreloadedColorStateLists16;
 
-    protected static SparseArray<ColorStateList> preloadedColorStateLists;
+    protected static SparseArray<ColorStateList> originalPreloadedColorStateLists;
 
     protected LongSparseArray<ConstantState> proxyPreloadedDrawables;
 
@@ -78,22 +78,25 @@ public class ProxyResources extends Resources {
 
     protected SparseArray<ColorStateList> proxyPreloadedColorStateLists;
 
+    /**
+     * 保存原始preload对象引用
+     */
     static {
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-	    preloadedDrawables = sPreloadedDrawablesArray[0];
+	    originalPreloadedDrawables = sPreloadedDrawablesArray[0];
 	} else {
-	    preloadedDrawables = get(Resources.class, "sPreloadedDrawables");
+	    originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
 	}
 
 	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-	    preloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
+	    originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
 	}
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	    preloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
+	    originalPreloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
 	} else {
-	    preloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
+	    originalPreloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
 	}
     }
 
@@ -152,7 +155,7 @@ public class ProxyResources extends Resources {
 
 	// drawable
 	if (proxyPreloadedDrawables == null) {
-	    proxyPreloadedDrawables = new DrawableLongSpareArray(this, preloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
+	    proxyPreloadedDrawables = new DrawableLongSpareArray(this, originalPreloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
 	}
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
@@ -163,7 +166,7 @@ public class ProxyResources extends Resources {
 
 	// colorDrawable
 	if (proxyPreloadedColorDrawables == null) {
-	    proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, preloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
+	    proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, originalPreloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
 	}
 	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
 	    set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
@@ -172,14 +175,40 @@ public class ProxyResources extends Resources {
 	// colorStateList
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 	    if (proxyPreloadedColorStateLists16 == null) {
-		proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(this, preloadedColorStateLists16, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+		proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(this, originalPreloadedColorStateLists16, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
 	    }
 	    set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
 	} else {
 	    if (proxyPreloadedColorStateLists == null) {
-		proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, preloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+		proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, originalPreloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
 	    }
 	    set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
+	}
+    }
+
+    /**
+     * 将 sPreloadedDrawables, sPreloadedColorDrawables,sPreloadedColorStateLists
+     * 替换成自定义的对象
+     */
+    public static void restorePreloadCache() {
+
+	// drawable
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
+	    sPreloadedDrawablesArray[0] = originalPreloadedDrawables;
+	} else {
+	    set(Resources.class, "sPreloadedDrawables", originalPreloadedDrawables);
+	}
+
+	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
+	    set(Resources.class, "sPreloadedColorDrawables", originalPreloadedColorDrawables);
+	}
+
+	// colorStateList
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+	    set(Resources.class, "sPreloadedColorStateLists", originalPreloadedColorStateLists16);
+	} else {
+	    set(Resources.class, "mPreloadedColorStateLists", originalPreloadedColorStateLists);
 	}
     }
 

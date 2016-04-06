@@ -192,21 +192,21 @@ public class SkinManager {
     }
 
     /**
-     * 创建皮肤资源
+     * 创建资源
      *
-     * @param skinPath
+     * @param resourcesPath
      *            资源文件路径
      * @return 资源对象
      */
-    private Resources createSkinResource(String skinPath) {
+    public Resources createResource(String resourcesPath, Resources defResources) {
 
-	if (DEFAULT_SKIN_NIGHT.equals(skinPath)) {
-	    return defaultResources;
+	if (DEFAULT_SKIN_NIGHT.equals(resourcesPath)) {
+	    return defResources;
 	}
 
 	Resources skinResources = null;
 
-	File skinFile = new File(skinPath);
+	File skinFile = new File(resourcesPath);
 	if (!skinFile.exists()) {
 	    Log.w(skinFile + " does not exist");
 	    return null;
@@ -219,7 +219,7 @@ public class SkinManager {
 		Log.w("AssetManager.addAssetPath return 0. Fail to initialze AssetManager . ");
 		return null;
 	    } else {
-		skinResources = new SkinResources(am, defaultResources, skinPath);
+		skinResources = new SkinResources(am, defResources, resourcesPath);
 	    }
 	} catch (Exception e) {
 	    Log.e(e, "Fail to initialze AssetManager");
@@ -235,11 +235,11 @@ public class SkinManager {
      *            资源路径
      * @return 代理Resources, 如果skinPath文件不存在或者解析失败返回null
      */
-    private ProxyResources createProxyResource(Context cxt, String skinPath) {
+    private ProxyResources createProxyResource(Context cxt, String skinPath, ProxyResources defResources) {
 
 	if (DEFAULT_SKIN_PATH.equals(skinPath)) {
 	    Log.d("skinPath is:{} , return defaultResources");
-	    return defaultResources;
+	    return defResources;
 	}
 
 	ProxyResources proxyResources = null;
@@ -247,20 +247,20 @@ public class SkinManager {
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
-		return proxyResources;
+		// return proxyResources;
 	    }
 	}
 
-	Resources skinResources = createSkinResource(skinPath);
+	Resources skinResources = createResource(skinPath, defResources);
 	if (skinResources == null) {
 	    Log.w("Fail to create skin resources");
 	    return null;
 	}
 
 	if (DEFAULT_SKIN_NIGHT.equals(skinPath)) {
-	    proxyResources = new NightResources(cxt.getPackageName(), skinResources, defaultResources, skinPath);
+	    proxyResources = new NightResources(cxt.getPackageName(), skinResources, defResources, skinPath);
 	} else {
-	    proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defaultResources, skinPath);
+	    proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defResources, skinPath);
 	}
 
 	synchronized (this) {
@@ -342,7 +342,7 @@ public class SkinManager {
 	    protected Boolean doInBackground(Void... params) {
 		try {
 		    Log.d("start change resource");
-		    final ProxyResources res = createProxyResource(cxt, skinPath);
+		    final ProxyResources res = createProxyResource(cxt, skinPath, defaultResources);
 		    if (res == null) {
 			return false;
 		    }
@@ -385,7 +385,7 @@ public class SkinManager {
      * @param res
      *            资源
      */
-    void change(final Activity a, Resources res) {
+    public void change(final Activity a, Resources res) {
 
 	changeActivityResources(a, res);
 
@@ -469,7 +469,7 @@ public class SkinManager {
      *
      * @param activity
      */
-    public void onAttach(Activity activity) {
+    public void callActivityOnCreate(Activity activity) {
 
 	if (defaultResources == null) {
 	    defaultResources = new ProxyResources(activity.getResources());
@@ -497,7 +497,7 @@ public class SkinManager {
 	if (DEFAULT_SKIN_PATH.equals(currentSkinPath)) {
 	    res = defaultResources;
 	} else {
-	    res = createProxyResource(activity, currentSkinPath);
+	    res = createProxyResource(activity, currentSkinPath, defaultResources);
 	    res.replacePreloadCache();
 	}
 	currentSkinResources = res;
@@ -506,6 +506,11 @@ public class SkinManager {
 	} catch (Exception e) {
 	    Log.e(e);
 	}
+    }
+
+    public void onBeforeCreate(Activity activity) {
+	LayoutInflater li = activity.getLayoutInflater();
+	registerViewFactory(li);
     }
 
     /**
