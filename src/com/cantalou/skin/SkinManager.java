@@ -247,7 +247,7 @@ public class SkinManager {
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
-		return proxyResources;
+		// return proxyResources;
 	    }
 	}
 
