@@ -247,7 +247,7 @@ public class SkinManager {
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
-		// return proxyResources;
+		return proxyResources;
 	    }
 	}
 
@@ -387,8 +387,6 @@ public class SkinManager {
      */
     public void change(final Activity a, Resources res) {
 
-	changeActivityResources(a, res);
-
 	if (a instanceof Skinnable) {
 	    serialTasks.offer(new Runnable() {
 		@Override
@@ -473,7 +471,6 @@ public class SkinManager {
 
 	if (defaultResources == null) {
 	    defaultResources = new ProxyResources(activity.getResources());
-	    defaultResources.replacePreloadCache();
 	    Log.v("init defaultResources and registerViewFactory ");
 	}
 
@@ -502,10 +499,11 @@ public class SkinManager {
 	}
 	currentSkinResources = res;
 	try {
-	    changeActivityResources(activity, res);
+	    //changeActivityResources(activity, res);
 	} catch (Exception e) {
 	    Log.e(e);
 	}
+	res.replacePreloadCache();
     }
 
     public void onBeforeCreate(Activity activity) {

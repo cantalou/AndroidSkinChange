@@ -10,34 +10,33 @@ import com.cantalou.skin.content.res.ProxyResources;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class DrawableLongSpareArray extends LongSparseArray<Drawable.ConstantState> {
 
-	private LongSparseArray<Integer> resourceIdKeyMap;
+    private LongSparseArray<Integer> resourceIdKeyMap;
 
-	/**
-	 * Resources mColorStateListCache
-	 */
-	private LongSparseArray<Drawable.ConstantState> originalCache;
+    /**
+     * Resources mColorStateListCache
+     */
+    private LongSparseArray<Drawable.ConstantState> originalCache;
 
-	private ProxyResources resources;
+    private ProxyResources resources;
 
-	public DrawableLongSpareArray(ProxyResources resources, LongSparseArray<Drawable.ConstantState> originalCache,
-			LongSparseArray<Integer> resourceIdKeyMap) {
-		this.resources = resources;
-		this.originalCache = originalCache;
-		this.resourceIdKeyMap = resourceIdKeyMap;
+    public DrawableLongSpareArray(ProxyResources resources, LongSparseArray<Drawable.ConstantState> originalCache, LongSparseArray<Integer> resourceIdKeyMap) {
+	this.resources = resources;
+	this.originalCache = originalCache;
+	this.resourceIdKeyMap = resourceIdKeyMap;
+    }
+
+    @Override
+    public Drawable.ConstantState get(long key) {
+	Integer id;
+	if (resources != null && (id = resourceIdKeyMap.get(key)) != null) {
+	    Drawable dr = resources.loadDrawable(id);
+	    if (dr != null) {
+		return dr.getConstantState();
+	    } else {
+		return null;
+	    }
+	} else {
+	    return originalCache.get(key);
 	}
-
-	@Override
-	public Drawable.ConstantState get(long key) {
-		Integer id;
-		if (resources != null && (id = resourceIdKeyMap.get(key)) != null) {
-			Drawable dr = resources.loadDrawable(id);
-			if (dr != null) {
-				return dr.getConstantState();
-			} else {
-				return null;
-			}
-		} else {
-			return originalCache.get(key);
-		}
-	}
+    }
 }
