@@ -151,7 +151,7 @@ public class ProxyResources extends Resources {
      * 将 sPreloadedDrawables, sPreloadedColorDrawables,
      * sPreloadedColorStateLists 替换成自定义的对象
      */
-    public void replacePreloadCache() {
+    public final void replacePreloadCache() {
 
 	// drawable
 	if (proxyPreloadedDrawables == null) {
@@ -188,9 +188,9 @@ public class ProxyResources extends Resources {
 
     /**
      * 将 sPreloadedDrawables, sPreloadedColorDrawables,sPreloadedColorStateLists
-     * 替换成自定义的对象
+     * 还原成原来的对象
      */
-    public static void restorePreloadCache() {
+    public final void restorePreloadCache() {
 
 	// drawable
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -200,6 +200,7 @@ public class ProxyResources extends Resources {
 	    set(Resources.class, "sPreloadedDrawables", originalPreloadedDrawables);
 	}
 
+	// colorDrawable
 	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
 	    set(Resources.class, "sPreloadedColorDrawables", originalPreloadedColorDrawables);
 	}
@@ -257,7 +258,7 @@ public class ProxyResources extends Resources {
 
     public Drawable loadDrawable(int id) throws NotFoundException {
 	TypedValue value = typedValueCache;
-	this.getValue(id, value, true);
+	getValue(id, value, true);
 	Drawable dr = loadDrawable(this, value, id);
 	if (dr == null) {
 	    dr = getDrawable(id);

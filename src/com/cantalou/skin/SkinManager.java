@@ -200,10 +200,6 @@ public class SkinManager {
      */
     public Resources createResource(String resourcesPath, Resources defResources) {
 
-	if (DEFAULT_SKIN_NIGHT.equals(resourcesPath)) {
-	    return defResources;
-	}
-
 	Resources skinResources = null;
 
 	File skinFile = new File(resourcesPath);
@@ -237,8 +233,9 @@ public class SkinManager {
      */
     private ProxyResources createProxyResource(Context cxt, String skinPath, ProxyResources defResources) {
 
-	if (DEFAULT_SKIN_PATH.equals(skinPath)) {
+	if (DEFAULT_SKIN_PATH.equals(skinPath) || DEFAULT_SKIN_NIGHT.equals(skinPath)) {
 	    Log.d("skinPath is:{} , return defaultResources");
+	    defResources.restorePreloadCache();
 	    return defResources;
 	}
 
@@ -247,7 +244,8 @@ public class SkinManager {
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
-		// return proxyResources;
+		proxyResources.replacePreloadCache();
+		return proxyResources;
 	    }
 	}
 
@@ -266,6 +264,7 @@ public class SkinManager {
 	synchronized (this) {
 	    cacheResources.put(skinPath, new WeakReference<ProxyResources>(proxyResources));
 	}
+	proxyResources.replacePreloadCache();
 	return proxyResources;
     }
 
@@ -315,7 +314,7 @@ public class SkinManager {
     }
 
     /**
-     * 更换所有activity的皮肤资源
+     * 更换皮肤资源
      *
      * @param activity
      * @param skinPath
@@ -346,7 +345,6 @@ public class SkinManager {
 		    if (res == null) {
 			return false;
 		    }
-		    res.replacePreloadCache();
 		    List<Activity> temp = (List<Activity>) activitys.clone();
 		    for (int i = temp.size() - 1; i >= 0; i--) {
 			Log.d("change :{} resources to :{}", temp.get(i), res);
@@ -386,6 +384,8 @@ public class SkinManager {
      *            资源
      */
     public void change(final Activity a, Resources res) {
+
+	changeActivityResources(a, res);
 
 	if (a instanceof Skinnable) {
 	    serialTasks.offer(new Runnable() {
@@ -490,25 +490,13 @@ public class SkinManager {
 	    currentSkinPath = prefSkinPath;
 	}
 
-	ProxyResources res;
-	if (DEFAULT_SKIN_PATH.equals(currentSkinPath)) {
-	    res = defaultResources;
-	} else {
-	    res = createProxyResource(activity, currentSkinPath, defaultResources);
-	    res.replacePreloadCache();
-	}
+	ProxyResources res = createProxyResource(activity, currentSkinPath, defaultResources);
 	currentSkinResources = res;
 	try {
-	    //changeActivityResources(activity, res);
+	    changeActivityResources(activity, res);
 	} catch (Exception e) {
 	    Log.e(e);
 	}
-	res.replacePreloadCache();
-    }
-
-    public void onBeforeCreate(Activity activity) {
-	LayoutInflater li = activity.getLayoutInflater();
-	registerViewFactory(li);
     }
 
     /**
