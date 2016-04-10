@@ -151,6 +151,7 @@ public class SkinManager {
 
     private SkinManager() {
 	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+	Log.LOG_TAG_FLAG = "-skin";
     }
 
     public static com.cantalou.skin.SkinManager getInstance() {
@@ -244,8 +245,8 @@ public class SkinManager {
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
-		proxyResources.replacePreloadCache();
-		return proxyResources;
+		//proxyResources.replacePreloadCache();
+		//return proxyResources;
 	    }
 	}
 

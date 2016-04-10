@@ -219,7 +219,7 @@ public class ProxyResources extends Resources {
 	return logValue.toString();
     }
 
-    protected String toHex(int id) {
+    public static String toHex(int id) {
 	return "0x" + Integer.toHexString(id);
     }
 
