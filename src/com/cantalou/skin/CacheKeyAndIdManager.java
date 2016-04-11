@@ -94,7 +94,7 @@ public final class CacheKeyAndIdManager {
 
 	if (handledDrawableId.contains(id)) {
 	    Log.d("Had registered id:{}, ignore", id);
-	    return;
+	    //return;
 	}
 
 	if (skinManager == null) {

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.util.LongSparseArray;
 
 import com.cantalou.android.util.Log;
+import com.cantalou.skin.CacheKeyAndIdManager;
 import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.ProxyResources;
 
@@ -30,8 +31,17 @@ public class DrawableLongSpareArray extends LongSparseArray<Drawable.ConstantSta
     @Override
     public Drawable.ConstantState get(long key) {
 	ProxyResources resources = skinManager.getCurrentSkinResources();
-	Integer id;
-	if (resources != null && (id = resourceIdKeyMap.get(key)) != null) {
+	Integer id = resourceIdKeyMap.get(key);
+	if(id == null){
+	    id = CacheKeyAndIdManager.getInstance().getDrawableCacheKeyIdMap().get(key); 
+	}
+	if(id == null){
+	    id = CacheKeyAndIdManager.getInstance().getColorDrawableCacheKeyIdMap().get(key); 
+	}
+	if(id == null){
+	    id = CacheKeyAndIdManager.getInstance().getColorStateListCacheKeyIdMap().get(key); 
+	}
+	if (resources != null && (id ) != null) {
 	    Drawable dr = resources.loadDrawable(id);
 	    if (dr != null) {
 		Log.v("load Drawable from {} id:{} ", resources, ProxyResources.toHex(id));
