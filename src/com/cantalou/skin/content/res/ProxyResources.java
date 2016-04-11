@@ -74,7 +74,7 @@ public class ProxyResources extends Resources {
     protected static CacheKeyAndIdManager cacheKeyAndIdManager;
 
     /**
-     * 保存原始preload对象引用
+     * 替换Resources的相关preload对象引用
      */
     static {
 
@@ -161,14 +161,6 @@ public class ProxyResources extends Resources {
     public Drawable getDrawableForDensity(int id, int density) throws NotFoundException {
 	cacheKeyAndIdManager.registerDrawable(id);
 	return super.getDrawableForDensity(id, density);
-    }
-
-    /**
-     * 将 sPreloadedDrawables, sPreloadedColorDrawables,
-     * sPreloadedColorStateLists 替换成自定义的对象
-     */
-    public final void replacePreloadCache() {
-
     }
 
     protected String toString(TypedValue value) {

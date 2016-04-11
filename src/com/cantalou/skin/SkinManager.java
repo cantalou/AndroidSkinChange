@@ -135,8 +135,6 @@ public class SkinManager {
 	    return result;
 	}
 
-	;
-
 	public synchronized void scheduleNext() {
 	    mActive = serialTasks.poll();
 	    if (mActive != null) {
@@ -264,7 +262,6 @@ public class SkinManager {
 	synchronized (this) {
 	    cacheResources.put(skinPath, new WeakReference<ProxyResources>(proxyResources));
 	}
-	proxyResources.replacePreloadCache();
 	return proxyResources;
     }
 
