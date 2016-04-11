@@ -98,7 +98,7 @@ public class SkinManager {
     /**
      * 资源
      */
-    private Resources currentSkinResources;
+    private ProxyResources currentSkinResources;
 
     /**
      * 资源切换时提交View刷新任务到UI线程
@@ -236,7 +236,6 @@ public class SkinManager {
 
 	if (DEFAULT_SKIN_PATH.equals(skinPath) || DEFAULT_SKIN_NIGHT.equals(skinPath)) {
 	    Log.d("skinPath is:{} , return defaultResources");
-	    defResources.restorePreloadCache();
 	    return defResources;
 	}
 
@@ -573,7 +572,7 @@ public class SkinManager {
 	onResourcesChangeFinishListeners.remove(listener);
     }
 
-    public Resources getCurrentSkinResources() {
+    public ProxyResources getCurrentSkinResources() {
 	return currentSkinResources;
     }
 

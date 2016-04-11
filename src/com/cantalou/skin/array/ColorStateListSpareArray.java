@@ -6,6 +6,7 @@ import android.util.LongSparseArray;
 import android.util.SparseArray;
 
 import com.cantalou.android.util.Log;
+import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.ProxyResources;
 
 @SuppressLint("NewApi")
@@ -18,16 +19,17 @@ public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
      */
     private SparseArray<ColorStateList> originalCache;
 
-    private ProxyResources resources;
+    private SkinManager skinManager;
 
-    public ColorStateListSpareArray(ProxyResources resources, SparseArray<ColorStateList> originalCache, LongSparseArray<Integer> resourceIdKeyMap) {
-	this.resources = resources;
+    public ColorStateListSpareArray(SkinManager skinManager, SparseArray<ColorStateList> originalCache, LongSparseArray<Integer> resourceIdKeyMap) {
+	this.skinManager = skinManager;
 	this.originalCache = originalCache;
 	this.resourceIdKeyMap = resourceIdKeyMap;
     }
 
     @Override
     public ColorStateList get(int key) {
+	ProxyResources resources = skinManager.getCurrentSkinResources();
 	Integer id;
 	ColorStateList csl;
 	if (resources != null && (id = resourceIdKeyMap.get(key)) != null) {
