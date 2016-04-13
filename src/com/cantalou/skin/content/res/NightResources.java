@@ -15,9 +15,17 @@ import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 
-import com.cantalou.android.util.BinarySearchIntArray;
 import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.android.util.array.BinarySearchIntArray;
 
+/**
+ * 夜间模式资源类<br>
+ * 1.对于Drawable资源添加灰色遮罩层<br>
+ * 2.对于色值资源寻找名为 "原色值名称_night" 替换
+ *
+ * @author cantalou
+ * @date 2016年4月13日 下午11:02:27
+ */
 public class NightResources extends SkinProxyResources {
 
     /**

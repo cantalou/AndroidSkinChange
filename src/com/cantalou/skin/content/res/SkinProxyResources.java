@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 
-import com.cantalou.android.util.BinarySearchIntArray;
 import com.cantalou.android.util.Log;
+import com.cantalou.android.util.array.BinarySearchIntArray;
 
 /**
  * 皮肤Resources代理类<br>
@@ -17,7 +17,6 @@ import com.cantalou.android.util.Log;
  * @author cantalou
  * @date 2015年11月29日 下午3:15:02
  */
-@SuppressWarnings("deprecation")
 public class SkinProxyResources extends ProxyResources {
 
     /**
@@ -70,17 +69,6 @@ public class SkinProxyResources extends ProxyResources {
      */
     public SkinProxyResources(Resources defRes) {
 	this("", null, defRes, "");
-    }
-
-    @Override
-    public int getColor(int id) throws NotFoundException {
-	cacheKeyAndIdManager.registerDrawable(id);
-	int skinId;
-	if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {
-	    return super.getColor(id);
-	} else {
-	    return skinResources.getColor(skinId);
-	}
     }
 
     /**
@@ -207,5 +195,9 @@ public class SkinProxyResources extends ProxyResources {
     @Override
     public String toString() {
 	return getClass().getSimpleName() + "{" + skinPath + "}";
+    }
+
+    public Resources getSkinResources() {
+	return skinResources;
     }
 }

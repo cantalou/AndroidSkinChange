@@ -3,32 +3,31 @@
  */
 package com.cantalou.skin;
 
+import static com.cantalou.android.util.ReflectUtil.findByMethod;
+import static com.cantalou.android.util.ReflectUtil.forName;
+import static com.cantalou.android.util.ReflectUtil.get;
+import static com.cantalou.android.util.ReflectUtil.invoke;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
+import org.xmlpull.v1.XmlPullParser;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
-import android.util.LongSparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.cantalou.android.util.BinarySearchIntArray;
 import com.cantalou.android.util.Log;
+import com.cantalou.android.util.array.BinarySearchIntArray;
+import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.content.res.SkinProxyResources;
-
-import org.xmlpull.v1.XmlPullParser;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-
-import static com.cantalou.android.util.ReflectUtil.findByMethod;
-import static com.cantalou.android.util.ReflectUtil.forName;
-import static com.cantalou.android.util.ReflectUtil.get;
-import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
  * @author cantalou
@@ -40,17 +39,17 @@ public final class CacheKeyAndIdManager {
     /**
      * 资源缓存key与资源id的映射
      */
-    private LongSparseArray<Integer> drawableCacheKeyIdMap = new LongSparseArray<Integer>();
+    private SparseLongIntArray drawableCacheKeyIdMap = new SparseLongIntArray();
 
     /**
      * 颜色缓存key与资源id的映射
      */
-    private LongSparseArray<Integer> colorDrawableCacheKeyIdMap = new LongSparseArray<Integer>();
+    private SparseLongIntArray colorDrawableCacheKeyIdMap = new SparseLongIntArray();
 
     /**
      * 颜色StateList缓存key与资源id的映射
      */
-    private LongSparseArray<Integer> colorStateListCacheKeyIdMap = new LongSparseArray<Integer>();
+    private SparseLongIntArray colorStateListCacheKeyIdMap = new SparseLongIntArray();
 
     /**
      * 菜单id和菜单icon资源id映射
@@ -93,7 +92,7 @@ public final class CacheKeyAndIdManager {
 	}
 
 	if (handledDrawableId.contains(id)) {
-	    Log.d("Had registered id:{}, ignore", id);
+	    Log.v("Had registered id:{}, ignore", id);
 	    //return;
 	}
 
@@ -106,7 +105,7 @@ public final class CacheKeyAndIdManager {
 	TypedValue value = cacheValue;
 	defaultResources.getValue(id, value, true);
 	long key = 0;
-	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
 	    boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
 	    key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
 	    if (isColorDrawable) {
@@ -281,15 +280,15 @@ public final class CacheKeyAndIdManager {
 	return isMenuLayout;
     }
 
-    public LongSparseArray<Integer> getDrawableCacheKeyIdMap() {
+    public SparseLongIntArray getDrawableCacheKeyIdMap() {
 	return drawableCacheKeyIdMap;
     }
 
-    public LongSparseArray<Integer> getColorDrawableCacheKeyIdMap() {
+    public SparseLongIntArray getColorDrawableCacheKeyIdMap() {
 	return colorDrawableCacheKeyIdMap;
     }
 
-    public LongSparseArray<Integer> getColorStateListCacheKeyIdMap() {
+    public SparseLongIntArray getColorStateListCacheKeyIdMap() {
 	return colorStateListCacheKeyIdMap;
     }
 

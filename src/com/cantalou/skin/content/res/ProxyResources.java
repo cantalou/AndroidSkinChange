@@ -63,65 +63,58 @@ public class ProxyResources extends Resources {
      */
     protected String[] resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE + 1];
 
-    protected static LongSparseArray<ConstantState> proxyPreloadedDrawables;
-
-    protected static LongSparseArray<ConstantState> proxyPreloadedColorDrawables;
-
-    protected static LongSparseArray<ColorStateList> proxyPreloadedColorStateLists16;
-
-    protected static SparseArray<ColorStateList> proxyPreloadedColorStateLists;
-
     protected static CacheKeyAndIdManager cacheKeyAndIdManager;
+
+    protected static TypedValue logValue = new TypedValue();
+
+    protected final TypedValue typedValueCache = new TypedValue();
 
     /**
      * 替换Resources的相关preload对象引用
      */
     static {
+	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+	replacePreloadObject();
+    }
+
+    private static void replacePreloadObject() {
 
 	SkinManager skinManager = SkinManager.getInstance();
 
-	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
-
 	// drawable
-	LongSparseArray<ConstantState> originalPreloadedDrawables;
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-	    originalPreloadedDrawables = sPreloadedDrawablesArray[0];
-	} else {
-	    originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
-	}
-
-	proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
+	    LongSparseArray<ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawablesArray[0],
+		    cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
 	    sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
 	} else {
+	    LongSparseArray<ConstantState> originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
+	    LongSparseArray<ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedDrawables,
+		    cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
 	    set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
 	}
 
 	// colorDrawable
 	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
 	    LongSparseArray<ConstantState> originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
-	    proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
+	    LongSparseArray<ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedColorDrawables,
+		    cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
 	    set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
 	}
 
 	// colorStateList
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 	    LongSparseArray<ColorStateList> originalPreloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
-	    proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(skinManager, originalPreloadedColorStateLists16,
+	    LongSparseArray<ColorStateList> proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(skinManager, originalPreloadedColorStateLists16,
 		    cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
 	    set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
 	} else {
 	    SparseArray<ColorStateList> originalPreloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
-	    proxyPreloadedColorStateLists = new ColorStateListSpareArray(skinManager, originalPreloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+	    SparseArray<ColorStateList> proxyPreloadedColorStateLists = new ColorStateListSpareArray(skinManager, originalPreloadedColorStateLists,
+		    cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
 	    set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
 	}
     }
-
-    protected static TypedValue logValue = new TypedValue();
-
-    protected final TypedValue typedValueCache = new TypedValue();
 
     public ProxyResources(Resources res) {
 	super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());

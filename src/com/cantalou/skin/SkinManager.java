@@ -188,6 +188,7 @@ public class SkinManager {
 	    Log.w("Fail to replace field named mInstrumentation . Try invoking onAttach in Activity.onAttach method before invoking super.onAttach");
 	}
 
+	PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, "");
     }
 
     /**
@@ -242,8 +243,7 @@ public class SkinManager {
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
-		//proxyResources.replacePreloadCache();
-		//return proxyResources;
+		return proxyResources;
 	    }
 	}
 
@@ -328,46 +328,47 @@ public class SkinManager {
 	}
 
 	final Context cxt = activity.getApplicationContext();
-//	new AsyncTask<Void, Void, Boolean>() {
-//	    @Override
-//	    protected void onPreExecute() {
-//		changingResource = true;
-//	    }
-//
-//	    @Override
-//	    protected Boolean doInBackground(Void... params) {
-//		try {
+	new AsyncTask<Void, Void, Boolean>() {
+	    @Override
+	    protected void onPreExecute() {
+		changingResource = true;
+	    }
+
+	    @Override
+	    protected Boolean doInBackground(Void... params) {
+		try {
 		    Log.d("start change resource");
 		    final ProxyResources res = createProxyResource(cxt, skinPath, defaultResources);
 		    if (res == null) {
-			return ;
+			return false;
 		    }
+		    currentSkinResources = res;
+		    currentSkinPath = skinPath;
+		    PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, currentSkinPath);
 		    List<Activity> temp = (List<Activity>) activitys.clone();
 		    for (int i = temp.size() - 1; i >= 0; i--) {
 			Log.d("change :{} resources to :{}", temp.get(i), res);
 			change(temp.get(i), res);
 		    }
 		    Log.d("finish change resource");
-		    currentSkinResources = res;
-		    currentSkinPath = skinPath;
-		    PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, currentSkinPath);
-//		    return true;
-//		} catch (Exception e) {
-//		    Log.e(e);
-//		    return false;
-//		}
-//	    }
-//
-//	    @Override
-//	    protected void onPostExecute(Boolean result) {
-//		Log.i("changeResources doInBackground return :{}, currentSkin:{}", result, currentSkinPath);
-//		ArrayList<OnResourcesChangeFinishListener> list = (ArrayList<OnResourcesChangeFinishListener>) onResourcesChangeFinishListeners.clone();
-//		for (OnResourcesChangeFinishListener listener : list) {
-//		    listener.onResourcesChangeFinish(result);
-//		}
-//		changingResource = false;
-//	    }
-//	}.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+
+		    return true;
+		} catch (Exception e) {
+		    Log.e(e);
+		    return false;
+		}
+	    }
+
+	    @Override
+	    protected void onPostExecute(Boolean result) {
+		Log.i("changeResources doInBackground return :{}, currentSkin:{}", result, currentSkinPath);
+		ArrayList<OnResourcesChangeFinishListener> list = (ArrayList<OnResourcesChangeFinishListener>) onResourcesChangeFinishListeners.clone();
+		for (OnResourcesChangeFinishListener listener : list) {
+		    listener.onResourcesChangeFinish(result);
+		}
+		changingResource = false;
+	    }
+	}.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
 	showSkinChangeAnimation(activity);
     }
@@ -385,12 +386,12 @@ public class SkinManager {
 	changeActivityResources(a, res);
 
 	if (a instanceof Skinnable) {
-//	    serialTasks.offer(new Runnable() {
-//		@Override
-//		public void run() {
+	    serialTasks.offer(new Runnable() {
+		@Override
+		public void run() {
 		    ((Skinnable) a).onResourcesChange();
-//		}
-//	    });
+		}
+	    });
 	}
 
 	final List<?> fragments = get(a, "mFragments.mAdded");
@@ -572,9 +573,9 @@ public class SkinManager {
     public ProxyResources getCurrentSkinResources() {
 	return currentSkinResources;
     }
-    
+
     public void setCurrentSkinResources(ProxyResources currentSkinResources) {
-        this.currentSkinResources = currentSkinResources;
+	this.currentSkinResources = currentSkinResources;
     }
 
     public Resources getDefaultResources() {
