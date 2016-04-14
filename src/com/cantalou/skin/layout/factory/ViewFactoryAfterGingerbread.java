@@ -9,8 +9,8 @@ import android.view.LayoutInflater.Factory2;
 import android.view.View;
 
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.holder.AbstractHolder;
-import com.cantalou.skin.holder.ViewHolder;
+import com.cantalou.skin.handler.AbstractHolder;
+import com.cantalou.skin.handler.ViewHolder;
 
 /**
  * 自定义Factory的实现, 保存View中属性的资源信息, 如:background赋值的资源id

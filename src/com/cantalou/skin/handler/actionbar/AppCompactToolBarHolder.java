@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder.actionbar;
+package com.cantalou.skin.handler.actionbar;
 
 import android.content.Context;
 import android.content.res.Resources;

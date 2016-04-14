@@ -28,8 +28,8 @@ import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
-import com.cantalou.skin.holder.AbstractHolder;
-import com.cantalou.skin.holder.ViewHolder;
+import com.cantalou.skin.handler.AbstractHolder;
+import com.cantalou.skin.handler.ViewHolder;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
@@ -527,6 +527,8 @@ public class SkinManager {
 
 	    final AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
 	    alphaAnimation.setDuration(800);
+	    alphaAnimation.setFillEnabled(true);
+	    alphaAnimation.setFillAfter(true);
 	    iv.setAnimation(alphaAnimation);
 	    alphaAnimation.startNow();
 	    decor.postDelayed(new Runnable() {

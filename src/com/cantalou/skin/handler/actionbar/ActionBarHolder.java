@@ -1,6 +1,6 @@
-package com.cantalou.skin.holder.actionbar;
+package com.cantalou.skin.handler.actionbar;
 
-import com.cantalou.skin.holder.ViewHolder;
+import com.cantalou.skin.handler.ViewHolder;
 
 /**
  * @author cantalou

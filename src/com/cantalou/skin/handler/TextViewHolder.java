@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.handler;
 
 import android.annotation.TargetApi;
 import android.content.Context;

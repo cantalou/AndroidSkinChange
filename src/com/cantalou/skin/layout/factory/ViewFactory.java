@@ -10,15 +10,15 @@ import android.view.View;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
-import com.cantalou.skin.holder.actionbar.AppCompactToolBarHolder;
-import com.cantalou.skin.holder.actionbar.ActionBarContainerHolder;
-import com.cantalou.skin.holder.actionbar.ActionBarViewHolder;
-import com.cantalou.skin.holder.actionbar.ActionMenuItemViewHolder;
-import com.cantalou.skin.holder.ImageViewHolder;
-import com.cantalou.skin.holder.ListViewHolder;
-import com.cantalou.skin.holder.TextViewHolder;
-import com.cantalou.skin.holder.AbstractHolder;
-import com.cantalou.skin.holder.ViewHolder;
+import com.cantalou.skin.handler.AbstractHolder;
+import com.cantalou.skin.handler.ImageViewHolder;
+import com.cantalou.skin.handler.ListViewHolder;
+import com.cantalou.skin.handler.TextViewHolder;
+import com.cantalou.skin.handler.ViewHolder;
+import com.cantalou.skin.handler.actionbar.ActionBarContainerHolder;
+import com.cantalou.skin.handler.actionbar.ActionBarViewHolder;
+import com.cantalou.skin.handler.actionbar.ActionMenuItemViewHolder;
+import com.cantalou.skin.handler.actionbar.AppCompactToolBarHolder;
 
 import java.util.HashMap;
 

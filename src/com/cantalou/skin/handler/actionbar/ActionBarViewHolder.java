@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder.actionbar;
+package com.cantalou.skin.handler.actionbar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
