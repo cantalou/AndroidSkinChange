@@ -10,7 +10,7 @@ import android.view.View;
  * @author cantalou
  * @date 2016年1月23日 下午11:30:39
  */
-public interface AttrHolder {
+public interface AttrHandler {
 
     public static final int APP_RESOURCE_ID_PACKAGE = 0x7F000000;
 

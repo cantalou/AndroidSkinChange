@@ -13,7 +13,7 @@ import android.view.View;
  * @date 2016年2月29日 上午10:52:34
  */
 @SuppressWarnings("deprecation")
-public class ViewHolder extends AbstractHolder {
+public class ViewHandler extends AbstractHandler {
     protected int background;
 
     @Override

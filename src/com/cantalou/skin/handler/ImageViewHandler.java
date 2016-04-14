@@ -10,7 +10,7 @@ import android.widget.ImageView;
  * @author cantalou
  * @date 2016年1月23日 下午11:31:01
  */
-public class ImageViewHolder extends ViewHolder {
+public class ImageViewHandler extends ViewHandler {
 
     protected int src;
 

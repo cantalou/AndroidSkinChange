@@ -10,15 +10,15 @@ import android.view.View;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.StringUtils;
-import com.cantalou.skin.handler.AbstractHolder;
-import com.cantalou.skin.handler.ImageViewHolder;
-import com.cantalou.skin.handler.ListViewHolder;
-import com.cantalou.skin.handler.TextViewHolder;
-import com.cantalou.skin.handler.ViewHolder;
-import com.cantalou.skin.handler.actionbar.ActionBarContainerHolder;
-import com.cantalou.skin.handler.actionbar.ActionBarViewHolder;
-import com.cantalou.skin.handler.actionbar.ActionMenuItemViewHolder;
-import com.cantalou.skin.handler.actionbar.AppCompactToolBarHolder;
+import com.cantalou.skin.handler.AbstractHandler;
+import com.cantalou.skin.handler.ImageViewHandler;
+import com.cantalou.skin.handler.ListViewHandler;
+import com.cantalou.skin.handler.TextViewHandler;
+import com.cantalou.skin.handler.ViewHandler;
+import com.cantalou.skin.handler.actionbar.ActionBarContainerHandler;
+import com.cantalou.skin.handler.actionbar.ActionBarViewHandler;
+import com.cantalou.skin.handler.actionbar.ActionMenuItemViewHandler;
+import com.cantalou.skin.handler.actionbar.AppCompactToolBarHandler;
 
 import java.util.HashMap;
 
@@ -34,30 +34,30 @@ public class ViewFactory implements Factory {
 
     static final HashMap<String, String> superNameCache = new HashMap<String, String>();
 
-    static final HashMap<String, AbstractHolder> viewAttrHolder = new HashMap<String, AbstractHolder>();
+    static final HashMap<String, AbstractHandler> viewAttrHolder = new HashMap<String, AbstractHandler>();
 
     static {
-	viewAttrHolder.put("android.view.View", new ViewHolder());// for super
+	viewAttrHolder.put("android.view.View", new ViewHandler());// for super
 								  // class
-	viewAttrHolder.put("View", new ViewHolder());// for layout file
-	viewAttrHolder.put("android.widget.TextView", new TextViewHolder());
-	viewAttrHolder.put("android.widget.ImageView", new ImageViewHolder());
-	viewAttrHolder.put("android.widget.ListView", new ListViewHolder());
+	viewAttrHolder.put("View", new ViewHandler());// for layout file
+	viewAttrHolder.put("android.widget.TextView", new TextViewHandler());
+	viewAttrHolder.put("android.widget.ImageView", new ImageViewHandler());
+	viewAttrHolder.put("android.widget.ListView", new ListViewHandler());
 
 	// ActionBarSherlock
-	viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-	viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-	viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHolder());
+	viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
+	viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
+	viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHandler());
 
 	// native actionbar
-	viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-	viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-	viewAttrHolder.put("com.android.internal.widget.ActionBarView", new ActionBarViewHolder());
+	viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
+	viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
+	viewAttrHolder.put("com.android.internal.widget.ActionBarView", new ActionBarViewHandler());
 
 	// AppCompact actionbar
-	viewAttrHolder.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHolder());
-	viewAttrHolder.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHolder());
-	viewAttrHolder.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHolder());
+	viewAttrHolder.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
+	viewAttrHolder.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
+	viewAttrHolder.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHandler());
     }
 
     LayoutInflater layoutInflater;
@@ -75,7 +75,7 @@ public class ViewFactory implements Factory {
     public View onCreateView(String name, Context context, AttributeSet attrs) {
 
 	View view = null;
-	AbstractHolder attrHolder = getHolder(name);
+	AbstractHandler attrHolder = getHolder(name);
 	if (attrHolder != null) {
 	    attrHolder.parse(context, attrs);
 	}
@@ -126,19 +126,19 @@ public class ViewFactory implements Factory {
 	}
 
 	if (view != null) {
-	    view.setTag(ViewHolder.ATTR_HOLDER_KEY, attrHolder);
+	    view.setTag(ViewHandler.ATTR_HOLDER_KEY, attrHolder);
 	}
 
 	return view;
     }
 
-    public static AbstractHolder getHolder(String name) {
+    public static AbstractHandler getHolder(String name) {
 
 	if (StringUtils.isBlank(name)) {
 	    return null;
 	}
 
-	AbstractHolder attrHolder = viewAttrHolder.get(name);
+	AbstractHandler attrHolder = viewAttrHolder.get(name);
 	if (attrHolder != null) {
 	    return attrHolder.clone();
 	}
@@ -182,7 +182,7 @@ public class ViewFactory implements Factory {
 	return superName;
     }
 
-    public static void registerAttrHolder(String name, ViewHolder attrHolder) {
+    public static void registerAttrHolder(String name, ViewHandler attrHolder) {
 	viewAttrHolder.put(name, attrHolder);
     }
 }

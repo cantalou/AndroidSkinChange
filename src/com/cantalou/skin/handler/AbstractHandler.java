@@ -17,7 +17,7 @@ import com.cantalou.skin.content.res.SkinProxyResources;
  * @author cantalou
  * @date 2016年2月29日 上午10:48:21
  */
-public abstract class AbstractHolder implements Cloneable {
+public abstract class AbstractHandler implements Cloneable {
 
     public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
 
@@ -28,7 +28,7 @@ public abstract class AbstractHolder implements Cloneable {
 
     protected CacheKeyAndIdManager cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
 
-    public final AbstractHolder parse(Context context, AttributeSet attrs) {
+    public final AbstractHandler parse(Context context, AttributeSet attrs) {
 	called = false;
 	boolean result = parseAttr(context, attrs);
 	if (!called) {
@@ -95,9 +95,9 @@ public abstract class AbstractHolder implements Cloneable {
     }
 
     @Override
-    public final ViewHolder clone() {
+    public final ViewHandler clone() {
 	try {
-	    return (ViewHolder) super.clone();
+	    return (ViewHandler) super.clone();
 	} catch (CloneNotSupportedException e) {
 	    Log.w(e);
 	    return null;

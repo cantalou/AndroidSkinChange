@@ -28,8 +28,8 @@ import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
-import com.cantalou.skin.handler.AbstractHolder;
-import com.cantalou.skin.handler.ViewHolder;
+import com.cantalou.skin.handler.AbstractHandler;
+import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
@@ -441,11 +441,11 @@ public class SkinManager {
 	    v.invalidate();
 	}
 
-	Object tag = v.getTag(ViewHolder.ATTR_HOLDER_KEY);
-	if (tag != null && tag instanceof ViewHolder) {
-	    ((AbstractHolder) tag).reloadAttr(v, v.getContext().getResources());
+	Object tag = v.getTag(ViewHandler.ATTR_HOLDER_KEY);
+	if (tag != null && tag instanceof ViewHandler) {
+	    ((AbstractHandler) tag).reloadAttr(v, v.getContext().getResources());
 	} else {
-	    AbstractHolder ah = ViewFactory.getHolder(v.getClass().getName());
+	    AbstractHandler ah = ViewFactory.getHolder(v.getClass().getName());
 	    if (ah != null) {
 		ah.reloadAttr(v, v.getContext().getResources());
 	    }

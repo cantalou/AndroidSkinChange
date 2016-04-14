@@ -13,7 +13,7 @@ import com.cantalou.android.util.ReflectUtil;
  * @author cantalou
  * @date 2016年1月28日 下午11:02:42
  */
-public class AppCompactToolBarHolder extends ActionBarHolder {
+public class AppCompactToolBarHandler extends ActionBarHandler {
 
     int collapseIcon;
 

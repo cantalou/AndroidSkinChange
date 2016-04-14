@@ -19,7 +19,7 @@ import com.cantalou.android.util.ReflectUtil;
  * @date 2016年1月23日 下午11:30:25
  */
 @SuppressWarnings("deprecation")
-public class ActionBarContainerHolder extends ActionBarHolder {
+public class ActionBarContainerHandler extends ActionBarHandler {
 
     private int background;
 

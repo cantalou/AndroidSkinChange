@@ -17,7 +17,7 @@ import com.cantalou.android.util.ReflectUtil;
  * @author cantalou
  * @date 2016年2月29日 上午10:48:12
  */
-public class ListViewHolder extends ViewHolder {
+public class ListViewHandler extends ViewHandler {
 
     protected int divider;
 
