@@ -51,11 +51,11 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
 	}
 
 	if (view != null) {
-	    AbstractHandler attrHolder = getHolder(name);
-	    if (attrHolder != null) {
-		attrHolder.parse(context, attrs);
+	    AbstractHandler attrHandler = getHandler(name);
+	    if (attrHandler != null) {
+		attrHandler.parse(context, attrs);
 	    }
-	    view.setTag(ViewHandler.ATTR_HOLDER_KEY, attrHolder);
+	    view.setTag(ViewHandler.ATTR_HANDLER_KEY, attrHandler);
 	} else {
 	    view = super.onCreateView(name, context, attrs);
 	}

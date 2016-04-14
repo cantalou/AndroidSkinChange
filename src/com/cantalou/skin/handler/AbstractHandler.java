@@ -19,7 +19,7 @@ import com.cantalou.skin.content.res.SkinProxyResources;
  */
 public abstract class AbstractHandler implements Cloneable {
 
-    public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
+    public static final int ATTR_HANDLER_KEY = 0x7FFFFFFF;
 
     /**
      * 父类的parse是否有被调用

@@ -441,11 +441,11 @@ public class SkinManager {
 	    v.invalidate();
 	}
 
-	Object tag = v.getTag(ViewHandler.ATTR_HOLDER_KEY);
+	Object tag = v.getTag(ViewHandler.ATTR_HANDLER_KEY);
 	if (tag != null && tag instanceof ViewHandler) {
 	    ((AbstractHandler) tag).reloadAttr(v, v.getContext().getResources());
 	} else {
-	    AbstractHandler ah = ViewFactory.getHolder(v.getClass().getName());
+	    AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
 	    if (ah != null) {
 		ah.reloadAttr(v, v.getContext().getResources());
 	    }

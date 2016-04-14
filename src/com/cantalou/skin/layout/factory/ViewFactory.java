@@ -34,30 +34,30 @@ public class ViewFactory implements Factory {
 
     static final HashMap<String, String> superNameCache = new HashMap<String, String>();
 
-    static final HashMap<String, AbstractHandler> viewAttrHolder = new HashMap<String, AbstractHandler>();
+    static final HashMap<String, AbstractHandler> viewAttrHandler = new HashMap<String, AbstractHandler>();
 
     static {
-	viewAttrHolder.put("android.view.View", new ViewHandler());// for super
+	viewAttrHandler.put("android.view.View", new ViewHandler());// for super
 								  // class
-	viewAttrHolder.put("View", new ViewHandler());// for layout file
-	viewAttrHolder.put("android.widget.TextView", new TextViewHandler());
-	viewAttrHolder.put("android.widget.ImageView", new ImageViewHandler());
-	viewAttrHolder.put("android.widget.ListView", new ListViewHandler());
+	viewAttrHandler.put("View", new ViewHandler());// for layout file
+	viewAttrHandler.put("android.widget.TextView", new TextViewHandler());
+	viewAttrHandler.put("android.widget.ImageView", new ImageViewHandler());
+	viewAttrHandler.put("android.widget.ListView", new ListViewHandler());
 
 	// ActionBarSherlock
-	viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
-	viewAttrHolder.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
-	viewAttrHolder.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHandler());
+	viewAttrHandler.put("com.actionbarsherlock.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
+	viewAttrHandler.put("com.actionbarsherlock.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
+	viewAttrHandler.put("com.actionbarsherlock.internal.widget.ActionBarView", new ActionBarViewHandler());
 
 	// native actionbar
-	viewAttrHolder.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
-	viewAttrHolder.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
-	viewAttrHolder.put("com.android.internal.widget.ActionBarView", new ActionBarViewHandler());
+	viewAttrHandler.put("com.android.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
+	viewAttrHandler.put("com.android.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
+	viewAttrHandler.put("com.android.internal.widget.ActionBarView", new ActionBarViewHandler());
 
 	// AppCompact actionbar
-	viewAttrHolder.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
-	viewAttrHolder.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
-	viewAttrHolder.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHandler());
+	viewAttrHandler.put("android.support.v7.internal.widget.ActionBarContainer", new ActionBarContainerHandler());
+	viewAttrHandler.put("android.support.v7.internal.view.menu.ActionMenuItemView", new ActionMenuItemViewHandler());
+	viewAttrHandler.put("android.support.v7.widget.Toolbar", new AppCompactToolBarHandler());
     }
 
     LayoutInflater layoutInflater;
@@ -75,9 +75,9 @@ public class ViewFactory implements Factory {
     public View onCreateView(String name, Context context, AttributeSet attrs) {
 
 	View view = null;
-	AbstractHandler attrHolder = getHolder(name);
-	if (attrHolder != null) {
-	    attrHolder.parse(context, attrs);
+	AbstractHandler attrHandler = getHandler(name);
+	if (attrHandler != null) {
+	    attrHandler.parse(context, attrs);
 	}
 
 	if (factoryProxy != null) {
@@ -126,21 +126,21 @@ public class ViewFactory implements Factory {
 	}
 
 	if (view != null) {
-	    view.setTag(ViewHandler.ATTR_HOLDER_KEY, attrHolder);
+	    view.setTag(ViewHandler.ATTR_HANDLER_KEY, attrHandler);
 	}
 
 	return view;
     }
 
-    public static AbstractHandler getHolder(String name) {
+    public static AbstractHandler getHandler(String name) {
 
 	if (StringUtils.isBlank(name)) {
 	    return null;
 	}
 
-	AbstractHandler attrHolder = viewAttrHolder.get(name);
-	if (attrHolder != null) {
-	    return attrHolder.clone();
+	AbstractHandler attrHandler = viewAttrHandler.get(name);
+	if (attrHandler != null) {
+	    return attrHandler.clone();
 	}
 
 	if (-1 == name.indexOf('.')) {
@@ -148,8 +148,8 @@ public class ViewFactory implements Factory {
 		try {
 		    String superClassName = getSuperClassName(prefix + name);
 		    while (superClassName != null) {
-			attrHolder = getHolder(superClassName);
-			if (attrHolder != null) {
+			attrHandler = getHandler(superClassName);
+			if (attrHandler != null) {
 			    break outer;
 			}
 			superClassName = getSuperClassName(superClassName);
@@ -159,18 +159,18 @@ public class ViewFactory implements Factory {
 	    }
 	} else {
 	    try {
-		attrHolder = getHolder(getSuperClassName(name));
+		attrHandler = getHandler(getSuperClassName(name));
 	    } catch (ClassNotFoundException e) {
 	    }
 	}
 
-	if (attrHolder == null) {
-	    Log.w("can not find a AttrHolder associated with name :{}", name);
+	if (attrHandler == null) {
+	    Log.w("can not find a AttrHandler associated with name :{}", name);
 	    return null;
 	} else {
-	    viewAttrHolder.put(name, attrHolder);
+	    viewAttrHandler.put(name, attrHandler);
 	}
-	return attrHolder.clone();
+	return attrHandler.clone();
     }
 
     private static String getSuperClassName(String name) throws ClassNotFoundException {
@@ -182,7 +182,7 @@ public class ViewFactory implements Factory {
 	return superName;
     }
 
-    public static void registerAttrHolder(String name, ViewHandler attrHolder) {
-	viewAttrHolder.put(name, attrHolder);
+    public static void registerAttrHandler(String name, ViewHandler attrHandler) {
+	viewAttrHandler.put(name, attrHandler);
     }
 }
