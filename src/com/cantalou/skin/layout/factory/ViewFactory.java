@@ -37,8 +37,8 @@ public class ViewFactory implements Factory {
     static final HashMap<String, AbstractHandler> viewAttrHandler = new HashMap<String, AbstractHandler>();
 
     static {
-	viewAttrHandler.put("android.view.View", new ViewHandler());// for super
-								  // class
+	// for super class
+	viewAttrHandler.put("android.view.View", new ViewHandler());
 	viewAttrHandler.put("View", new ViewHandler());// for layout file
 	viewAttrHandler.put("android.widget.TextView", new TextViewHandler());
 	viewAttrHandler.put("android.widget.ImageView", new ImageViewHandler());
@@ -119,9 +119,7 @@ public class ViewFactory implements Factory {
 		ie.initCause(e);
 		throw ie;
 	    } finally {
-		if (lastContext != null) {
-		    constructorArgs[0] = lastContext;
-		}
+		constructorArgs[0] = lastContext;
 	    }
 	}
 

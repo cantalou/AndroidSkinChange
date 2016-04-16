@@ -1,4 +1,4 @@
-package com.cantalou.skin.instrumentation;
+package com.cantalou.skin;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,7 +18,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.SkinManager;
 
 /**
  * 重写Instrumentation的callActivityOnCreate,callActivityOnCreate,

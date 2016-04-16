@@ -30,7 +30,6 @@ import com.cantalou.skin.content.res.SkinProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
-import com.cantalou.skin.instrumentation.SkinInstrumentation;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
 
@@ -284,7 +283,7 @@ public class SkinManager {
     }
 
     /**
-     * 注册自定义的ViewFactory
+     * 注册自定义的ViewFactory到LayoutInflater中实现对View生成的拦截
      *
      * @param li
      */
@@ -465,7 +464,7 @@ public class SkinManager {
      *
      * @param activity
      */
-    public void callActivityOnCreate(Activity activity) {
+    void callActivityOnCreate(Activity activity) {
 
 	if (defaultResources == null) {
 	    defaultResources = new ProxyResources(activity.getResources());
