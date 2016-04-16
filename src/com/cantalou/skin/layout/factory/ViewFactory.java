@@ -1,9 +1,13 @@
 package com.cantalou.skin.layout.factory;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.LayoutInflater.Factory;
 import android.view.View;
 
@@ -182,5 +186,32 @@ public class ViewFactory implements Factory {
 
     public static void registerAttrHandler(String name, ViewHandler attrHandler) {
 	viewAttrHandler.put(name, attrHandler);
+    }
+
+    public void clearMemoryLeak(Activity activity) {
+
+	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+	    return;
+	}
+
+	Window w = activity.getWindow();
+	if (w == null) {
+	    return;
+	}
+	View decor = w.getDecorView();
+	if (decor == null) {
+	    return;
+	}
+	rClearMemoryLeak(decor);
+    }
+
+    private void rClearMemoryLeak(View view) {
+	view.setTag(ViewHandler.ATTR_HANDLER_KEY, null);
+	if (view instanceof ViewGroup) {
+	    ViewGroup container = (ViewGroup) view;
+	    for (int i = 0, len = container.getChildCount(); i < len; i++) {
+		rClearMemoryLeak(container.getChildAt(i));
+	    }
+	}
     }
 }

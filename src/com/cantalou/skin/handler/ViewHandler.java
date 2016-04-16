@@ -7,8 +7,6 @@ import android.view.View;
 
 /**
  * 
- *
- * 
  * @author cantalou
  * @date 2016年2月29日 上午10:52:34
  */
@@ -33,4 +31,5 @@ public class ViewHandler extends AbstractHandler {
 	return super.parseAttr(context, attrs) || background != 0;
     }
 
+    
 }

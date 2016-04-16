@@ -48,7 +48,6 @@ public class ActionBarContainerHandler extends ActionBarHandler {
 	    if (stackBackgroundDrawable != null) {
 		ReflectUtil.invokeByMethodName(view, "setStackedBackground", stackBackgroundDrawable);
 	    }
-
 	}
     }
 

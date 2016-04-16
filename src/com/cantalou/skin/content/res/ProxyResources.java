@@ -73,13 +73,12 @@ public class ProxyResources extends Resources {
      * 替换Resources的相关preload对象引用
      */
     static {
-	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
-	replacePreloadObject();
+	SkinManager skinManager = SkinManager.getInstance();
+	cacheKeyAndIdManager = skinManager.getCacheKeyAndIdManager();
+	replacePreloadObject(skinManager);
     }
 
-    private static void replacePreloadObject() {
-
-	SkinManager skinManager = SkinManager.getInstance();
+    private static void replacePreloadObject(SkinManager skinManager) {
 
 	// drawable
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {

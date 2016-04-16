@@ -11,17 +11,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
 
 import com.cantalou.android.util.ReflectUtil;
 
 /**
- * 重写Instrumentation的callActivityOnCreate,callActivityOnCreate,
- * callActivityOnDestroy方法, 在调用Activity的生命周期方法前增加换肤功能回调
+ * 重写Instrumentation的callActivityOnCreate, callActivityOnDestroy方法,
+ * 在调用Activity的生命周期方法onCretea前调用ResourcesManager.callActivityOnCreate()方法
  *
  * @author cantalou
  * @date 2015年12月5日 下午4:53:44
@@ -38,12 +41,6 @@ public class SkinInstrumentation extends Instrumentation {
 	this.targetInstrucmentation = target;
     }
 
-
-    @Override
-    public Activity newActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-	return targetInstrucmentation.newActivity(cl, className, intent);
-    }
-    
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
 	skinManager.callActivityOnCreate(activity);
@@ -58,8 +55,13 @@ public class SkinInstrumentation extends Instrumentation {
 
     @Override
     public void callActivityOnDestroy(Activity activity) {
-	skinManager.onDestroy(activity);
 	targetInstrucmentation.callActivityOnDestroy(activity);
+	skinManager.onDestroy(activity);
+    }
+
+    @Override
+    public Activity newActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	return targetInstrucmentation.newActivity(cl, className, intent);
     }
 
     @Override
@@ -239,7 +241,6 @@ public class SkinInstrumentation extends Instrumentation {
 
     @Override
     public void startPerformanceSnapshot() {
-
 	targetInstrucmentation.startPerformanceSnapshot();
     }
 
@@ -251,13 +252,11 @@ public class SkinInstrumentation extends Instrumentation {
 
     @Override
     public void startProfiling() {
-
 	targetInstrucmentation.startProfiling();
     }
 
     @Override
     public void stopProfiling() {
-
 	targetInstrucmentation.stopProfiling();
     }
 
@@ -269,31 +268,26 @@ public class SkinInstrumentation extends Instrumentation {
 
     @Override
     public void waitForIdle(Runnable recipient) {
-
 	targetInstrucmentation.waitForIdle(recipient);
     }
 
     @Override
     public void waitForIdleSync() {
-
 	targetInstrucmentation.waitForIdleSync();
     }
 
     @Override
     public void runOnMainSync(Runnable runner) {
-
 	targetInstrucmentation.runOnMainSync(runner);
     }
 
     @Override
     public Activity startActivitySync(Intent intent) {
-
 	return targetInstrucmentation.startActivitySync(intent);
     }
 
     @Override
     public Activity waitForMonitor(ActivityMonitor monitor) {
-
 	return targetInstrucmentation.waitForMonitor(monitor);
     }
 

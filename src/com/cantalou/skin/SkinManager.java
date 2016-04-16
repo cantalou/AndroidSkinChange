@@ -148,6 +148,7 @@ public class SkinManager {
 
     private SkinManager() {
 	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+	cacheKeyAndIdManager.setSkinManager(this);
 	Log.LOG_TAG_FLAG = "-skin";
     }
 
@@ -166,25 +167,25 @@ public class SkinManager {
 
 	Class<?> activityThreadClass = forName("android.app.ActivityThread");
 	if (activityThreadClass == null) {
-	    Log.w("Fail to load class android.app.ActivityThread. Try invoking onAttach in Activity.onAttach method before invoking super.onAttach");
+	    Log.w("Fail to load class android.app.ActivityThread.");
 	    return;
 	}
 
 	Object activityThread = invoke(activityThreadClass, "currentActivityThread");
 	if (activityThread == null) {
-	    Log.w("Fail to get ActivityThread instance. Try invoking onAttach in Activity.onAttach method before invoking super.onAttach");
+	    Log.w("Fail to get ActivityThread instance.");
 	    return;
 	}
 
 	Instrumentation instrumentation = invoke(activityThread, "getInstrumentation");
 	if (instrumentation == null) {
-	    Log.w("Can not load class android.app.ActivityThread. Try invoking onAttach in Activity.onAttach method before invoking super.onAttach");
+	    Log.w("Can not load class android.app.ActivityThread.");
 	    return;
 	}
 
 	SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
 	if (!set(activityThread, "mInstrumentation", skinInstrumentation)) {
-	    Log.w("Fail to replace field named mInstrumentation . Try invoking onAttach in Activity.onAttach method before invoking super.onAttach");
+	    Log.w("Fail to replace field named mInstrumentation.");
 	}
 
 	PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, "");
