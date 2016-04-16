@@ -34,7 +34,7 @@ import java.util.HashMap;
  */
 public class ViewFactory implements Factory {
 
-    static final String[] sClassPrefixList = { "android.widget.", "android.webkit.", "android.app." };
+    static final String[] classPrefixList = { "android.widget.", "android.webkit.", "android.app." };
 
     static final HashMap<String, String> superNameCache = new HashMap<String, String>();
 
@@ -101,7 +101,7 @@ public class ViewFactory implements Factory {
 	    }
 	    try {
 		if (-1 == name.indexOf('.')) {
-		    for (String prefix : sClassPrefixList) {
+		    for (String prefix : classPrefixList) {
 			try {
 			    view = layoutInflater.createView(name, prefix, attrs);
 			    if (view != null) {
@@ -146,7 +146,7 @@ public class ViewFactory implements Factory {
 	}
 
 	if (-1 == name.indexOf('.')) {
-	    outer: for (String prefix : sClassPrefixList) {
+	    outer: for (String prefix : classPrefixList) {
 		try {
 		    String superClassName = getSuperClassName(prefix + name);
 		    while (superClassName != null) {

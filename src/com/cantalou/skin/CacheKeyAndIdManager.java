@@ -83,15 +83,7 @@ public final class CacheKeyAndIdManager {
 
     private Object menuInflater;
 
-    private static class InstanceHolder {
-	static final CacheKeyAndIdManager INSTANCE = new CacheKeyAndIdManager();
-    }
-
-    private CacheKeyAndIdManager() {
-    }
-
-    static CacheKeyAndIdManager getInstance() {
-	return InstanceHolder.INSTANCE;
+    CacheKeyAndIdManager() {
     }
 
     /**
@@ -234,7 +226,7 @@ public final class CacheKeyAndIdManager {
 	    Log.v("Registered layout id:{}, ignore", id);
 	    return;
 	}
-	
+
 	Resources defaultResources = skinManager.getDefaultResources();
 	Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
 	handledDrawableId.put(id);
@@ -305,7 +297,7 @@ public final class CacheKeyAndIdManager {
     }
 
     public void setSkinManager(SkinManager skinManager) {
-        this.skinManager = skinManager;
+	this.skinManager = skinManager;
     }
-    
+
 }

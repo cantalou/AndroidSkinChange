@@ -143,11 +143,11 @@ public class SkinManager {
     };
 
     private static class InstanceHolder {
-	static final com.cantalou.skin.SkinManager INSTANCE = new com.cantalou.skin.SkinManager();
+	static final SkinManager INSTANCE = new SkinManager();
     }
 
     private SkinManager() {
-	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+	cacheKeyAndIdManager = new CacheKeyAndIdManager();
 	cacheKeyAndIdManager.setSkinManager(this);
 	Log.LOG_TAG_FLAG = "-skin";
     }
@@ -167,13 +167,13 @@ public class SkinManager {
 
 	Class<?> activityThreadClass = forName("android.app.ActivityThread");
 	if (activityThreadClass == null) {
-	    Log.w("Fail to load class android.app.ActivityThread.");
+	    Log.w("Can not loadclass android.app.ActivityThread.");
 	    return;
 	}
 
 	Object activityThread = invoke(activityThreadClass, "currentActivityThread");
 	if (activityThread == null) {
-	    Log.w("Fail to get ActivityThread instance.");
+	    Log.w("Can not get ActivityThread instance.");
 	    return;
 	}
 
@@ -186,6 +186,7 @@ public class SkinManager {
 	SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
 	if (!set(activityThread, "mInstrumentation", skinInstrumentation)) {
 	    Log.w("Fail to replace field named mInstrumentation.");
+	    return;
 	}
 
 	PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, "");
@@ -202,22 +203,21 @@ public class SkinManager {
 
 	Resources skinResources = null;
 
-	File skinFile = new File(resourcesPath);
-	if (!skinFile.exists()) {
-	    Log.w(skinFile + " does not exist");
+	File resourcesFile = new File(resourcesPath);
+	if (!resourcesFile.exists()) {
+	    Log.w(resourcesFile + " does not exist");
 	    return null;
 	}
 
 	try {
 	    AssetManager am = AssetManager.class.newInstance();
-	    int result = invoke(am, "addAssetPath", new Class<?>[] { String.class }, skinFile.getAbsolutePath());
+	    int result = invoke(am, "addAssetPath", new Class<?>[] { String.class }, resourcesFile.getAbsolutePath());
 	    if (result == 0) {
 		Log.w("AssetManager.addAssetPath return 0. Fail to initialze AssetManager . ");
 		return null;
-	    } else {
-		skinResources = new SkinResources(am, defResources, resourcesPath);
 	    }
-	} catch (Exception e) {
+	    skinResources = new SkinResources(am, defResources, resourcesPath);
+	} catch (Throwable e) {
 	    Log.e(e, "Fail to initialze AssetManager");
 	}
 	return skinResources;
@@ -227,19 +227,19 @@ public class SkinManager {
      * 创建代理资源
      *
      * @param cxt
-     * @param skinPath
+     * @param path
      *            资源路径
-     * @return 代理Resources, 如果skinPath文件不存在或者解析失败返回null
+     * @return 代理Resources, 如果path文件不存在或者解析失败返回null
      */
-    private ProxyResources createProxyResource(Context cxt, String skinPath, ProxyResources defResources) {
+    private ProxyResources createProxyResource(Context cxt, String path, ProxyResources defResources) {
 
-	if (DEFAULT_SKIN_PATH.equals(skinPath) || DEFAULT_SKIN_NIGHT.equals(skinPath)) {
+	if (DEFAULT_SKIN_PATH.equals(path) || DEFAULT_SKIN_NIGHT.equals(path)) {
 	    Log.d("skinPath is:{} , return defaultResources");
 	    return defResources;
 	}
 
 	ProxyResources proxyResources = null;
-	WeakReference<ProxyResources> resRef = cacheResources.get(skinPath);
+	WeakReference<ProxyResources> resRef = cacheResources.get(path);
 	if (resRef != null) {
 	    proxyResources = resRef.get();
 	    if (proxyResources != null) {
@@ -247,20 +247,20 @@ public class SkinManager {
 	    }
 	}
 
-	Resources skinResources = createResource(skinPath, defResources);
+	Resources skinResources = createResource(path, defResources);
 	if (skinResources == null) {
-	    Log.w("Fail to create skin resources");
+	    Log.w("Fail to create resources path :{}", path);
 	    return null;
 	}
 
-	if (DEFAULT_SKIN_NIGHT.equals(skinPath)) {
-	    proxyResources = new NightResources(cxt.getPackageName(), skinResources, defResources, skinPath);
+	if (DEFAULT_SKIN_NIGHT.equals(path)) {
+	    proxyResources = new NightResources(cxt.getPackageName(), skinResources, defResources, path);
 	} else {
-	    proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defResources, skinPath);
+	    proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defResources, path);
 	}
 
 	synchronized (this) {
-	    cacheResources.put(skinPath, new WeakReference<ProxyResources>(proxyResources));
+	    cacheResources.put(path, new WeakReference<ProxyResources>(proxyResources));
 	}
 	return proxyResources;
     }
@@ -284,7 +284,7 @@ public class SkinManager {
     }
 
     /**
-     * 注册自定义的ViewFactory到LayoutInflater中实现对View生成的拦截
+     * 注册自定义的ViewFactory到LayoutInflater中,实现对View生成的拦截
      *
      * @param li
      */
@@ -311,15 +311,15 @@ public class SkinManager {
     }
 
     /**
-     * 更换皮肤资源
+     * 更换资源
      *
      * @param activity
-     * @param skinPath
-     * @return
+     * @param path
+     *            资源文件路径
      */
     @SuppressWarnings("unchecked")
-    public void changeResources(Activity activity, final String skinPath) {
-	if (StringUtils.isBlank(skinPath)) {
+    public void changeResources(Activity activity, final String path) {
+	if (StringUtils.isBlank(path)) {
 	    throw new IllegalArgumentException("skinPath could not be empty");
 	}
 
@@ -336,25 +336,26 @@ public class SkinManager {
 
 	    @Override
 	    protected Boolean doInBackground(Void... params) {
+		ProxyResources originalResources = currentSkinResources;
 		try {
 		    Log.d("start change resource");
-		    final ProxyResources res = createProxyResource(cxt, skinPath, defaultResources);
+		    final ProxyResources res = createProxyResource(cxt, path, defaultResources);
 		    if (res == null) {
 			return false;
 		    }
 		    currentSkinResources = res;
-		    currentSkinPath = skinPath;
-		    PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, currentSkinPath);
 		    List<Activity> temp = (List<Activity>) activitys.clone();
 		    for (int i = temp.size() - 1; i >= 0; i--) {
 			Log.d("change :{} resources to :{}", temp.get(i), res);
 			change(temp.get(i), res);
 		    }
 		    Log.d("finish change resource");
-
+		    currentSkinPath = path;
+		    PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, path);
 		    return true;
 		} catch (Exception e) {
 		    Log.e(e);
+		    currentSkinResources = originalResources;
 		    return false;
 		}
 	    }
@@ -443,11 +444,11 @@ public class SkinManager {
 
 	Object tag = v.getTag(ViewHandler.ATTR_HANDLER_KEY);
 	if (tag != null && tag instanceof ViewHandler) {
-	    ((AbstractHandler) tag).reloadAttr(v, v.getContext().getResources());
+	    ((AbstractHandler) tag).reloadAttr(v, currentSkinResources);
 	} else {
 	    AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
 	    if (ah != null) {
-		ah.reloadAttr(v, v.getContext().getResources());
+		ah.reloadAttr(v, currentSkinResources);
 	    }
 	}
 
