@@ -188,8 +188,6 @@ public class SkinManager {
 	    Log.w("Fail to replace field named mInstrumentation.");
 	    return;
 	}
-
-	PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, "");
     }
 
     /**
@@ -370,7 +368,7 @@ public class SkinManager {
 	    }
 	}.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
-	showSkinChangeAnimation(activity);
+	//showSkinChangeAnimation(activity);
     }
 
     /**
@@ -389,7 +387,7 @@ public class SkinManager {
 	    serialTasks.offer(new Runnable() {
 		@Override
 		public void run() {
-		    ((Skinnable) a).onResourcesChange();
+		    //((Skinnable) a).onResourcesChange();
 		}
 	    });
 	}
@@ -527,8 +525,6 @@ public class SkinManager {
 
 	    final AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
 	    alphaAnimation.setDuration(800);
-	    alphaAnimation.setFillEnabled(true);
-	    alphaAnimation.setFillAfter(true);
 	    iv.setAnimation(alphaAnimation);
 	    alphaAnimation.startNow();
 	    decor.postDelayed(new Runnable() {
