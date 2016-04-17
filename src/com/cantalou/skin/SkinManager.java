@@ -233,7 +233,7 @@ public class SkinManager {
      */
     private ProxyResources createProxyResource(Context cxt, String path, ProxyResources defResources) {
 
-	if (DEFAULT_SKIN_PATH.equals(path) || DEFAULT_SKIN_NIGHT.equals(path)) {
+	if (DEFAULT_SKIN_PATH.equals(path)) {
 	    Log.d("skinPath is:{} , return defaultResources");
 	    return defResources;
 	}
@@ -247,15 +247,14 @@ public class SkinManager {
 	    }
 	}
 
-	Resources skinResources = createResource(path, defResources);
-	if (skinResources == null) {
-	    Log.w("Fail to create resources path :{}", path);
-	    return null;
-	}
-
 	if (DEFAULT_SKIN_NIGHT.equals(path)) {
-	    proxyResources = new NightResources(cxt.getPackageName(), skinResources, defResources, path);
+	    proxyResources = new NightResources(cxt.getPackageName(), defResources, defResources, path);
 	} else {
+	    Resources skinResources = createResource(path, defResources);
+	    if (skinResources == null) {
+		Log.w("Fail to create resources path :{}", path);
+		return null;
+	    }
 	    proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defResources, path);
 	}
 
