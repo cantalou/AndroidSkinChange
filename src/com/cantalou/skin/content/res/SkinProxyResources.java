@@ -17,7 +17,7 @@ import com.cantalou.android.util.array.BinarySearchIntArray;
  * @author cantalou
  * @date 2015年11月29日 下午3:15:02
  */
-public class SkinProxyResources extends ProxyResources {
+public class SkinProxyResources extends StaticProxyResources {
 
     /**
      * 皮肤资源

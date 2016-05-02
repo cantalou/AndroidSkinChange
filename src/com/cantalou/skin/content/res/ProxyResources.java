@@ -29,13 +29,12 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
- * 重写getDrawable,getColorStateList,getColor方法进行资源加载的拦截, 将资源id注册到SkinManger中
  *
  * @author cantalou
  * @date 2015年12月12日 下午11:07:07
  */
 @SuppressWarnings("deprecation")
-public class ProxyResources extends Resources {
+public abstract class ProxyResources extends Resources {
 
     public static final boolean logEnable = true;
 
@@ -63,60 +62,14 @@ public class ProxyResources extends Resources {
      */
     protected String[] resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE + 1];
 
-    protected static CacheKeyAndIdManager cacheKeyAndIdManager;
-
-    protected static TypedValue logValue = new TypedValue();
+    protected CacheKeyAndIdManager cacheKeyAndIdManager;
 
     protected final TypedValue typedValueCache = new TypedValue();
 
-    /**
-     * 替换Resources的相关preload对象引用
-     */
-    static {
-	SkinManager skinManager = SkinManager.getInstance();
-	cacheKeyAndIdManager = skinManager.getCacheKeyAndIdManager();
-	replacePreloadObject(skinManager);
-    }
-
-    private static void replacePreloadObject(SkinManager skinManager) {
-
-	// drawable
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-	    LongSparseArray<ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawablesArray[0],
-		    cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
-	    sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
-	} else {
-	    LongSparseArray<ConstantState> originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
-	    LongSparseArray<ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedDrawables,
-		    cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
-	    set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
-	}
-
-	// colorDrawable
-	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-	    LongSparseArray<ConstantState> originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
-	    LongSparseArray<ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedColorDrawables,
-		    cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
-	    set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
-	}
-
-	// colorStateList
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	    LongSparseArray<ColorStateList> originalPreloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
-	    LongSparseArray<ColorStateList> proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(skinManager, originalPreloadedColorStateLists16,
-		    cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
-	    set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
-	} else {
-	    SparseArray<ColorStateList> originalPreloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
-	    SparseArray<ColorStateList> proxyPreloadedColorStateLists = new ColorStateListSpareArray(skinManager, originalPreloadedColorStateLists,
-		    cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
-	    set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
-	}
-    }
-
     public ProxyResources(Resources res) {
 	super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
+	cacheKeyAndIdManager = SkinManager.getInstance().getCacheKeyAndIdManager();
+	replaceCacheEntry();
     }
 
     @Override
@@ -156,24 +109,24 @@ public class ProxyResources extends Resources {
     }
 
     protected String toString(TypedValue value) {
-	logValue.setTo(value);
-	logValue.string = getResourceName(value.resourceId);
-	return logValue.toString();
+	StringBuilder sb = new StringBuilder();
+	sb.append("TypedValue{t=0x").append(Integer.toHexString(value.type));
+	sb.append("/d=0x").append(Integer.toHexString(value.data));
+	if (value.type == TypedValue.TYPE_STRING) {
+	    sb.append(" \"").append(value.string != null ? value.string : getResourceName(value.resourceId)).append("\"");
+	}
+	if (value.assetCookie != 0) {
+	    sb.append(" a=").append(value.assetCookie);
+	}
+	if (value.resourceId != 0) {
+	    sb.append(" r=0x").append(Integer.toHexString(value.resourceId));
+	}
+	sb.append("}");
+	return sb.toString();
     }
 
-    public static String toHex(int id) {
+    public static final String toHex(int id) {
 	return "0x" + Integer.toHexString(id);
-    }
-
-    protected String toHex(Object id) {
-	if (id == null) {
-	    return "null";
-	}
-	if (id instanceof Number) {
-	    return "0x" + Integer.toHexString(((Number) id).intValue());
-	} else {
-	    return id.toString();
-	}
     }
 
     @Override
@@ -218,7 +171,7 @@ public class ProxyResources extends Resources {
     }
 
     /**
-     * 重写Resource.loadDrawable方法, 增加在加载图片资源时内存占用调整
+     * 实现Resource.loadDrawable方法, 增加在加载图片资源时内存占用调整
      *
      * @param res
      * @param value
@@ -239,11 +192,11 @@ public class ProxyResources extends Resources {
 	    String file = value.string.toString();
 	    if (file.endsWith(".xml")) {
 		try {
-		    XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
+		    XmlResourceParser rp = invoke(res, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
 		    dr = Drawable.createFromXml(res, rp);
 		    rp.close();
 		} catch (Exception e) {
-		    Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), this);
+		    Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), res);
 		}
 	    } else {
 		try {
@@ -303,7 +256,7 @@ public class ProxyResources extends Resources {
 
 	if (file.endsWith(".xml")) {
 	    try {
-		XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
+		XmlResourceParser rp = invoke(res, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
 		csl = ColorStateList.createFromXml(res, rp);
 		rp.close();
 	    } catch (Exception e) {
@@ -325,4 +278,6 @@ public class ProxyResources extends Resources {
 	resourceNameIdCache = new int[RESOURCE_NAME_CACHE_SIZE];
 	resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
     }
+
+    public abstract void replaceCacheEntry();
 }

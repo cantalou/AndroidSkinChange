@@ -26,8 +26,10 @@ import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.content.SkinContextWrapper;
 import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.ResourcesManager;
 import com.cantalou.skin.content.res.SkinProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
+import com.cantalou.skin.content.res.StaticProxyResources;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.layout.factory.ViewFactory;
@@ -60,24 +62,9 @@ public class SkinManager {
     public static final String PREF_KEY_CURRENT_SKIN = "com.cantalou.skin.PREF_KEY_CURRENT_SKIN";
 
     /**
-     * 默认皮肤
-     */
-    public static final String DEFAULT_SKIN_PATH = "defaultSkin";
-
-    /**
-     * 夜间模式皮肤资源名称, 夜间模式属于内置资源包
-     */
-    public static final String DEFAULT_SKIN_NIGHT = "defaultSkinNight";
-
-    /**
      * activity
      */
     ArrayList<Activity> activitys = new ArrayList<Activity>();
-
-    /**
-     * 已载入的资源
-     */
-    private HashMap<String, WeakReference<ProxyResources>> cacheResources = new HashMap<String, WeakReference<ProxyResources>>();
 
     /**
      * 当前是否正在切换资源
@@ -92,7 +79,7 @@ public class SkinManager {
     /**
      * 资源名称
      */
-    String currentSkinPath = DEFAULT_SKIN_PATH;
+    String currentSkinPath = ResourcesManager.DEFAULT_RESOURCES;
 
     /**
      * 资源
@@ -113,6 +100,8 @@ public class SkinManager {
      * 资源缓存key和资源id管理对象
      */
     private CacheKeyAndIdManager cacheKeyAndIdManager;
+
+    private ResourcesManager resourcesManager;
 
     ArrayDeque<Runnable> serialTasks = new ArrayDeque<Runnable>() {
 	Runnable mActive;
@@ -141,15 +130,19 @@ public class SkinManager {
 	    }
 	}
     };
-
-    private static class InstanceHolder {
-	static final SkinManager INSTANCE = new SkinManager();
-    }
-
+    
     private SkinManager() {
+	
 	cacheKeyAndIdManager = new CacheKeyAndIdManager();
 	cacheKeyAndIdManager.setSkinManager(this);
+	
+	resourcesManager = ResourcesManager.getInstance();
+	
 	Log.LOG_TAG_FLAG = "-skin";
+    }
+    
+    private static class InstanceHolder {
+	static final SkinManager INSTANCE = new SkinManager();
     }
 
     public static com.cantalou.skin.SkinManager getInstance() {
@@ -188,78 +181,6 @@ public class SkinManager {
 	    Log.w("Fail to replace field named mInstrumentation.");
 	    return;
 	}
-    }
-
-    /**
-     * 创建资源
-     *
-     * @param resourcesPath
-     *            资源文件路径
-     * @return 资源对象
-     */
-    public Resources createResource(String resourcesPath, Resources defResources) {
-
-	Resources skinResources = null;
-
-	File resourcesFile = new File(resourcesPath);
-	if (!resourcesFile.exists()) {
-	    Log.w(resourcesFile + " does not exist");
-	    return null;
-	}
-
-	try {
-	    AssetManager am = AssetManager.class.newInstance();
-	    int result = invoke(am, "addAssetPath", new Class<?>[] { String.class }, resourcesFile.getAbsolutePath());
-	    if (result == 0) {
-		Log.w("AssetManager.addAssetPath return 0. Fail to initialze AssetManager . ");
-		return null;
-	    }
-	    skinResources = new SkinResources(am, defResources, resourcesPath);
-	} catch (Throwable e) {
-	    Log.e(e, "Fail to initialze AssetManager");
-	}
-	return skinResources;
-    }
-
-    /**
-     * 创建代理资源
-     *
-     * @param cxt
-     * @param path
-     *            资源路径
-     * @return 代理Resources, 如果path文件不存在或者解析失败返回null
-     */
-    private ProxyResources createProxyResource(Context cxt, String path, ProxyResources defResources) {
-
-	if (DEFAULT_SKIN_PATH.equals(path)) {
-	    Log.d("skinPath is:{} , return defaultResources");
-	    return defResources;
-	}
-
-	ProxyResources proxyResources = null;
-	WeakReference<ProxyResources> resRef = cacheResources.get(path);
-	if (resRef != null) {
-	    proxyResources = resRef.get();
-	    if (proxyResources != null) {
-		return proxyResources;
-	    }
-	}
-
-	if (DEFAULT_SKIN_NIGHT.equals(path)) {
-	    proxyResources = new NightResources(cxt.getPackageName(), defResources, defResources, path);
-	} else {
-	    Resources skinResources = createResource(path, defResources);
-	    if (skinResources == null) {
-		Log.w("Fail to create resources path :{}", path);
-		return null;
-	    }
-	    proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defResources, path);
-	}
-
-	synchronized (this) {
-	    cacheResources.put(path, new WeakReference<ProxyResources>(proxyResources));
-	}
-	return proxyResources;
     }
 
     /**
@@ -336,7 +257,7 @@ public class SkinManager {
 		ProxyResources originalResources = currentSkinResources;
 		try {
 		    Log.d("start change resource");
-		    final ProxyResources res = createProxyResource(cxt, path, defaultResources);
+		    final ProxyResources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
 		    if (res == null) {
 			return false;
 		    }
@@ -368,7 +289,7 @@ public class SkinManager {
 	    }
 	}.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
-	//showSkinChangeAnimation(activity);
+	// showSkinChangeAnimation(activity);
     }
 
     /**
@@ -387,7 +308,7 @@ public class SkinManager {
 	    serialTasks.offer(new Runnable() {
 		@Override
 		public void run() {
-		    //((Skinnable) a).onResourcesChange();
+		    // ((Skinnable) a).onResourcesChange();
 		}
 	    });
 	}
@@ -466,7 +387,7 @@ public class SkinManager {
     void callActivityOnCreate(Activity activity) {
 
 	if (defaultResources == null) {
-	    defaultResources = new ProxyResources(activity.getResources());
+	    defaultResources = new StaticProxyResources(activity.getResources());
 	    Log.v("init defaultResources and registerViewFactory ");
 	}
 
@@ -486,7 +407,7 @@ public class SkinManager {
 	    currentSkinPath = prefSkinPath;
 	}
 
-	ProxyResources res = createProxyResource(activity, currentSkinPath, defaultResources);
+	ProxyResources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
 	currentSkinResources = res;
 	try {
 	    changeActivityResources(activity, res);

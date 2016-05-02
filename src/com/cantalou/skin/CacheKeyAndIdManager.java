@@ -118,7 +118,7 @@ public final class CacheKeyAndIdManager {
 	    exitsId = drawableCacheKeyIdMap.put(key, id);
 	}
 	if (checkDuplicatedKey && exitsId > 0) {
-	    throw new IllegalStateException("Different resources id maps to the same key,value:" + value);
+	    throw new IllegalStateException("Different resources id maps to the same key, value:" + value);
 	}
 	Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
 	handledDrawableId.put(id);
