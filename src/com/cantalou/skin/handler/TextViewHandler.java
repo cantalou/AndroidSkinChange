@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.handler;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.cantalou.skin.content.res.SkinProxyResources;
  * @author cantalou
  * @date 2016年2月29日 上午10:45:09
  */
-public class TextViewHolder extends ViewHolder {
+public class TextViewHandler extends ViewHandler {
 
     protected int textColorHighlight;
     protected int textColor;

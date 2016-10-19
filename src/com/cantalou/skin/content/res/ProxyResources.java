@@ -17,6 +17,7 @@ import android.util.TypedValue;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.skin.CacheKeyAndIdManager;
+import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.array.ColorStateListLongSpareArray;
 import com.cantalou.skin.array.ColorStateListSpareArray;
 import com.cantalou.skin.array.DrawableLongSpareArray;
@@ -28,13 +29,12 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
- * 重写getDrawable,getColorStateList,getColor方法进行资源加载的拦截, 将资源id注册到SkinManger中
  *
  * @author cantalou
  * @date 2015年12月12日 下午11:07:07
  */
 @SuppressWarnings("deprecation")
-public class ProxyResources extends Resources {
+public abstract class ProxyResources extends Resources {
 
     public static final boolean logEnable = true;
 
@@ -62,53 +62,14 @@ public class ProxyResources extends Resources {
      */
     protected String[] resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE + 1];
 
-    protected static LongSparseArray<ConstantState> originalPreloadedDrawables;
-
-    protected static LongSparseArray<ConstantState> originalPreloadedColorDrawables;
-
-    protected static LongSparseArray<ColorStateList> originalPreloadedColorStateLists16;
-
-    protected static SparseArray<ColorStateList> originalPreloadedColorStateLists;
-
-    protected LongSparseArray<ConstantState> proxyPreloadedDrawables;
-
-    protected LongSparseArray<ConstantState> proxyPreloadedColorDrawables;
-
-    protected LongSparseArray<ColorStateList> proxyPreloadedColorStateLists16;
-
-    protected SparseArray<ColorStateList> proxyPreloadedColorStateLists;
-
-    /**
-     * 保存原始preload对象引用
-     */
-    static {
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-	    originalPreloadedDrawables = sPreloadedDrawablesArray[0];
-	} else {
-	    originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
-	}
-
-	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-	    originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
-	}
-
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	    originalPreloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
-	} else {
-	    originalPreloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
-	}
-    }
-
     protected CacheKeyAndIdManager cacheKeyAndIdManager;
-
-    protected static TypedValue logValue = new TypedValue();
 
     protected final TypedValue typedValueCache = new TypedValue();
 
     public ProxyResources(Resources res) {
 	super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
-	cacheKeyAndIdManager = CacheKeyAndIdManager.getInstance();
+	cacheKeyAndIdManager = SkinManager.getInstance().getCacheKeyAndIdManager();
+	replaceCacheEntry();
     }
 
     @Override
@@ -147,91 +108,25 @@ public class ProxyResources extends Resources {
 	return super.getDrawableForDensity(id, density);
     }
 
-    /**
-     * 将 sPreloadedDrawables, sPreloadedColorDrawables,
-     * sPreloadedColorStateLists 替换成自定义的对象
-     */
-    public final void replacePreloadCache() {
-
-	// drawable
-	if (proxyPreloadedDrawables == null) {
-	    proxyPreloadedDrawables = new DrawableLongSpareArray(this, originalPreloadedDrawables, cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
-	}
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-	    sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
-	} else {
-	    set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
-	}
-
-	// colorDrawable
-	if (proxyPreloadedColorDrawables == null) {
-	    proxyPreloadedColorDrawables = new DrawableLongSpareArray(this, originalPreloadedColorDrawables, cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
-	}
-	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-	    set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
-	}
-
-	// colorStateList
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	    if (proxyPreloadedColorStateLists16 == null) {
-		proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(this, originalPreloadedColorStateLists16, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
-	    }
-	    set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
-	} else {
-	    if (proxyPreloadedColorStateLists == null) {
-		proxyPreloadedColorStateLists = new ColorStateListSpareArray(this, originalPreloadedColorStateLists, cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
-	    }
-	    set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
-	}
-    }
-
-    /**
-     * 将 sPreloadedDrawables, sPreloadedColorDrawables,sPreloadedColorStateLists
-     * 还原成原来的对象
-     */
-    public final void restorePreloadCache() {
-
-	// drawable
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-	    LongSparseArray<ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
-	    sPreloadedDrawablesArray[0] = originalPreloadedDrawables;
-	} else {
-	    set(Resources.class, "sPreloadedDrawables", originalPreloadedDrawables);
-	}
-
-	// colorDrawable
-	if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-	    set(Resources.class, "sPreloadedColorDrawables", originalPreloadedColorDrawables);
-	}
-
-	// colorStateList
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	    set(Resources.class, "sPreloadedColorStateLists", originalPreloadedColorStateLists16);
-	} else {
-	    set(Resources.class, "mPreloadedColorStateLists", originalPreloadedColorStateLists);
-	}
-    }
-
     protected String toString(TypedValue value) {
-	logValue.setTo(value);
-	logValue.string = getResourceName(value.resourceId);
-	return logValue.toString();
+	StringBuilder sb = new StringBuilder();
+	sb.append("TypedValue{t=0x").append(Integer.toHexString(value.type));
+	sb.append("/d=0x").append(Integer.toHexString(value.data));
+	if (value.type == TypedValue.TYPE_STRING) {
+	    sb.append(" \"").append(value.string != null ? value.string : getResourceName(value.resourceId)).append("\"");
+	}
+	if (value.assetCookie != 0) {
+	    sb.append(" a=").append(value.assetCookie);
+	}
+	if (value.resourceId != 0) {
+	    sb.append(" r=0x").append(Integer.toHexString(value.resourceId));
+	}
+	sb.append("}");
+	return sb.toString();
     }
 
-    public static String toHex(int id) {
+    public static final String toHex(int id) {
 	return "0x" + Integer.toHexString(id);
-    }
-
-    protected String toHex(Object id) {
-	if (id == null) {
-	    return "null";
-	}
-	if (id instanceof Number) {
-	    return "0x" + Integer.toHexString(((Number) id).intValue());
-	} else {
-	    return id.toString();
-	}
     }
 
     @Override
@@ -276,7 +171,7 @@ public class ProxyResources extends Resources {
     }
 
     /**
-     * 重写Resource.loadDrawable方法, 增加在加载图片资源时内存占用调整
+     * 实现Resource.loadDrawable方法, 增加在加载图片资源时内存占用调整
      *
      * @param res
      * @param value
@@ -297,11 +192,11 @@ public class ProxyResources extends Resources {
 	    String file = value.string.toString();
 	    if (file.endsWith(".xml")) {
 		try {
-		    XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
+		    XmlResourceParser rp = invoke(res, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
 		    dr = Drawable.createFromXml(res, rp);
 		    rp.close();
 		} catch (Exception e) {
-		    Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), this);
+		    Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), res);
 		}
 	    } else {
 		try {
@@ -361,7 +256,7 @@ public class ProxyResources extends Resources {
 
 	if (file.endsWith(".xml")) {
 	    try {
-		XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
+		XmlResourceParser rp = invoke(res, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
 		csl = ColorStateList.createFromXml(res, rp);
 		rp.close();
 	    } catch (Exception e) {
@@ -383,4 +278,6 @@ public class ProxyResources extends Resources {
 	resourceNameIdCache = new int[RESOURCE_NAME_CACHE_SIZE];
 	resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
     }
+
+    public abstract void replaceCacheEntry();
 }

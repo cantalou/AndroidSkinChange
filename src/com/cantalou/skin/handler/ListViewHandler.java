@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.handler;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -17,7 +17,7 @@ import com.cantalou.android.util.ReflectUtil;
  * @author cantalou
  * @date 2016年2月29日 上午10:48:12
  */
-public class ListViewHolder extends ViewHolder {
+public class ListViewHandler extends ViewHandler {
 
     protected int divider;
 

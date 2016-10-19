@@ -6,40 +6,35 @@ import android.os.Build;
 import android.util.LongSparseArray;
 
 import com.cantalou.android.util.Log;
+import com.cantalou.android.util.array.SparseLongIntArray;
+import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.ProxyResources;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class DrawableLongSpareArray extends LongSparseArray<Drawable.ConstantState> {
 
-    private LongSparseArray<Integer> resourceIdKeyMap;
+    private SparseLongIntArray resourceIdKeyMap;
 
     /**
      * Resources mColorStateListCache
      */
     private LongSparseArray<Drawable.ConstantState> originalCache;
 
-    private ProxyResources resources;
+    private SkinManager skinManager;
 
-    public DrawableLongSpareArray(ProxyResources resources, LongSparseArray<Drawable.ConstantState> originalCache, LongSparseArray<Integer> resourceIdKeyMap) {
-	this.resources = resources;
+    public DrawableLongSpareArray(SkinManager skinManager, LongSparseArray<Drawable.ConstantState> originalCache, SparseLongIntArray resourceIdKeyMap) {
 	this.originalCache = originalCache;
 	this.resourceIdKeyMap = resourceIdKeyMap;
+	this.skinManager = skinManager;
     }
 
     @Override
     public Drawable.ConstantState get(long key) {
-	Integer id;
-	if (resources != null && (id = resourceIdKeyMap.get(key)) != null) {
-	    Drawable dr = resources.loadDrawable(id);
-	    if (dr != null) {
-		Log.v("load Drawable from {} id:{} ", resources, ProxyResources.toHex(id));
-		return dr.getConstantState();
-	    } else {
-		Log.v("load Drawable from {} id:{} return null");
-		return null;
-	    }
+	int id = resourceIdKeyMap.get(key);
+	if (id != 0) {
+	    Drawable dr = skinManager.getCurrentSkinResources().loadDrawable(id);
+	    return dr != null ? dr.getConstantState() : null;
 	} else {
-	    Log.v("load Drawable from originalCache");
 	    return originalCache.get(key);
 	}
     }

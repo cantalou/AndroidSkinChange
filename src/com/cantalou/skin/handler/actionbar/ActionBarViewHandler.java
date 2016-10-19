@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder.actionbar;
+package com.cantalou.skin.handler.actionbar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,7 +22,7 @@ import com.cantalou.skin.content.res.ResourcesCompat;
  */
 @SuppressLint({ "NewApi" })
 @SuppressWarnings("deprecation")
-public class ActionBarViewHolder extends ActionBarHolder {
+public class ActionBarViewHandler extends ActionBarHandler {
     private int[] actionBarAttr;
 
     private Integer actionBarStyle;

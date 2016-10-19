@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.handler;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,11 +10,11 @@ import android.view.View;
  * @author cantalou
  * @date 2016年1月23日 下午11:30:39
  */
-public interface AttrHolder {
+public interface AttrHandler {
 
     public static final int APP_RESOURCE_ID_PACKAGE = 0x7F000000;
 
-    public static final int ATTR_HOLDER_KEY = 0x7FFFFFFF;
+    public static final int ATTR_HANDLER_KEY = 0x7FFFFFFF;
 
     /**
      * 重新加载资源

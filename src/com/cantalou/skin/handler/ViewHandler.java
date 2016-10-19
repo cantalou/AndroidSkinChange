@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder;
+package com.cantalou.skin.handler;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,13 +7,11 @@ import android.view.View;
 
 /**
  * 
- *
- * 
  * @author cantalou
  * @date 2016年2月29日 上午10:52:34
  */
 @SuppressWarnings("deprecation")
-public class ViewHolder extends AbstractHolder {
+public class ViewHandler extends AbstractHandler {
     protected int background;
 
     @Override
@@ -33,4 +31,5 @@ public class ViewHolder extends AbstractHolder {
 	return super.parseAttr(context, attrs) || background != 0;
     }
 
+    
 }

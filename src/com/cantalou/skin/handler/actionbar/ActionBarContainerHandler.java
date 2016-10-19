@@ -1,4 +1,4 @@
-package com.cantalou.skin.holder.actionbar;
+package com.cantalou.skin.handler.actionbar;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -19,7 +19,7 @@ import com.cantalou.android.util.ReflectUtil;
  * @date 2016年1月23日 下午11:30:25
  */
 @SuppressWarnings("deprecation")
-public class ActionBarContainerHolder extends ActionBarHolder {
+public class ActionBarContainerHandler extends ActionBarHandler {
 
     private int background;
 
@@ -48,7 +48,6 @@ public class ActionBarContainerHolder extends ActionBarHolder {
 	    if (stackBackgroundDrawable != null) {
 		ReflectUtil.invokeByMethodName(view, "setStackedBackground", stackBackgroundDrawable);
 	    }
-
 	}
     }
 
