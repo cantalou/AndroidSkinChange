@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -24,22 +23,16 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.content.SkinContextWrapper;
-import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.ResourcesManager;
-import com.cantalou.skin.content.res.SkinProxyResources;
-import com.cantalou.skin.content.res.SkinResources;
 import com.cantalou.skin.content.res.StaticProxyResources;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.cantalou.android.util.ReflectUtil.forName;
@@ -104,49 +97,49 @@ public class SkinManager {
     private ResourcesManager resourcesManager;
 
     ArrayDeque<Runnable> serialTasks = new ArrayDeque<Runnable>() {
-	Runnable mActive;
+        Runnable mActive;
 
-	public synchronized boolean offer(final Runnable e) {
-	    boolean result = super.offer(new Runnable() {
-		@Override
-		public void run() {
-		    try {
-			e.run();
-		    } finally {
-			scheduleNext();
-		    }
-		}
-	    });
-	    if (mActive == null) {
-		scheduleNext();
-	    }
-	    return result;
-	}
+        public synchronized boolean offer(final Runnable e) {
+            boolean result = super.offer(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        e.run();
+                    } finally {
+                        scheduleNext();
+                    }
+                }
+            });
+            if (mActive == null) {
+                scheduleNext();
+            }
+            return result;
+        }
 
-	public synchronized void scheduleNext() {
-	    mActive = serialTasks.poll();
-	    if (mActive != null) {
-		uiHandler.post(mActive);
-	    }
-	}
+        public synchronized void scheduleNext() {
+            mActive = serialTasks.poll();
+            if (mActive != null) {
+                uiHandler.post(mActive);
+            }
+        }
     };
-    
+
     private SkinManager() {
-	
-	cacheKeyAndIdManager = new CacheKeyAndIdManager();
-	cacheKeyAndIdManager.setSkinManager(this);
-	
-	resourcesManager = ResourcesManager.getInstance();
-	
-	Log.LOG_TAG_FLAG = "-skin";
+
+        cacheKeyAndIdManager = new CacheKeyAndIdManager();
+        cacheKeyAndIdManager.setSkinManager(this);
+
+        resourcesManager = ResourcesManager.getInstance();
+
+        Log.LOG_TAG_FLAG = "-skin";
     }
-    
+
     private static class InstanceHolder {
-	static final SkinManager INSTANCE = new SkinManager();
+        static final SkinManager INSTANCE = new SkinManager();
     }
 
     public static com.cantalou.skin.SkinManager getInstance() {
-	return InstanceHolder.INSTANCE;
+        return InstanceHolder.INSTANCE;
     }
 
     /**
@@ -154,51 +147,49 @@ public class SkinManager {
      */
     public void initByReplaceInstrumentation(Context cxt) {
 
-	if (Looper.getMainLooper() != Looper.myLooper()) {
-	    throw new RuntimeException("applicationOnCreate method can only be called in the main thread");
-	}
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            throw new RuntimeException("applicationOnCreate method can only be called in the main thread");
+        }
 
-	Class<?> activityThreadClass = forName("android.app.ActivityThread");
-	if (activityThreadClass == null) {
-	    Log.w("Can not loadclass android.app.ActivityThread.");
-	    return;
-	}
+        Class<?> activityThreadClass = forName("android.app.ActivityThread");
+        if (activityThreadClass == null) {
+            Log.w("Can not loadclass android.app.ActivityThread.");
+            return;
+        }
 
-	Object activityThread = invoke(activityThreadClass, "currentActivityThread");
-	if (activityThread == null) {
-	    Log.w("Can not get ActivityThread instance.");
-	    return;
-	}
+        Object activityThread = invoke(activityThreadClass, "currentActivityThread");
+        if (activityThread == null) {
+            Log.w("Can not get ActivityThread instance.");
+            return;
+        }
 
-	Instrumentation instrumentation = invoke(activityThread, "getInstrumentation");
-	if (instrumentation == null) {
-	    Log.w("Can not load class android.app.ActivityThread.");
-	    return;
-	}
+        Instrumentation instrumentation = invoke(activityThread, "getInstrumentation");
+        if (instrumentation == null) {
+            Log.w("Can not load class android.app.ActivityThread.");
+            return;
+        }
 
-	SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
-	if (!set(activityThread, "mInstrumentation", skinInstrumentation)) {
-	    Log.w("Fail to replace field named mInstrumentation.");
-	    return;
-	}
+        SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
+        if (!set(activityThread, "mInstrumentation", skinInstrumentation)) {
+            Log.w("Fail to replace field named mInstrumentation.");
+            return;
+        }
     }
 
     /**
      * 将Activity或者Context的资源替换成toRes指定资源
      *
-     * @param activity
-     *            触发切换资源的Activity
-     * @param toRes
-     *            新资源
+     * @param activity 触发切换资源的Activity
+     * @param toRes    新资源
      */
-    private void changeActivityResources(Activity activity, Resources toRes) {
-	// ContextThemeWrapper add mResources field in JELLY_BEAN
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	    Log.v("after JELLY_BEAN change Activity:{} to Resources :{} ,result:{} ", activity, toRes, set(activity, "mResources", toRes));
-	} else {
-	    Log.v("vefore JELLY_BEAN change context:{} to Resources :{} ,result:{} ", activity.getBaseContext(), toRes, set(activity.getBaseContext(), "mResources", toRes));
-	}
-	Log.v("reset theme to null ", set(activity, "mTheme", null));
+    public void changeActivityResources(Activity activity, Resources toRes) {
+        // ContextThemeWrapper add mResources field in JELLY_BEAN
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Log.v("after JELLY_BEAN change Activity:{} to Resources :{} ,result:{} ", activity, toRes, set(activity, "mResources", toRes));
+        } else {
+            Log.v("before JELLY_BEAN change context:{} to Resources :{} ,result:{} ", activity.getBaseContext(), toRes, set(activity.getBaseContext(), "mResources", toRes));
+        }
+        Log.v("reset theme to null ", set(activity, "mTheme", null));
     }
 
     /**
@@ -207,136 +198,133 @@ public class SkinManager {
      * @param li
      */
     public void registerViewFactory(LayoutInflater li) {
-	Factory factory = li.getFactory();
-	if (factory instanceof ViewFactory) {
-	    Log.w("Had register factory");
-	    return;
-	}
+        Factory factory = li.getFactory();
+        if (factory instanceof ViewFactory) {
+            Log.w("Had register factory");
+            return;
+        }
 
-	if (factory != null && get(factory, "mF1") instanceof ViewFactory) {
-	    Log.w("Had register factory");
-	    return;
-	}
+        if (factory != null && get(factory, "mF1") instanceof ViewFactory) {
+            Log.w("Had register factory");
+            return;
+        }
 
-	ViewFactory vf;
-	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-	    vf = new ViewFactory();
-	} else {
-	    vf = new ViewFactoryAfterGingerbread();
-	}
-	vf.register(li);
-	Log.d("LayoutInflater:{} register custom factory:{}", li, vf);
+        ViewFactory vf;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            vf = new ViewFactory();
+        } else {
+            vf = new ViewFactoryAfterGingerbread();
+        }
+        vf.register(li);
+        Log.d("LayoutInflater:{} register custom factory:{}", li, vf);
     }
 
     /**
      * 更换资源
      *
      * @param activity
-     * @param path
-     *            资源文件路径
+     * @param path     资源文件路径
      */
     @SuppressWarnings("unchecked")
     public void changeResources(Activity activity, final String path) {
-	if (StringUtils.isBlank(path)) {
-	    throw new IllegalArgumentException("skinPath could not be empty");
-	}
+        if (StringUtils.isBlank(path)) {
+            throw new IllegalArgumentException("skinPath could not be empty");
+        }
 
-	if (defaultResources == null) {
-	    throw new IllegalStateException("defaultResources is not initialized. Call the method onAttach of SkinManage in Activity onAttach()");
-	}
+        if (defaultResources == null) {
+            throw new IllegalStateException("defaultResources is not initialized. Call the method onAttach of SkinManage in Activity onAttach()");
+        }
 
-	final Context cxt = activity.getApplicationContext();
-	new AsyncTask<Void, Void, Boolean>() {
-	    @Override
-	    protected void onPreExecute() {
-		changingResource = true;
-	    }
+        final Context cxt = activity.getApplicationContext();
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected void onPreExecute() {
+                changingResource = true;
+            }
 
-	    @Override
-	    protected Boolean doInBackground(Void... params) {
-		ProxyResources originalResources = currentSkinResources;
-		try {
-		    Log.d("start change resource");
-		    final ProxyResources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
-		    if (res == null) {
-			return false;
-		    }
-		    currentSkinResources = res;
-		    List<Activity> temp = (List<Activity>) activitys.clone();
-		    for (int i = temp.size() - 1; i >= 0; i--) {
-			Log.d("change :{} resources to :{}", temp.get(i), res);
-			change(temp.get(i), res);
-		    }
-		    Log.d("finish change resource");
-		    currentSkinPath = path;
-		    PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, path);
-		    return true;
-		} catch (Exception e) {
-		    Log.e(e);
-		    currentSkinResources = originalResources;
-		    return false;
-		}
-	    }
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                ProxyResources originalResources = currentSkinResources;
+                try {
+                    Log.d("start change resource");
+                    final ProxyResources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
+                    if (res == null) {
+                        return false;
+                    }
+                    currentSkinResources = res;
+                    List<Activity> temp = (List<Activity>) activitys.clone();
+                    for (int i = temp.size() - 1; i >= 0; i--) {
+                        Log.d("change :{} resources to :{}", temp.get(i), res);
+                        change(temp.get(i), res);
+                    }
+                    Log.d("finish change resource");
+                    currentSkinPath = path;
+                    PrefUtil.setString(cxt, PREF_KEY_CURRENT_SKIN, path);
+                    return true;
+                } catch (Exception e) {
+                    Log.e(e);
+                    currentSkinResources = originalResources;
+                    return false;
+                }
+            }
 
-	    @Override
-	    protected void onPostExecute(Boolean result) {
-		Log.i("changeResources doInBackground return :{}, currentSkin:{}", result, currentSkinPath);
-		ArrayList<OnResourcesChangeFinishListener> list = (ArrayList<OnResourcesChangeFinishListener>) onResourcesChangeFinishListeners.clone();
-		for (OnResourcesChangeFinishListener listener : list) {
-		    listener.onResourcesChangeFinish(result);
-		}
-		changingResource = false;
-	    }
-	}.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+            @Override
+            protected void onPostExecute(Boolean result) {
+                Log.i("changeResources doInBackground return :{}, currentSkin:{}", result, currentSkinPath);
+                ArrayList<OnResourcesChangeFinishListener> list = (ArrayList<OnResourcesChangeFinishListener>) onResourcesChangeFinishListeners.clone();
+                for (OnResourcesChangeFinishListener listener : list) {
+                    listener.onResourcesChangeFinish(result);
+                }
+                changingResource = false;
+            }
+        }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
-	// showSkinChangeAnimation(activity);
+        // showSkinChangeAnimation(activity);
     }
 
     /**
      * 更换所有activity的皮肤资源, 调用OnResourcesChangeListener回调进行自定义资源的更新
      *
-     * @param a
-     *            activity
-     * @param res
-     *            资源
+     * @param a   activity
+     * @param res 资源
      */
     public void change(final Activity a, Resources res) {
 
-	changeActivityResources(a, res);
+        changeActivityResources(a, res);
 
-	if (a instanceof Skinnable) {
-	    serialTasks.offer(new Runnable() {
-		@Override
-		public void run() {
-		    // ((Skinnable) a).onResourcesChange();
-		}
-	    });
-	}
+        if (a instanceof Skinnable) {
+            serialTasks.offer(new Runnable() {
+                @Override
+                public void run() {
+                    // ((Skinnable) a).onResourcesChange();
+                }
+            });
+        }
 
-	final List<?> fragments = get(a, "mFragments.mAdded");
-	if (fragments != null && fragments.size() > 0) {
-	    serialTasks.offer(new Runnable() {
-		@Override
-		public void run() {
-		    for (Object f : fragments) {
-			if (f instanceof Skinnable) {
-			    Skinnable listener = (Skinnable) f;
-			    listener.onResourcesChange();
-			}
-		    }
-		}
-	    });
-	}
+        final List<?> fragments = get(a, "mFragments.mAdded");
+        if (fragments != null && fragments.size() > 0) {
+            serialTasks.offer(new Runnable() {
+                @Override
+                public void run() {
+                    for (Object f : fragments) {
+                        if (f instanceof Skinnable) {
+                            Skinnable listener = (Skinnable) f;
+                            listener.onResourcesChange();
+                        }
+                    }
+                }
+            });
+        }
 
-	final Window w = a.getWindow();
-	if (w != null) {
-	    serialTasks.offer(new Runnable() {
-		@Override
-		public void run() {
-		    onResourcesChange(w.getDecorView());
-		}
-	    });
-	}
+        final Window w = a.getWindow();
+        if (w != null) {
+            serialTasks.offer(new Runnable() {
+                @Override
+                public void run() {
+                    onResourcesChange(w.getDecorView());
+                }
+            });
+        }
 
     }
 
@@ -347,36 +335,36 @@ public class SkinManager {
      */
     private void onResourcesChange(View v) {
 
-	if (Looper.myLooper() == null || Looper.getMainLooper() != Looper.myLooper()) {
-	    throw new AndroidRuntimeException("Only the original thread that created a view hierarchy can touch its views.");
-	}
+        if (Looper.myLooper() == null || Looper.getMainLooper() != Looper.myLooper()) {
+            throw new AndroidRuntimeException("Only the original thread that created a view hierarchy can touch its views.");
+        }
 
-	if (v == null) {
-	    return;
-	}
+        if (v == null) {
+            return;
+        }
 
-	if (v instanceof Skinnable) {
-	    ((Skinnable) v).onResourcesChange();
-	    v.invalidate();
-	}
+        if (v instanceof Skinnable) {
+            ((Skinnable) v).onResourcesChange();
+            v.invalidate();
+        }
 
-	Object tag = v.getTag(ViewHandler.ATTR_HANDLER_KEY);
-	if (tag != null && tag instanceof ViewHandler) {
-	    ((AbstractHandler) tag).reloadAttr(v, currentSkinResources);
-	} else {
-	    AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
-	    if (ah != null) {
-		ah.reloadAttr(v, currentSkinResources);
-	    }
-	}
+        Object tag = v.getTag(ViewHandler.ATTR_HANDLER_KEY);
+        if (tag != null && tag instanceof ViewHandler) {
+            ((AbstractHandler) tag).reloadAttr(v, currentSkinResources);
+        } else {
+            AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
+            if (ah != null) {
+                ah.reloadAttr(v, currentSkinResources);
+            }
+        }
 
-	if (v instanceof ViewGroup) {
-	    ViewGroup vg = (ViewGroup) v;
-	    int size = vg.getChildCount();
-	    for (int i = 0; i < size; i++) {
-		onResourcesChange(vg.getChildAt(i));
-	    }
-	}
+        if (v instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) v;
+            int size = vg.getChildCount();
+            for (int i = 0; i < size; i++) {
+                onResourcesChange(vg.getChildAt(i));
+            }
+        }
     }
 
     /**
@@ -386,86 +374,85 @@ public class SkinManager {
      */
     void callActivityOnCreate(Activity activity) {
 
-	if (defaultResources == null) {
-	    defaultResources = new StaticProxyResources(activity.getResources());
-	    Log.v("init defaultResources and registerViewFactory ");
-	}
+        if (defaultResources == null) {
+            defaultResources = new StaticProxyResources(activity.getResources());
+            Log.v("init defaultResources and registerViewFactory ");
+        }
 
-	activitys.add(activity);
+        activitys.add(activity);
 
-	Context baseContext = activity.getBaseContext();
-	if (!(baseContext instanceof SkinContextWrapper)) {
-	    set(activity, "mBase", new SkinContextWrapper(baseContext));
-	    Log.v("replace Activity baseContext to :{} ", baseContext);
-	}
+        Context baseContext = activity.getBaseContext();
+        if (!(baseContext instanceof SkinContextWrapper)) {
+            set(activity, "mBase", new SkinContextWrapper(baseContext));
+            Log.v("replace Activity baseContext to :{} ", baseContext);
+        }
 
-	LayoutInflater li = activity.getLayoutInflater();
-	registerViewFactory(li);
+        LayoutInflater li = activity.getLayoutInflater();
+        registerViewFactory(li);
 
-	String prefSkinPath = PrefUtil.getString(activity, PREF_KEY_CURRENT_SKIN);
-	if (StringUtils.isNotBlank(prefSkinPath)) {
-	    currentSkinPath = prefSkinPath;
-	}
+        String prefSkinPath = PrefUtil.getString(activity, PREF_KEY_CURRENT_SKIN);
+        if (StringUtils.isNotBlank(prefSkinPath)) {
+            currentSkinPath = prefSkinPath;
+        }
 
-	ProxyResources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
-	currentSkinResources = res;
-	try {
-	    changeActivityResources(activity, res);
-	} catch (Exception e) {
-	    Log.e(e);
-	}
+        ProxyResources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
+        currentSkinResources = res;
+        try {
+            changeActivityResources(activity, res);
+        } catch (Exception e) {
+            Log.e(e);
+        }
     }
 
     /**
      * 对当前界面截图, 模糊渐变消失
      *
-     * @param activity
-     *            要显示渐变动画的界面
+     * @param activity 要显示渐变动画的界面
      */
     private void showSkinChangeAnimation(Activity activity) {
-	try {
-	    final ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-	    if (decor == null) {
-		return;
-	    }
+        try {
+            final ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+            if (decor == null) {
+                return;
+            }
 
-	    decor.setDrawingCacheEnabled(true);
-	    Bitmap temp = Bitmap.createBitmap(decor.getDrawingCache());
-	    decor.setDrawingCacheEnabled(false);
-	    final ImageView iv = new ImageView(activity);
-	    iv.setOnClickListener(new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-		    // consume all event
-		}
-	    });
-	    iv.setImageBitmap(temp);
+            decor.setDrawingCacheEnabled(true);
+            Bitmap temp = Bitmap.createBitmap(decor.getDrawingCache());
+            decor.setDrawingCacheEnabled(false);
+            final ImageView iv = new ImageView(activity);
+            iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // consume all event
+                }
+            });
+            iv.setImageBitmap(temp);
 
-	    ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-	    decor.addView(iv, lp);
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            decor.addView(iv, lp);
 
-	    final AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
-	    alphaAnimation.setDuration(800);
-	    iv.setAnimation(alphaAnimation);
-	    alphaAnimation.startNow();
-	    decor.postDelayed(new Runnable() {
-		@Override
-		public void run() {
-		    alphaAnimation.reset();
-		    alphaAnimation.cancel();
-		    iv.setAnimation(null);
-		    iv.setVisibility(View.GONE);
-		    decor.removeView(iv);
-		}
-	    }, 800);
+            final AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+            alphaAnimation.setDuration(800);
+            iv.setAnimation(alphaAnimation);
+            alphaAnimation.startNow();
+            decor.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    alphaAnimation.reset();
+                    alphaAnimation.cancel();
+                    iv.setAnimation(null);
+                    iv.setVisibility(View.GONE);
+                    decor.removeView(iv);
+                }
+            }, 800);
 
-	} catch (Exception e) {
-	    Log.e(e);
-	}
+        } catch (Exception e) {
+            Log.e(e);
+        }
     }
 
     public void onDestroy(Activity activity) {
-	activitys.remove(activity);
+        activitys.remove(activity);
     }
 
     /**
@@ -474,39 +461,39 @@ public class SkinManager {
      * @return 是 true
      */
     public boolean isChangingResource() {
-	return changingResource;
+        return changingResource;
     }
 
     public String getCurrentSkin() {
-	return currentSkinPath;
+        return currentSkinPath;
     }
 
     public synchronized void addOnResourcesChangeFinishListener(OnResourcesChangeFinishListener listener) {
-	onResourcesChangeFinishListeners.add(listener);
+        onResourcesChangeFinishListeners.add(listener);
     }
 
     public synchronized void removeOnResourcesChangeFinishListener(OnResourcesChangeFinishListener listener) {
-	onResourcesChangeFinishListeners.remove(listener);
+        onResourcesChangeFinishListeners.remove(listener);
     }
 
     public ProxyResources getCurrentSkinResources() {
-	return currentSkinResources;
+        return currentSkinResources;
     }
 
     public void setCurrentSkinResources(ProxyResources currentSkinResources) {
-	this.currentSkinResources = currentSkinResources;
+        this.currentSkinResources = currentSkinResources;
     }
 
     public Resources getDefaultResources() {
-	return defaultResources;
+        return defaultResources;
     }
 
     public ArrayList<Activity> getActivitys() {
-	return activitys;
+        return activitys;
     }
 
     public CacheKeyAndIdManager getCacheKeyAndIdManager() {
-	return cacheKeyAndIdManager;
+        return cacheKeyAndIdManager;
     }
 
 }
