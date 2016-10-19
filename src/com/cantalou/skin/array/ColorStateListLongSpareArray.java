@@ -5,10 +5,8 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.LongSparseArray;
 
-import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.content.res.ProxyResources;
 
 /**
  * 系统版本高于Build.VERSION_CODES.

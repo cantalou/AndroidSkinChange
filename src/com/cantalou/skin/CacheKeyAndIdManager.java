@@ -3,17 +3,6 @@
  */
 package com.cantalou.skin;
 
-import static com.cantalou.android.util.ReflectUtil.findByMethod;
-import static com.cantalou.android.util.ReflectUtil.forName;
-import static com.cantalou.android.util.ReflectUtil.get;
-import static com.cantalou.android.util.ReflectUtil.invoke;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-
-import org.xmlpull.v1.XmlPullParser;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
@@ -29,6 +18,17 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.content.res.SkinProxyResources;
+
+import org.xmlpull.v1.XmlPullParser;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
+import static com.cantalou.android.util.ReflectUtil.findMethod;
+import static com.cantalou.android.util.ReflectUtil.forName;
+import static com.cantalou.android.util.ReflectUtil.get;
+import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
  * @author cantalou
@@ -178,7 +178,7 @@ public final class CacheKeyAndIdManager {
 		if (menuInflater == null) {
 		    menuInflater = invoke(activity, "getMenuInflater");
 		}
-		inflateMethod = findByMethod(menuInflater.getClass(), "inflate");
+		inflateMethod = findMethod(menuInflater.getClass(), "inflate");
 
 		Class<?>[] parameterTypes = inflateMethod.getParameterTypes();
 		Class<?> menuBuilderKlass = forName("com.android.internal.view.menu.MenuBuilder");

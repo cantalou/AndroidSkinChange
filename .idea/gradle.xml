@@ -3,9 +3,9 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="WRAPPED" />
+        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../tool/gradle/gradle-2.14.1" />
+        <option name="gradleHome" value="D:/Program Files (x86)/gradle/gradle-2.14" />
         <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

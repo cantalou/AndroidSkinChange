@@ -8,25 +8,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Drawable.ConstantState;
 import android.os.Build;
-import android.util.LongSparseArray;
-import android.util.SparseArray;
 import android.util.TypedValue;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.skin.CacheKeyAndIdManager;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.array.ColorStateListLongSpareArray;
-import com.cantalou.skin.array.ColorStateListSpareArray;
-import com.cantalou.skin.array.DrawableLongSpareArray;
 
 import java.io.InputStream;
 
-import static com.cantalou.android.util.ReflectUtil.get;
 import static com.cantalou.android.util.ReflectUtil.invoke;
-import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
  *
