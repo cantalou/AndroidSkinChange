@@ -44,7 +44,7 @@ public class NightResources extends SkinProxyResources {
     protected BinarySearchIntArray notFoundedNightIds = new BinarySearchIntArray();
 
     public NightResources(String packageName, Resources skinRes, Resources defRes, String skinName) {
-	super(packageName, skinRes, defRes, skinName);
+        super(packageName, skinRes, defRes, skinName);
     }
 
     /**
@@ -55,58 +55,58 @@ public class NightResources extends SkinProxyResources {
      */
     public synchronized int toNightId(int id) {
 
-	if (id == 0) {
-	    return 0;
-	}
+        if (id == 0) {
+            return 0;
+        }
 
-	if ((id & APP_ID_MASK) != APP_ID_MASK) {
-	    return id;
-	}
+        if ((id & APP_ID_MASK) != APP_ID_MASK) {
+            return id;
+        }
 
-	// 如果皮肤资源包不存在当前资源项,直接返回id
-	if (notFoundedNightIds.contains(id)) {
-	    return id;
-	}
+        // 如果皮肤资源包不存在当前资源项,直接返回id
+        if (notFoundedNightIds.contains(id)) {
+            return id;
+        }
 
-	int nightId = nightIdMap.get(id);
-	if (nightId != 0) {
-	    return nightId;
-	}
+        int nightId = nightIdMap.get(id);
+        if (nightId != 0) {
+            return nightId;
+        }
 
-	String name = getResourceName(id);
-	if (TextUtils.isEmpty(name)) {
-	    return id;
-	}
-	int index = name.lastIndexOf('.');
-	if (index != -1) {
-	    name = name.substring(0, index) + NIGHT_RESOURCE_NAME_SUF + name.substring(index);
-	} else {
-	    name = name + NIGHT_RESOURCE_NAME_SUF;
-	}
-	nightId = getIdentifier(name, null, packageName);
-	if (nightId == 0) {
-	    notFoundedNightIds.put(id);
-	    nightId = id;
-	} else {
-	    nightIdMap.put(id, nightId);
-	}
-	return nightId;
+        String name = getResourceName(id);
+        if (TextUtils.isEmpty(name)) {
+            return id;
+        }
+        int index = name.lastIndexOf('.');
+        if (index != -1) {
+            name = name.substring(0, index) + NIGHT_RESOURCE_NAME_SUF + name.substring(index);
+        } else {
+            name = name + NIGHT_RESOURCE_NAME_SUF;
+        }
+        nightId = getIdentifier(name, null, packageName);
+        if (nightId == 0) {
+            notFoundedNightIds.put(id);
+            nightId = id;
+        } else {
+            nightIdMap.put(id, nightId);
+        }
+        return nightId;
     }
 
     @Override
     public void getValue(int id, TypedValue outValue, boolean resolveRefs) throws NotFoundException {
-	super.getValue(toNightId(id), outValue, resolveRefs);
+        super.getValue(toNightId(id), outValue, resolveRefs);
     }
 
     @Override
     public void getValueForDensity(int id, int density, TypedValue outValue, boolean resolveRefs) throws NotFoundException {
-	super.getValueForDensity(toNightId(id), density, outValue, resolveRefs);
+        super.getValueForDensity(toNightId(id), density, outValue, resolveRefs);
     }
 
     public Drawable loadDrawable(int id) throws NotFoundException {
-	Drawable result = super.loadDrawable(toNightId(id));
-	setColorFilter(result);
-	return result;
+        Drawable result = super.loadDrawable(toNightId(id));
+        setColorFilter(result);
+        return result;
     }
 
     /**
@@ -117,36 +117,36 @@ public class NightResources extends SkinProxyResources {
      * @date 2015年11月3日 下午4:08:56
      */
     private void setColorFilter(Drawable drawable) {
-	if (drawable instanceof BitmapDrawable) {
-	    drawable.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
-	} else if (drawable instanceof DrawableContainer) {
-	    DrawableContainerState dcs = ReflectUtil.get(drawable, "mDrawableContainerState");
-	    if (dcs == null) {
-		return;
-	    }
-	    for (Drawable d : dcs.getChildren()) {
-		setColorFilter(d);
-	    }
-	} else if (drawable instanceof LayerDrawable) {
-	    LayerDrawable ld = ((LayerDrawable) drawable);
-	    for (int i = 0; i < ld.getNumberOfLayers(); i++) {
-		setColorFilter(ld.getDrawable(i));
-	    }
-	} else if (drawable instanceof ScaleDrawable) {
-	    setColorFilter(((ScaleDrawable) drawable).getDrawable());
-	} else if (drawable instanceof ClipDrawable) {
-	    setColorFilter((Drawable) ReflectUtil.get(drawable, "mClipState.mDrawable"));
-	} else if (drawable instanceof RotateDrawable) {
-	    setColorFilter(((RotateDrawable) drawable).getDrawable());
-	} else if (drawable instanceof InsetDrawable) {
-	    setColorFilter((Drawable) ReflectUtil.get(drawable, "mInsetState.mDrawable"));
-	}
+        if (drawable instanceof BitmapDrawable) {
+            drawable.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+        } else if (drawable instanceof DrawableContainer) {
+            DrawableContainerState dcs = ReflectUtil.get(drawable, "mDrawableContainerState");
+            if (dcs == null) {
+                return;
+            }
+            for (Drawable d : dcs.getChildren()) {
+                setColorFilter(d);
+            }
+        } else if (drawable instanceof LayerDrawable) {
+            LayerDrawable ld = ((LayerDrawable) drawable);
+            for (int i = 0; i < ld.getNumberOfLayers(); i++) {
+                setColorFilter(ld.getDrawable(i));
+            }
+        } else if (drawable instanceof ScaleDrawable) {
+            setColorFilter(((ScaleDrawable) drawable).getDrawable());
+        } else if (drawable instanceof ClipDrawable) {
+            setColorFilter((Drawable) ReflectUtil.get(drawable, "mClipState.mDrawable"));
+        } else if (drawable instanceof RotateDrawable) {
+            setColorFilter(((RotateDrawable) drawable).getDrawable());
+        } else if (drawable instanceof InsetDrawable) {
+            setColorFilter((Drawable) ReflectUtil.get(drawable, "mInsetState.mDrawable"));
+        }
     }
 
     public void clearCache() {
-	super.clearCache();
-	nightIdMap.clear();
-	notFoundedNightIds.clear();
+        super.clearCache();
+        nightIdMap.clear();
+        notFoundedNightIds.clear();
     }
 
 }

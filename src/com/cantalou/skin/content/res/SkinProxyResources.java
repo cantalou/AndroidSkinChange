@@ -47,28 +47,25 @@ public class SkinProxyResources extends StaticProxyResources {
     /**
      * Create a new ProxyResources object
      *
-     * @param skinRes
-     *            skin resources
-     * @param defRes
-     *            default resources
+     * @param skinRes     skin resources
+     * @param defRes      default resources
      * @param packageName
      * @param skinPath
      */
     public SkinProxyResources(String packageName, Resources skinRes, Resources defRes, String skinPath) {
-	super(defRes);
-	this.skinResources = skinRes;
-	this.packageName = packageName;
-	this.skinPath = skinPath;
+        super(defRes);
+        this.skinResources = skinRes;
+        this.packageName = packageName;
+        this.skinPath = skinPath;
     }
 
     /**
      * Create a new ProxyResources
      *
-     * @param defRes
-     *            default resources
+     * @param defRes default resources
      */
     public SkinProxyResources(Resources defRes) {
-	this("", null, defRes, "");
+        this("", null, defRes, "");
     }
 
     /**
@@ -78,126 +75,126 @@ public class SkinProxyResources extends StaticProxyResources {
      * @return 皮肤资源id, 不存在皮肤资源时,返回0
      */
     public synchronized int toSkinId(int id) {
-	if (id == 0) {
-	    return 0;
-	}
+        if (id == 0) {
+            return 0;
+        }
 
-	if ((id & APP_ID_MASK) != APP_ID_MASK) {
-	    return 0;
-	}
+        if ((id & APP_ID_MASK) != APP_ID_MASK) {
+            return 0;
+        }
 
-	if (notFoundedSkinIds.contains(id)) {
-	    Log.v("resource id :{} toSkinId not found ", toHex(id));
-	    return 0;
-	}
+        if (notFoundedSkinIds.contains(id)) {
+            Log.v("resource id :{} toSkinId not found ", toHex(id));
+            return 0;
+        }
 
-	int skinId = skinIdMap.get(id);
-	if (skinId != 0) {
-	    return skinId;
-	}
+        int skinId = skinIdMap.get(id);
+        if (skinId != 0) {
+            return skinId;
+        }
 
-	String name = getResourceName(id);
-	if (TextUtils.isEmpty(name)) {
-	    Log.v("resource id :{} getResourceName(id) return null", toHex(id));
-	    return 0;
-	}
+        String name = getResourceName(id);
+        if (TextUtils.isEmpty(name)) {
+            Log.v("resource id :{} getResourceName(id) return null", toHex(id));
+            return 0;
+        }
 
-	skinId = skinResources.getIdentifier(name, null, packageName);
-	if (skinId == 0) {
-	    notFoundedSkinIds.put(id);
-	    Log.v("resource id :{} getIdentifier(name, null, packageName) return null", toHex(id));
-	} else {
-	    skinIdMap.put(id, skinId);
-	}
-	Log.v("convert name:{},id:{} to skin id:{}", name, toHex(id), toHex(skinId));
-	return skinId;
+        skinId = skinResources.getIdentifier(name, null, packageName);
+        if (skinId == 0) {
+            notFoundedSkinIds.put(id);
+            Log.v("resource id :{} getIdentifier(name, null, packageName) return null", toHex(id));
+        } else {
+            skinIdMap.put(id, skinId);
+        }
+        Log.v("convert name:{},id:{} to skin id:{}", name, toHex(id), toHex(skinId));
+        return skinId;
     }
 
     protected boolean isColor(TypedValue value) {
-	return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
+        return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
     }
 
     public Drawable loadDrawable(int id) throws NotFoundException {
-	if (id == 0) {
-	    return null;
-	}
+        if (id == 0) {
+            return null;
+        }
 
-	TypedValue value = typedValueCache;
-	getValue(id, value, true);
+        TypedValue value = typedValueCache;
+        getValue(id, value, true);
 
-	Resources res;
-	int skinId;
-	if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {
-	    res = this;
-	    skinId = id;
-	} else {
-	    res = skinResources;
-	    if (isColor(value)) {
-		res.getValue(skinId, value, true);
-	    }
-	}
+        Resources res;
+        int skinId;
+        if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {
+            res = this;
+            skinId = id;
+        } else {
+            res = skinResources;
+            if (isColor(value)) {
+                res.getValue(skinId, value, true);
+            }
+        }
 
-	Drawable result = null;
-	try {
-	    result = loadDrawable(res, value, skinId);
-	} catch (Exception e) {
-	    Log.e(e);
-	}
+        Drawable result = null;
+        try {
+            result = loadDrawable(res, value, skinId);
+        } catch (Exception e) {
+            Log.e(e);
+        }
 
-	// 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
-	if (result == null && skinId != 0) {
-	    result = loadDrawable(this, value, id);
-	}
-	return result;
+        // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
+        if (result == null && skinId != 0) {
+            result = loadDrawable(this, value, id);
+        }
+        return result;
     }
 
     public ColorStateList loadColorStateList(int id) throws NotFoundException {
 
-	if (id == 0) {
-	    return null;
-	}
+        if (id == 0) {
+            return null;
+        }
 
-	TypedValue value = typedValueCache;
-	getValue(id, value, true);
+        TypedValue value = typedValueCache;
+        getValue(id, value, true);
 
-	Resources res;
-	int skinId;
-	if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {
-	    res = this;
-	    skinId = id;
-	} else {
-	    res = skinResources;
-	    if (isColor(value)) {
-		res.getValue(skinId, value, true);
-	    }
-	}
+        Resources res;
+        int skinId;
+        if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {
+            res = this;
+            skinId = id;
+        } else {
+            res = skinResources;
+            if (isColor(value)) {
+                res.getValue(skinId, value, true);
+            }
+        }
 
-	ColorStateList result = null;
-	try {
-	    result = loadColorStateList(res, value, skinId);
-	} catch (Exception e) {
-	    Log.e(e);
-	}
+        ColorStateList result = null;
+        try {
+            result = loadColorStateList(res, value, skinId);
+        } catch (Exception e) {
+            Log.e(e);
+        }
 
-	// 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
-	if (result == null && skinId != 0) {
-	    result = loadColorStateList(this, value, id);
-	}
-	return result;
+        // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
+        if (result == null && skinId != 0) {
+            result = loadColorStateList(this, value, id);
+        }
+        return result;
     }
 
     public void clearCache() {
-	super.clearCache();
-	skinIdMap.clear();
-	notFoundedSkinIds.clear();
+        super.clearCache();
+        skinIdMap.clear();
+        notFoundedSkinIds.clear();
     }
 
     @Override
     public String toString() {
-	return getClass().getSimpleName() + "{" + skinPath + "}";
+        return getClass().getSimpleName() + "{" + skinPath + "}";
     }
 
     public Resources getSkinResources() {
-	return skinResources;
+        return skinResources;
     }
 }

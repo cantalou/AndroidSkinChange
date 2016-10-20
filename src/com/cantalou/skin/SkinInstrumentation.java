@@ -1,6 +1,7 @@
 package com.cantalou.skin;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
@@ -17,14 +18,12 @@ import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
 
 import com.cantalou.android.util.ReflectUtil;
 
 /**
  * 重写Instrumentation的callActivityOnCreate, callActivityOnDestroy方法,
- * 在调用Activity的生命周期方法onCretea前调用ResourcesManager.callActivityOnCreate()方法
+ * 在调用Activity的生命周期方法onCreate前调用ResourcesManager.callActivityOnCreate()方法
  *
  * @author cantalou
  * @date 2015年12月5日 下午4:53:44
@@ -34,332 +33,335 @@ public class SkinInstrumentation extends Instrumentation {
 
     private SkinManager skinManager;
 
-    private Instrumentation targetInstrucmentation;
+    private Instrumentation targetInstrumentation;
 
     public SkinInstrumentation(SkinManager skinManager, Instrumentation target) {
-	this.skinManager = skinManager;
-	this.targetInstrucmentation = target;
+        this.skinManager = skinManager;
+        this.targetInstrumentation = target;
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void callActivityOnCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
-	skinManager.callActivityOnCreate(activity);
-	targetInstrucmentation.callActivityOnCreate(activity, icicle, persistentState);
+        skinManager.callActivityOnCreate(activity);
+        targetInstrumentation.callActivityOnCreate(activity, icicle, persistentState);
     }
 
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle) {
-	skinManager.callActivityOnCreate(activity);
-	targetInstrucmentation.callActivityOnCreate(activity, icicle);
+        skinManager.callActivityOnCreate(activity);
+        targetInstrumentation.callActivityOnCreate(activity, icicle);
     }
 
     @Override
     public void callActivityOnDestroy(Activity activity) {
-	targetInstrucmentation.callActivityOnDestroy(activity);
-	skinManager.onDestroy(activity);
+        targetInstrumentation.callActivityOnDestroy(activity);
+        skinManager.onDestroy(activity);
     }
 
     @Override
     public Activity newActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-	return targetInstrucmentation.newActivity(cl, className, intent);
+        return targetInstrumentation.newActivity(cl, className, intent);
     }
 
     @Override
     public void endPerformanceSnapshot() {
-	targetInstrucmentation.endPerformanceSnapshot();
+        targetInstrumentation.endPerformanceSnapshot();
     }
 
     @Override
     public Context getContext() {
-	return targetInstrucmentation.getContext();
+        return targetInstrumentation.getContext();
     }
 
     @Override
     public ComponentName getComponentName() {
-	return targetInstrucmentation.getComponentName();
+        return targetInstrumentation.getComponentName();
     }
 
     @Override
     public Context getTargetContext() {
-	return targetInstrucmentation.getTargetContext();
+        return targetInstrumentation.getTargetContext();
     }
 
     @Override
     public boolean isProfiling() {
-	return targetInstrucmentation.isProfiling();
+        return targetInstrumentation.isProfiling();
     }
 
     @Override
     public void addMonitor(ActivityMonitor monitor) {
-	targetInstrucmentation.addMonitor(monitor);
+        targetInstrumentation.addMonitor(monitor);
     }
 
     @Override
     public ActivityMonitor addMonitor(IntentFilter filter, ActivityResult result, boolean block) {
-	return targetInstrucmentation.addMonitor(filter, result, block);
+        return targetInstrumentation.addMonitor(filter, result, block);
     }
 
     @Override
     public ActivityMonitor addMonitor(String cls, ActivityResult result, boolean block) {
-	return targetInstrucmentation.addMonitor(cls, result, block);
+        return targetInstrumentation.addMonitor(cls, result, block);
     }
 
     @Override
     public void callActivityOnNewIntent(Activity activity, Intent intent) {
-	targetInstrucmentation.callActivityOnNewIntent(activity, intent);
+        targetInstrumentation.callActivityOnNewIntent(activity, intent);
     }
 
     @Override
     public void callActivityOnPause(Activity activity) {
-	targetInstrucmentation.callActivityOnPause(activity);
+        targetInstrumentation.callActivityOnPause(activity);
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void callActivityOnPostCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
-	targetInstrucmentation.callActivityOnPostCreate(activity, icicle, persistentState);
+        targetInstrumentation.callActivityOnPostCreate(activity, icicle, persistentState);
     }
 
     @Override
     public void callActivityOnPostCreate(Activity activity, Bundle icicle) {
-	targetInstrucmentation.callActivityOnPostCreate(activity, icicle);
+        targetInstrumentation.callActivityOnPostCreate(activity, icicle);
     }
 
     @Override
     public void callActivityOnRestart(Activity activity) {
-	targetInstrucmentation.callActivityOnRestart(activity);
+        targetInstrumentation.callActivityOnRestart(activity);
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void callActivityOnRestoreInstanceState(Activity activity, Bundle savedInstanceState, PersistableBundle persistentState) {
-	targetInstrucmentation.callActivityOnRestoreInstanceState(activity, savedInstanceState, persistentState);
+        targetInstrumentation.callActivityOnRestoreInstanceState(activity, savedInstanceState, persistentState);
     }
 
     @Override
     public boolean checkMonitorHit(ActivityMonitor monitor, int minHits) {
-	return targetInstrucmentation.checkMonitorHit(monitor, minHits);
+        return targetInstrumentation.checkMonitorHit(monitor, minHits);
     }
 
     @Override
     public void callActivityOnRestoreInstanceState(Activity activity, Bundle savedInstanceState) {
-	targetInstrucmentation.callActivityOnRestoreInstanceState(activity, savedInstanceState);
+        targetInstrumentation.callActivityOnRestoreInstanceState(activity, savedInstanceState);
     }
 
     @Override
     public void callActivityOnStart(Activity activity) {
-	targetInstrucmentation.callActivityOnStart(activity);
+        targetInstrumentation.callActivityOnStart(activity);
     }
 
     @Override
     public void callActivityOnResume(Activity activity) {
-	targetInstrucmentation.callActivityOnResume(activity);
+        targetInstrumentation.callActivityOnResume(activity);
     }
 
     @Override
     public void callActivityOnSaveInstanceState(Activity activity, Bundle outState, PersistableBundle outPersistentState) {
-	targetInstrucmentation.callActivityOnSaveInstanceState(activity, outState, outPersistentState);
+        targetInstrumentation.callActivityOnSaveInstanceState(activity, outState, outPersistentState);
     }
 
     @Override
     public void finish(int resultCode, Bundle results) {
-	targetInstrucmentation.finish(resultCode, results);
+        targetInstrumentation.finish(resultCode, results);
     }
 
     @Override
     public boolean invokeMenuActionSync(Activity targetActivity, int id, int flag) {
-	return targetInstrucmentation.invokeMenuActionSync(targetActivity, id, flag);
+        return targetInstrumentation.invokeMenuActionSync(targetActivity, id, flag);
     }
 
     @Override
     public boolean invokeContextMenuAction(Activity targetActivity, int id, int flag) {
-	return targetInstrucmentation.invokeContextMenuAction(targetActivity, id, flag);
+        return targetInstrumentation.invokeContextMenuAction(targetActivity, id, flag);
     }
 
     @Override
     public void callApplicationOnCreate(Application app) {
-	targetInstrucmentation.callApplicationOnCreate(app);
+        targetInstrumentation.callApplicationOnCreate(app);
     }
 
     @Override
     public void callActivityOnStop(Activity activity) {
-	targetInstrucmentation.callActivityOnStop(activity);
+        targetInstrumentation.callActivityOnStop(activity);
     }
 
     @Override
     public void callActivityOnSaveInstanceState(Activity activity, Bundle outState) {
-	targetInstrucmentation.callActivityOnSaveInstanceState(activity, outState);
+        targetInstrumentation.callActivityOnSaveInstanceState(activity, outState);
     }
 
     @Override
     public void callActivityOnUserLeaving(Activity activity) {
-	targetInstrucmentation.callActivityOnUserLeaving(activity);
+        targetInstrumentation.callActivityOnUserLeaving(activity);
     }
 
     @Override
     public Bundle getAllocCounts() {
-	return targetInstrucmentation.getAllocCounts();
+        return targetInstrumentation.getAllocCounts();
     }
 
     @Override
     public Bundle getBinderCounts() {
-	return targetInstrucmentation.getBinderCounts();
+        return targetInstrumentation.getBinderCounts();
     }
 
     @Override
     public UiAutomation getUiAutomation() {
-	return targetInstrucmentation.getUiAutomation();
+        return targetInstrumentation.getUiAutomation();
     }
 
     @Override
     public void onCreate(Bundle arguments) {
-	targetInstrucmentation.onCreate(arguments);
+        targetInstrumentation.onCreate(arguments);
     }
 
     @Override
     public void start() {
-	targetInstrucmentation.start();
+        targetInstrumentation.start();
     }
 
     @Override
     public void onStart() {
-	targetInstrucmentation.onStart();
+        targetInstrumentation.onStart();
     }
 
     @Override
     public boolean onException(Object obj, Throwable e) {
-	return targetInstrucmentation.onException(obj, e);
+        return targetInstrumentation.onException(obj, e);
     }
 
     @Override
     public void sendStatus(int resultCode, Bundle results) {
-	targetInstrucmentation.sendStatus(resultCode, results);
+        targetInstrumentation.sendStatus(resultCode, results);
     }
 
     @Override
     public void setAutomaticPerformanceSnapshots() {
-	targetInstrucmentation.setAutomaticPerformanceSnapshots();
+        targetInstrumentation.setAutomaticPerformanceSnapshots();
     }
 
     @Override
     public void startPerformanceSnapshot() {
-	targetInstrucmentation.startPerformanceSnapshot();
+        targetInstrumentation.startPerformanceSnapshot();
     }
 
     @Override
     public void onDestroy() {
 
-	targetInstrucmentation.onDestroy();
+        targetInstrumentation.onDestroy();
     }
 
     @Override
     public void startProfiling() {
-	targetInstrucmentation.startProfiling();
+        targetInstrumentation.startProfiling();
     }
 
     @Override
     public void stopProfiling() {
-	targetInstrucmentation.stopProfiling();
+        targetInstrumentation.stopProfiling();
     }
 
     @Override
     public void setInTouchMode(boolean inTouch) {
 
-	targetInstrucmentation.setInTouchMode(inTouch);
+        targetInstrumentation.setInTouchMode(inTouch);
     }
 
     @Override
     public void waitForIdle(Runnable recipient) {
-	targetInstrucmentation.waitForIdle(recipient);
+        targetInstrumentation.waitForIdle(recipient);
     }
 
     @Override
     public void waitForIdleSync() {
-	targetInstrucmentation.waitForIdleSync();
+        targetInstrumentation.waitForIdleSync();
     }
 
     @Override
     public void runOnMainSync(Runnable runner) {
-	targetInstrucmentation.runOnMainSync(runner);
+        targetInstrumentation.runOnMainSync(runner);
     }
 
     @Override
     public Activity startActivitySync(Intent intent) {
-	return targetInstrucmentation.startActivitySync(intent);
+        return targetInstrumentation.startActivitySync(intent);
     }
 
     @Override
     public Activity waitForMonitor(ActivityMonitor monitor) {
-	return targetInstrucmentation.waitForMonitor(monitor);
+        return targetInstrumentation.waitForMonitor(monitor);
     }
 
     @Override
     public Activity waitForMonitorWithTimeout(ActivityMonitor monitor, long timeOut) {
-	return targetInstrucmentation.waitForMonitorWithTimeout(monitor, timeOut);
+        return targetInstrumentation.waitForMonitorWithTimeout(monitor, timeOut);
     }
 
     @Override
     public void removeMonitor(ActivityMonitor monitor) {
-	targetInstrucmentation.removeMonitor(monitor);
+        targetInstrumentation.removeMonitor(monitor);
     }
 
     @Override
     public void sendStringSync(String text) {
-	targetInstrucmentation.sendStringSync(text);
+        targetInstrumentation.sendStringSync(text);
     }
 
     @Override
     public void sendKeySync(KeyEvent event) {
-	targetInstrucmentation.sendKeySync(event);
+        targetInstrumentation.sendKeySync(event);
     }
 
     @Override
     public void sendKeyDownUpSync(int key) {
-	targetInstrucmentation.sendKeyDownUpSync(key);
+        targetInstrumentation.sendKeyDownUpSync(key);
     }
 
     @Override
     public void sendCharacterSync(int keyCode) {
-	targetInstrucmentation.sendCharacterSync(keyCode);
+        targetInstrumentation.sendCharacterSync(keyCode);
     }
 
     @Override
     public void sendPointerSync(MotionEvent event) {
-	targetInstrucmentation.sendPointerSync(event);
+        targetInstrumentation.sendPointerSync(event);
     }
 
     @Override
     public void sendTrackballEventSync(MotionEvent event) {
-	targetInstrucmentation.sendTrackballEventSync(event);
+        targetInstrumentation.sendTrackballEventSync(event);
     }
 
     @Override
     public Application newApplication(ClassLoader cl, String className, Context context) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-	return targetInstrucmentation.newApplication(cl, className, context);
+        return targetInstrumentation.newApplication(cl, className, context);
     }
 
     @Override
     public Activity newActivity(Class<?> clazz, Context context, IBinder token, Application application, Intent intent, ActivityInfo info, CharSequence title, Activity parent,
-	    String id, Object lastNonConfigurationInstance) throws InstantiationException, IllegalAccessException {
-	return targetInstrucmentation.newActivity(clazz, context, token, application, intent, info, title, parent, id, lastNonConfigurationInstance);
+                                String id, Object lastNonConfigurationInstance) throws InstantiationException, IllegalAccessException {
+        return targetInstrumentation.newActivity(clazz, context, token, application, intent, info, title, parent, id, lastNonConfigurationInstance);
     }
 
     @Override
     public void startAllocCounting() {
-	targetInstrucmentation.startAllocCounting();
+        targetInstrumentation.startAllocCounting();
     }
 
     @Override
     public void stopAllocCounting() {
-	targetInstrucmentation.stopAllocCounting();
+        targetInstrumentation.stopAllocCounting();
     }
 
     public void execStartActivities(Context who, IBinder contextThread, IBinder token, Activity target, Intent[] intents) {
-	ReflectUtil.invoke(targetInstrucmentation, "execStartActivities", new Class<?>[] { Context.class, IBinder.class, IBinder.class, Activity.class, intents.getClass() }, who,
-		contextThread, token, target, intents);
+        ReflectUtil.invoke(targetInstrumentation, "execStartActivities", new Class<?>[]{Context.class, IBinder.class, IBinder.class, Activity.class, intents.getClass()}, who,
+                contextThread, token, target, intents);
     }
 
     @SuppressLint("NewApi")
     public ActivityResult execStartActivity(Context who, IBinder contextThread, IBinder token, Fragment target, Intent intent, int requestCode) {
-	return (ActivityResult) ReflectUtil.invoke(targetInstrucmentation, "execStartActivity", new Class<?>[] { Context.class, IBinder.class, IBinder.class, Activity.class,
-		Intent.class, int.class }, who, contextThread, token, target, intent, requestCode);
+        return (ActivityResult) ReflectUtil.invoke(targetInstrumentation, "execStartActivity", new Class<?>[]{Context.class, IBinder.class, IBinder.class, Activity.class,
+                Intent.class, int.class}, who, contextThread, token, target, intent, requestCode);
     }
 }

@@ -19,7 +19,7 @@ import com.cantalou.skin.SkinManager;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class ColorStateListLongSpareArray extends LongSparseArray<ColorStateList> {
 
-    private SparseLongIntArray resourceIdKeyMap;;
+    private SparseLongIntArray resourceIdKeyMap;
 
     /**
      * Resources mColorStateListCache
@@ -29,18 +29,22 @@ public class ColorStateListLongSpareArray extends LongSparseArray<ColorStateList
     private SkinManager skinManager;
 
     public ColorStateListLongSpareArray(SkinManager skinManager, LongSparseArray<ColorStateList> originalCache, SparseLongIntArray resourceIdKeyMap) {
-	this.skinManager = skinManager;
-	this.originalCache = originalCache;
-	this.resourceIdKeyMap = resourceIdKeyMap;
+        this.skinManager = skinManager;
+        this.originalCache = originalCache;
+        this.resourceIdKeyMap = resourceIdKeyMap;
     }
 
     @Override
     public ColorStateList get(long key) {
-	int id = resourceIdKeyMap.get(key);
-	if (id != 0) {
-	    return skinManager.getCurrentSkinResources().loadColorStateList(id);
-	} else {
-	    return originalCache.get(key);
-	}
+        int id = resourceIdKeyMap.get(key);
+        if (id != 0) {
+            return skinManager.getCurrentSkinResources().loadColorStateList(id);
+        } else {
+            return originalCache.get(key);
+        }
+    }
+
+    public LongSparseArray<ColorStateList> getOriginalCache() {
+        return originalCache;
     }
 }

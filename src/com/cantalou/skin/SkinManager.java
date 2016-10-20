@@ -372,7 +372,7 @@ public class SkinManager {
      *
      * @param activity
      */
-    void callActivityOnCreate(Activity activity) {
+    public void callActivityOnCreate(Activity activity) {
 
         if (defaultResources == null) {
             defaultResources = new StaticProxyResources(activity.getResources());
