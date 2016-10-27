@@ -197,4 +197,6 @@ public class SkinProxyResources extends StaticProxyResources {
     public Resources getSkinResources() {
         return skinResources;
     }
+
+
 }
