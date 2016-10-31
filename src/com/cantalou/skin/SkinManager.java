@@ -82,7 +82,7 @@ public class SkinManager {
     /**
      * 资源切换时提交View刷新任务到UI线程
      */
-    Handler uiHandler = new Handler(Looper.myLooper());
+    private Handler uiHandler = new Handler(Looper.getMainLooper());
 
     /**
      * 资源切换结束回调
