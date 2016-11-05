@@ -19,7 +19,7 @@ import com.cantalou.android.util.array.BinarySearchIntArray;
  * @author cantalou
  * @date 2016年11月5日 下午3:15:02
  */
-public class SkinProxyResources2 extends StaticProxyResources {
+public class KeepIdSkinProxyResources extends StaticProxyResources {
 
     /**
      * 默认资源
@@ -38,7 +38,7 @@ public class SkinProxyResources2 extends StaticProxyResources {
      * @param skin 皮肤资源
      * @param def  默认资源
      */
-    public SkinProxyResources2(Resources skin, Resources def) {
+    public KeepIdSkinProxyResources(Resources skin, Resources def) {
         super(skin);
         this.def = def;
         resourcesManager = ResourcesManager.getInstance();
