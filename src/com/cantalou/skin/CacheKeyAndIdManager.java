@@ -17,7 +17,8 @@ import android.widget.FrameLayout;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.android.util.array.SparseLongIntArray;
-import com.cantalou.skin.content.res.SkinProxyResources;
+import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.ProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -91,7 +92,7 @@ public final class CacheKeyAndIdManager {
      */
     public synchronized void registerDrawable(int id) {
 
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+        if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
 
@@ -129,7 +130,7 @@ public final class CacheKeyAndIdManager {
      */
     public synchronized void registerColorStateList(int id) {
 
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+        if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
 
@@ -160,7 +161,7 @@ public final class CacheKeyAndIdManager {
      * @param id
      */
     public synchronized void registerMenu(int id) {
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+        if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
         ArrayList<Activity> activities = skinManager.getActivitys();
@@ -213,7 +214,7 @@ public final class CacheKeyAndIdManager {
      * @param id
      */
     public synchronized void registerLayout(int id) {
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+        if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
         ArrayList<Activity> activities = skinManager.getActivitys();

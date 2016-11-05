@@ -25,7 +25,6 @@ import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.content.SkinContextWrapper;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.ResourcesManager;
-import com.cantalou.skin.content.res.StaticProxyResources;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.layout.factory.ViewFactory;

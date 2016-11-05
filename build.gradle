@@ -14,8 +14,8 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile 'com.cantalou:android-util:1.0.+'
-    //compile project(':androidUtil')
+    //compile 'com.cantalou:android-util:1.0.+'
+    compile project(':androidUtil')
 }
 
 android {
@@ -49,6 +49,7 @@ android {
 
 }
 
-apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/bintray_2.gradle'
+//apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/bintray_2.gradle'
 //apply from: './bintray.gradle'
+
 

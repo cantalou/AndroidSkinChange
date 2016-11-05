@@ -31,6 +31,7 @@ public class StaticProxyResources extends ProxyResources {
 
     public StaticProxyResources(Resources res) {
         super(res);
+        replaceCacheEntry();
     }
 
     /**

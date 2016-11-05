@@ -21,10 +21,13 @@ import java.io.InputStream;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
+ * 代理获取资源<p>
+ * 1.拦截所有调用方法注册资源ID和key的对应关系<p>
+ * 2.实现loadDrawable(int id)和loadColorStateList(int id)自定义加载资源<p>
+ *
  * @author cantalou
  * @date 2015年12月12日 下午11:07:07
  */
-@SuppressWarnings("deprecation")
 public abstract class ProxyResources extends Resources {
 
     public static final boolean logEnable = true;
@@ -60,7 +63,6 @@ public abstract class ProxyResources extends Resources {
     public ProxyResources(Resources res) {
         super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
         cacheKeyAndIdManager = SkinManager.getInstance().getCacheKeyAndIdManager();
-        replaceCacheEntry();
     }
 
     @Override
@@ -97,6 +99,12 @@ public abstract class ProxyResources extends Resources {
     public Drawable getDrawableForDensity(int id, int density) throws NotFoundException {
         cacheKeyAndIdManager.registerDrawable(id);
         return super.getDrawableForDensity(id, density);
+    }
+
+    @Override
+    public XmlResourceParser getLayout(int id) throws NotFoundException {
+        cacheKeyAndIdManager.registerLayout(id);
+        return super.getLayout(id);
     }
 
     protected String toString(TypedValue value) {
@@ -142,6 +150,13 @@ public abstract class ProxyResources extends Resources {
         }
     }
 
+    /**
+     * 尝试使用 loadDrawable(Resources, TypedValue, int)方法进行自定义的资源加载,失败是再调用getDrawable(int)加载
+     *
+     * @param id 资源id
+     * @return 资源
+     * @throws NotFoundException
+     */
     public Drawable loadDrawable(int id) throws NotFoundException {
         TypedValue value = typedValueCache;
         getValue(id, value, true);
@@ -155,14 +170,8 @@ public abstract class ProxyResources extends Resources {
         return dr;
     }
 
-    @Override
-    public XmlResourceParser getLayout(int id) throws NotFoundException {
-        cacheKeyAndIdManager.registerLayout(id);
-        return super.getLayout(id);
-    }
-
     /**
-     * 实现Resource.loadDrawable方法, 增加在加载图片资源时内存占用调整
+     * 和Resource.getDrawable(int)一样的加载资源实现, 增加在加载图片资源时内存占用调整
      *
      * @param res
      * @param value
@@ -270,5 +279,4 @@ public abstract class ProxyResources extends Resources {
         resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
     }
 
-    public abstract void replaceCacheEntry();
 }

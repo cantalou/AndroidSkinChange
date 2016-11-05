@@ -17,11 +17,11 @@ public class SkinResources extends Resources {
      * an AssetManager.
      *
      * @param assets Previously created AssetManager.
-     * @param res
+     * @param defRes
      */
-    public SkinResources(AssetManager assets, Resources res, String skinName) {
-        super(assets, res.getDisplayMetrics(), res.getConfiguration());
-        this.defaultResources = res;
+    public SkinResources(AssetManager assets, Resources defRes, String skinName) {
+        super(assets, defRes.getDisplayMetrics(), defRes.getConfiguration());
+        this.defaultResources = defRes;
         this.skinName = skinName;
     }
 
