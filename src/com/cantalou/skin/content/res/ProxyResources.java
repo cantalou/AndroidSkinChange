@@ -28,7 +28,7 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
  * @author cantalou
  * @date 2015年12月12日 下午11:07:07
  */
-public abstract class ProxyResources extends Resources {
+public class ProxyResources extends Resources {
 
     public static final boolean logEnable = true;
 

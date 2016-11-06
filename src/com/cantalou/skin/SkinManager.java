@@ -6,10 +6,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.*;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory;
@@ -19,6 +16,8 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
+import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
+import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.StringUtils;
@@ -46,7 +45,7 @@ import static com.cantalou.android.util.ReflectUtil.set;
  * @date 2015年10月31日 下午3:49:46
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class SkinManager {
+public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
     /**
      * 当前皮肤存储key
@@ -56,7 +55,7 @@ public class SkinManager {
     /**
      * activity
      */
-    ArrayList<Activity> activitys = new ArrayList<Activity>();
+    ArrayList<Activity> activities = new ArrayList<Activity>();
 
     /**
      * 当前是否正在切换资源
@@ -76,7 +75,7 @@ public class SkinManager {
     /**
      * 资源
      */
-    private ProxyResources currentSkinResources;
+    private ProxyResources currentResources;
 
     /**
      * 资源切换时提交View刷新任务到UI线程
@@ -94,6 +93,8 @@ public class SkinManager {
     private CacheKeyAndIdManager cacheKeyAndIdManager;
 
     private ResourcesManager resourcesManager;
+
+    private ActivityLifecycleManager activityLifecycleManager;
 
     ArrayDeque<Runnable> serialTasks = new ArrayDeque<Runnable>() {
         Runnable mActive;
@@ -130,6 +131,9 @@ public class SkinManager {
 
         resourcesManager = ResourcesManager.getInstance();
 
+        activityLifecycleManager = ActivityLifecycleManager.getInstance();
+        activityLifecycleManager.registerActivityLifecycleCallbacks(this);
+
         Log.LOG_TAG_FLAG = "-skin";
     }
 
@@ -139,40 +143,6 @@ public class SkinManager {
 
     public static com.cantalou.skin.SkinManager getInstance() {
         return InstanceHolder.INSTANCE;
-    }
-
-    /**
-     * 通过替换ActivityThread中的mInstrumentation属性, 拦截Activity的生命周期回调, 添加皮肤功能
-     */
-    public void initByReplaceInstrumentation(Context cxt) {
-
-        if (Looper.getMainLooper() != Looper.myLooper()) {
-            throw new RuntimeException("applicationOnCreate method can only be called in the main thread");
-        }
-
-        Class<?> activityThreadClass = forName("android.app.ActivityThread");
-        if (activityThreadClass == null) {
-            Log.w("Can not loadclass android.app.ActivityThread.");
-            return;
-        }
-
-        Object activityThread = invoke(activityThreadClass, "currentActivityThread");
-        if (activityThread == null) {
-            Log.w("Can not get ActivityThread instance.");
-            return;
-        }
-
-        Instrumentation instrumentation = invoke(activityThread, "getInstrumentation");
-        if (instrumentation == null) {
-            Log.w("Can not load class android.app.ActivityThread.");
-            return;
-        }
-
-        SkinInstrumentation skinInstrumentation = new SkinInstrumentation(this, instrumentation);
-        if (!set(activityThread, "mInstrumentation", skinInstrumentation)) {
-            Log.w("Fail to replace field named mInstrumentation.");
-            return;
-        }
     }
 
     /**
@@ -243,15 +213,15 @@ public class SkinManager {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                ProxyResources originalResources = currentSkinResources;
+                ProxyResources originalResources = currentResources;
                 try {
                     Log.d("start change resource");
-                    final ProxyResources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
+                    final ProxyResources res = resourcesManager.createProxyResource(path, defaultResources);
                     if (res == null) {
                         return false;
                     }
-                    currentSkinResources = res;
-                    List<Activity> temp = (List<Activity>) activitys.clone();
+                    currentResources = res;
+                    List<Activity> temp = (List<Activity>) activities.clone();
                     for (int i = temp.size() - 1; i >= 0; i--) {
                         Log.d("change :{} resources to :{}", temp.get(i), res);
                         change(temp.get(i), res);
@@ -262,7 +232,7 @@ public class SkinManager {
                     return true;
                 } catch (Exception e) {
                     Log.e(e);
-                    currentSkinResources = originalResources;
+                    currentResources = originalResources;
                     return false;
                 }
             }
@@ -349,11 +319,11 @@ public class SkinManager {
 
         Object tag = v.getTag(ViewHandler.ATTR_HANDLER_KEY);
         if (tag != null && tag instanceof ViewHandler) {
-            ((AbstractHandler) tag).reloadAttr(v, currentSkinResources);
+            ((AbstractHandler) tag).reloadAttr(v, currentResources);
         } else {
             AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
             if (ah != null) {
-                ah.reloadAttr(v, currentSkinResources);
+                ah.reloadAttr(v, currentResources);
             }
         }
 
@@ -366,19 +336,20 @@ public class SkinManager {
         }
     }
 
-    /**
-     * 初始化defaultResources, 判断使用什么资源,
-     *
-     * @param activity
-     */
-    public void callActivityOnCreate(Activity activity) {
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+        activities.remove(activity);
+    }
+
+    @Override
+    public void beforeActivityOnCreate(Activity activity, Bundle savedInstanceState) {
 
         if (defaultResources == null) {
-            defaultResources = new StaticProxyResources(activity.getResources());
+            defaultResources = new ProxyResources(activity.getResources());
             Log.v("init defaultResources and registerViewFactory ");
         }
 
-        activitys.add(activity);
+        activities.add(activity);
 
         Context baseContext = activity.getBaseContext();
         if (!(baseContext instanceof SkinContextWrapper)) {
@@ -394,8 +365,8 @@ public class SkinManager {
             currentSkinPath = prefSkinPath;
         }
 
-        ProxyResources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
-        currentSkinResources = res;
+        ProxyResources res = resourcesManager.createProxyResource(currentSkinPath, defaultResources);
+        currentResources = res;
         try {
             changeActivityResources(activity, res);
         } catch (Exception e) {
@@ -450,10 +421,6 @@ public class SkinManager {
         }
     }
 
-    public void onDestroy(Activity activity) {
-        activitys.remove(activity);
-    }
-
     /**
      * 当前是否正在切换资源
      *
@@ -475,20 +442,20 @@ public class SkinManager {
         onResourcesChangeFinishListeners.remove(listener);
     }
 
-    public ProxyResources getCurrentSkinResources() {
-        return currentSkinResources;
+    public ProxyResources getCurrentResources() {
+        return currentResources;
     }
 
-    public void setCurrentSkinResources(ProxyResources currentSkinResources) {
-        this.currentSkinResources = currentSkinResources;
+    public void setCurrentResources(ProxyResources currentResources) {
+        this.currentResources = currentResources;
     }
 
     public Resources getDefaultResources() {
         return defaultResources;
     }
 
-    public ArrayList<Activity> getActivitys() {
-        return activitys;
+    public ArrayList<Activity> getActivities() {
+        return activities;
     }
 
     public CacheKeyAndIdManager getCacheKeyAndIdManager() {

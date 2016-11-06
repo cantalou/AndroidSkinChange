@@ -1,13 +1,9 @@
 package com.cantalou.skin.content.res;
 
-import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
-import android.util.SparseIntArray;
-import android.util.TypedValue;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 
@@ -19,7 +15,7 @@ import com.cantalou.android.util.array.BinarySearchIntArray;
  * @author cantalou
  * @date 2016年11月5日 下午3:15:02
  */
-public class KeepIdSkinProxyResources extends StaticProxyResources {
+public class KeepIdSkinProxyResources extends ProxyResources {
 
     /**
      * 默认资源
@@ -32,7 +28,6 @@ public class KeepIdSkinProxyResources extends StaticProxyResources {
     protected BinarySearchIntArray notFoundedSkinIds = new BinarySearchIntArray();
 
     protected ResourcesManager resourcesManager;
-
 
     /**
      * @param skin 皮肤资源

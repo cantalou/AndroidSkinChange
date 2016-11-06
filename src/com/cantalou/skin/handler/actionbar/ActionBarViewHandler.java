@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.content.res.ResourcesCompat;
+import com.cantalou.skin.util.ResourcesUtil;
 
 /**
  * ActionBar logo,icon刷新
@@ -76,7 +76,7 @@ public class ActionBarViewHandler extends ActionBarHandler {
 		}
 	    }
 	    if (logo == 0) {
-		logo = ResourcesCompat.loadLogoFromManifest((Activity) context);
+		logo = ResourcesUtil.loadLogoFromManifest((Activity) context);
 	    }
 	}
 	if (logo != 0) {
@@ -96,7 +96,7 @@ public class ActionBarViewHandler extends ActionBarHandler {
 		}
 	    }
 	    if (icon == 0) {
-		icon = ResourcesCompat.loadIconFromManifest((Activity) context);
+		icon = ResourcesUtil.loadIconFromManifest((Activity) context);
 	    }
 	}
 	if (icon != 0) {

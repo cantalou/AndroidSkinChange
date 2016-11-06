@@ -18,7 +18,6 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.content.res.ProxyResources;
-import com.cantalou.skin.content.res.ProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -164,7 +163,7 @@ public final class CacheKeyAndIdManager {
         if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
-        ArrayList<Activity> activities = skinManager.getActivitys();
+        ArrayList<Activity> activities = skinManager.getActivities();
         int size = activities.size();
         if (size == 0) {
             return;
@@ -217,7 +216,7 @@ public final class CacheKeyAndIdManager {
         if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
-        ArrayList<Activity> activities = skinManager.getActivitys();
+        ArrayList<Activity> activities = skinManager.getActivities();
         int size = activities.size();
         if (size == 0) {
             return;

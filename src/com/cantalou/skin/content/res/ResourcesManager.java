@@ -44,11 +44,6 @@ public class ResourcesManager {
     public static final String DEFAULT_RESOURCES = "defaultResources";
 
     /**
-     * 夜间模式皮肤资源名称, 夜间模式属于内置资源包
-     */
-    public static final String DEFAULT_NIGHT_RESOURCES = "defaultNightResources";
-
-    /**
      * 已载入的资源
      */
     private HashMap<String, WeakReference<ProxyResources>> cacheResources = new HashMap<String, WeakReference<ProxyResources>>();
@@ -59,6 +54,7 @@ public class ResourcesManager {
     protected BinarySearchIntArray safeLayout = new BinarySearchIntArray();
 
     private ResourcesManager() {
+        replaceCacheEntry();
     }
 
     private static class InstanceHolder {
@@ -102,15 +98,14 @@ public class ResourcesManager {
     /**
      * 创建代理资源
      *
-     * @param cxt
      * @param path 资源路径
      * @return 代理Resources, 如果path文件不存在或者解析失败返回null
      */
-    public ProxyResources createProxyResource(Context cxt, String path, ProxyResources defResources) {
+    public ProxyResources createProxyResource(String path, Resources defResources) {
 
         if (DEFAULT_RESOURCES.equals(path)) {
             Log.d("skinPath is:{} , return defaultResources");
-            return defResources;
+            return defResources instanceof ProxyResources ? (ProxyResources)defResources : new ProxyResources(defResources);
         }
 
         ProxyResources proxyResources = null;
@@ -122,16 +117,12 @@ public class ResourcesManager {
             }
         }
 
-        if (DEFAULT_NIGHT_RESOURCES.equals(path)) {
-            proxyResources = new NightResources(cxt.getPackageName(), defResources, defResources, path);
-        } else {
-            Resources skinResources = createResource(path, defResources);
-            if (skinResources == null) {
-                Log.w("Fail to create resources path :{}", path);
-                return null;
-            }
-            proxyResources = new SkinProxyResources(cxt.getPackageName(), skinResources, defResources, path);
+        Resources skinResources = createResource(path, defResources);
+        if (skinResources == null) {
+            Log.w("Fail to create resources path :{}", path);
+            return null;
         }
+        proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
 
         synchronized (this) {
             cacheResources.put(path, new WeakReference<ProxyResources>(proxyResources));

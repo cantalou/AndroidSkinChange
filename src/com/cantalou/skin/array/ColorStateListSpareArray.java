@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.SkinManager;
+import com.cantalou.skin.content.res.ProxyResources;
 
 /**
  * 系统版本低于Build.VERSION_CODES.
@@ -18,7 +19,6 @@ import com.cantalou.skin.SkinManager;
 public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
 
     private SparseLongIntArray resourceIdKeyMap;
-    ;
 
     /**
      * Resources mColorStateListCache
@@ -37,10 +37,12 @@ public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
     public ColorStateList get(int key) {
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
-            return skinManager.getCurrentSkinResources().loadColorStateList(id);
-        } else {
-            return originalCache.get(key);
+            ProxyResources res = skinManager.getCurrentResources();
+            if (res != null) {
+                return res.loadColorStateList(id);
+            }
         }
+        return originalCache.get(key);
     }
 
     public SparseArray<ColorStateList> getOriginalCache() {
