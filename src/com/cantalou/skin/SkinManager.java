@@ -216,7 +216,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                 ProxyResources originalResources = currentResources;
                 try {
                     Log.d("start change resource");
-                    final ProxyResources res = resourcesManager.createProxyResource(path, defaultResources);
+                    final ProxyResources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
                     if (res == null) {
                         return false;
                     }
@@ -365,7 +365,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             currentSkinPath = prefSkinPath;
         }
 
-        ProxyResources res = resourcesManager.createProxyResource(currentSkinPath, defaultResources);
+        ProxyResources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
         currentResources = res;
         try {
             changeActivityResources(activity, res);
