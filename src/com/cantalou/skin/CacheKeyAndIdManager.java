@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.cantalou.skin;
 
 import android.annotation.TargetApi;

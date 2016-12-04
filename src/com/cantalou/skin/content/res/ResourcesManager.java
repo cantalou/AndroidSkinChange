@@ -12,8 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
-import android.util.TypedValue;
 import com.cantalou.android.util.Log;
+import com.cantalou.android.util.StringUtils;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.skin.CacheKeyAndIdManager;
 import com.cantalou.skin.SkinManager;
@@ -30,8 +30,7 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
- * 3.由于代码的实现适合布局文件是相对应的,所有在进行换肤的时候是布局文件的更换是容易出错的 如:点击事件, 界面动画. 如果皮肤资源包中不存在代码引用的View则会产生Crash,
- * 当确定布局文件是安全的时候可调用registerSafeLayout进行注册
+ * 3.
  *
  * @author cantalou
  * @date 2016年5月2日 下午9:11:12
@@ -44,24 +43,22 @@ public class ResourcesManager {
     public static final String DEFAULT_RESOURCES = "defaultResources";
 
     /**
-     * 夜间模式资源
-     */
-    public static final String NIGHT_RESOURCES = "nightResources";
-
-    /**
      * 已载入的资源
      */
     private HashMap<String, WeakReference<ProxyResources>> cacheResources = new HashMap<String, WeakReference<ProxyResources>>();
 
     /**
-     * 确保替换布局文件是安全的
+     * 确保替换布局文件是安全的<br/>
+     * 由于代码的实现是和布局文件是相对应的, 所有在进行换肤的时候布局文件的更换是容易出错的 如:点击事件, 界面动画. <br/>
+     * 如果皮肤资源包中不存在代码引用的View元素, 图片, 色值, 则会产生Crash.<br/>
+     * 当确定布局文件是安全的时候可调用registerSafeLayout进行注册<br/>
      */
     protected BinarySearchIntArray safeLayout = new BinarySearchIntArray();
 
     protected Context context;
 
     private ResourcesManager() {
-        replaceCacheEntry();
+        //replaceCacheEntry();
     }
 
     private static class InstanceHolder {
@@ -80,8 +77,12 @@ public class ResourcesManager {
      */
     public Resources createResource(Context context, String resourcesPath, Resources defResources) {
 
-        Resources skinResources = null;
+        if (StringUtils.isBlank(resourcesPath)) {
+            Log.w("param resourcesPath is blank");
+            return null;
+        }
 
+        Resources skinResources = null;
         File resourcesFile = new File(resourcesPath);
         if (!resourcesFile.exists()) {
             Log.w(resourcesFile + " does not exist");
@@ -97,7 +98,7 @@ public class ResourcesManager {
             }
             skinResources = new SkinResources(am, defResources, resourcesPath);
         } catch (Throwable e) {
-            Log.e(e, "Fail to initialze AssetManager");
+            Log.e(e, "Fail to init AssetManager");
         }
         return skinResources;
     }
@@ -123,23 +124,13 @@ public class ResourcesManager {
                 return proxyResources;
             }
         }
-        Resources skinResources = null;
-        if (NIGHT_RESOURCES.equals(path)) {
-            skinResources = createResource(context, path, defResources);
-            if (skinResources == null) {
-                Log.w("Fail to create resources path :{}", path);
-                return null;
-            }
-            proxyResources = new KeepIdNightResources(skinResources, defResources);
-        } else {
-            skinResources = createResource(context, path, defResources);
-            if (skinResources == null) {
-                Log.w("Fail to create resources path :{}", path);
-                return null;
-            }
-            proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
-        }
 
+        Resources skinResources = createResource(context, path, defResources);
+        if (skinResources == null) {
+            Log.w("Fail to create resources path :{}", path);
+            return null;
+        }
+        proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
 
         synchronized (this) {
             cacheResources.put(path, new WeakReference<ProxyResources>(proxyResources));
