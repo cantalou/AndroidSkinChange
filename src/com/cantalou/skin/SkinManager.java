@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
+import com.cantalou.android.manager.system.SystemCompat;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.StringUtils;
@@ -143,6 +144,13 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * 初始化<br/>
+     * 1.空实现触发ActivityLifecycleManager的初始化
+     */
+    public void init() {
+
+    }
 
     /**
      * 注册自定义的ViewFactory到LayoutInflater中,实现对View生成的拦截

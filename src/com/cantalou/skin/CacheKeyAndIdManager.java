@@ -31,13 +31,7 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
  * @author cantalou
  * @date 2016年1月31日 下午5:30:09
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public final class CacheKeyAndIdManager {
-
-    /**
-     * 是否检测不同资源id相同资源key的情况
-     */
-    public static boolean checkDuplicatedKey = true;
 
     /**
      * 资源缓存key与资源id的映射
@@ -58,11 +52,6 @@ public final class CacheKeyAndIdManager {
      * 菜单id和菜单icon资源id映射
      */
     private SparseIntArray menuItemIdAndIconIdMap = new SparseIntArray();
-
-    /**
-     * 已处理过的资源id,包括图片,颜色,selector文件,xml文件
-     */
-    private BinarySearchIntArray handledDrawableId = new BinarySearchIntArray();
 
     /**
      * 缓存对象
@@ -92,33 +81,25 @@ public final class CacheKeyAndIdManager {
             return;
         }
 
-        if (handledDrawableId.contains(id)) {
-            Log.v("Registered drawable id:{}, ignore", id);
-            return;
-        }
         Resources defaultResources = skinManager.getDefaultResources();
 
         TypedValue value = cacheValue;
         defaultResources.getValue(id, value, true);
         long key;
-        int exitsId;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
             boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
             key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
             if (isColorDrawable) {
-                exitsId = colorDrawableCacheKeyIdMap.put(key, id);
+                colorDrawableCacheKeyIdMap.put(key, id);
             } else {
-                exitsId = drawableCacheKeyIdMap.put(key, id);
+                drawableCacheKeyIdMap.put(key, id);
             }
         } else {
             key = (((long) value.assetCookie) << 32) | value.data;
-            exitsId = drawableCacheKeyIdMap.put(key, id);
+            drawableCacheKeyIdMap.put(key, id);
         }
-        if (checkDuplicatedKey && exitsId > 0) {
-            throw new IllegalStateException("Different resources id maps to the same key, value:" + value);
-        }
+
         Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
-        handledDrawableId.put(id);
     }
 
     /**
@@ -130,10 +111,6 @@ public final class CacheKeyAndIdManager {
             return;
         }
 
-        if (handledDrawableId.contains(id)) {
-            Log.v("Registered colorStateList id:{}, ignore", id);
-            return;
-        }
         Resources defaultResources = skinManager.getDefaultResources();
 
         TypedValue value = cacheValue;
@@ -144,11 +121,9 @@ public final class CacheKeyAndIdManager {
         } else {
             key = (value.assetCookie << 24) | value.data;
         }
-        if (checkDuplicatedKey && colorStateListCacheKeyIdMap.put(key, id) > 0) {
-            throw new IllegalStateException("Different resources id maps to the same key,value:" + value);
-        }
+        colorStateListCacheKeyIdMap.put(key, id);
+
         Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
-        handledDrawableId.put(id);
     }
 
     /**
@@ -219,14 +194,8 @@ public final class CacheKeyAndIdManager {
             return;
         }
 
-        if (handledDrawableId.contains(id)) {
-            Log.v("Registered layout id:{}, ignore", id);
-            return;
-        }
-
         Resources defaultResources = skinManager.getDefaultResources();
         Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
-        handledDrawableId.put(id);
 
         if (isMenuLayout(defaultResources, id)) {
             registerMenu(id);
@@ -302,6 +271,5 @@ public final class CacheKeyAndIdManager {
         colorDrawableCacheKeyIdMap.clear();
         colorStateListCacheKeyIdMap.clear();
         menuItemIdAndIconIdMap.clear();
-        handledDrawableId.clear();
     }
 }
