@@ -37,15 +37,14 @@ public class ColorStateListLongSpareArray extends LongSparseArray<ColorStateList
 
     @Override
     public ColorStateList get(long key) {
-        ColorStateList result = null;
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
             ProxyResources res = skinManager.getCurrentResources();
             if (res != null) {
-                result = res.getColorStateList(id);
+                return res.loadColorStateList(id);
             }
         }
-        return result != null ? result : skinManager.getDefaultResources().getColorStateList(id);
+        return originalCache.get(key);
     }
 
     public LongSparseArray<ColorStateList> getOriginalCache() {

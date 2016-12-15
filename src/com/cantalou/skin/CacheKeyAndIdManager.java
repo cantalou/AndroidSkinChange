@@ -1,15 +1,11 @@
 package com.cantalou.skin;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
@@ -39,11 +35,6 @@ public final class CacheKeyAndIdManager {
     private SparseLongIntArray drawableCacheKeyIdMap = new SparseLongIntArray();
 
     /**
-     * 颜色缓存key与资源id的映射
-     */
-    private SparseLongIntArray colorDrawableCacheKeyIdMap = new SparseLongIntArray();
-
-    /**
      * 颜色StateList缓存key与资源id的映射
      */
     private SparseLongIntArray colorStateListCacheKeyIdMap = new SparseLongIntArray();
@@ -52,6 +43,11 @@ public final class CacheKeyAndIdManager {
      * 菜单id和菜单icon资源id映射
      */
     private SparseIntArray menuItemIdAndIconIdMap = new SparseIntArray();
+
+    /**
+     * 已注册扫描过的布局文件
+     */
+    private BinarySearchIntArray registeredLayout = new BinarySearchIntArray();
 
     /**
      * 缓存对象
@@ -75,7 +71,7 @@ public final class CacheKeyAndIdManager {
     /**
      * 注册图片资源id
      */
-    public synchronized void registerDrawable(int id) {
+    private synchronized void registerDrawable(int id) {
 
         if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
@@ -86,26 +82,19 @@ public final class CacheKeyAndIdManager {
         TypedValue value = cacheValue;
         defaultResources.getValue(id, value, true);
         long key;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-            boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
-            key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
-            if (isColorDrawable) {
-                colorDrawableCacheKeyIdMap.put(key, id);
-            } else {
-                drawableCacheKeyIdMap.put(key, id);
-            }
-        } else {
-            key = (((long) value.assetCookie) << 32) | value.data;
-            drawableCacheKeyIdMap.put(key, id);
-        }
+        boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
 
-        Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
+        if (!isColorDrawable) {
+            key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
+            drawableCacheKeyIdMap.put(key, id);
+            Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
+        }
     }
 
     /**
      * 注册资源id
      */
-    public synchronized void registerColorStateList(int id) {
+    private synchronized void registerColorStateList(int id) {
 
         if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
@@ -169,7 +158,6 @@ public final class CacheKeyAndIdManager {
             for (Object menuItem : items) {
                 int iconResId = get(menuItem, "mIconResId");
                 if (iconResId > 0) {
-                    registerDrawable(iconResId);
                     int itemId = get(menuItem, "mId");
                     menuItemIdAndIconIdMap.put(itemId, iconResId);
                 }
@@ -185,9 +173,15 @@ public final class CacheKeyAndIdManager {
      * @param id
      */
     public synchronized void registerLayout(int id) {
+
         if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
+
+        if (registeredLayout.contains(id)) {
+            return;
+        }
+
         ArrayList<Activity> activities = skinManager.getActivities();
         int size = activities.size();
         if (size == 0) {
@@ -199,18 +193,8 @@ public final class CacheKeyAndIdManager {
 
         if (isMenuLayout(defaultResources, id)) {
             registerMenu(id);
-        } else {
-            Activity activity = activities.get(size - 1);
-            LayoutInflater li = activity.getLayoutInflater();
-
-            try {
-                // Spcify parent view if layout contains merge element
-                ViewGroup parent = new FrameLayout(activity);
-                li.inflate(id, parent);
-            } catch (Exception e) {
-                Log.e(e);
-            }
         }
+        registeredLayout.put(id);
     }
 
     /**
@@ -250,10 +234,6 @@ public final class CacheKeyAndIdManager {
         return drawableCacheKeyIdMap;
     }
 
-    public SparseLongIntArray getColorDrawableCacheKeyIdMap() {
-        return colorDrawableCacheKeyIdMap;
-    }
-
     public SparseLongIntArray getColorStateListCacheKeyIdMap() {
         return colorStateListCacheKeyIdMap;
     }
@@ -268,7 +248,6 @@ public final class CacheKeyAndIdManager {
 
     public void reset() {
         drawableCacheKeyIdMap.clear();
-        colorDrawableCacheKeyIdMap.clear();
         colorStateListCacheKeyIdMap.clear();
         menuItemIdAndIconIdMap.clear();
     }

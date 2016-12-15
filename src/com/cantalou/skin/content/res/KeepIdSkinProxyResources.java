@@ -6,6 +6,7 @@ import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
+import com.cantalou.skin.ResourcesManager;
 
 /**
  * 应用皮肤Resources代理类, 加载资源时优先加载皮肤资源包中的资源, 皮肤资源包 不存在指定的资源时, 使用默认资源.<br>
@@ -58,7 +59,7 @@ public class KeepIdSkinProxyResources extends ProxyResources {
 
         Drawable result = null;
         try {
-            result = super.loadDrawable(id);
+            result = super.getDrawable(id);
             Log.d("从皮肤资源包中加载资源id:{},result:{}", toHex(id), result);
         } catch (NotFoundException e) {
             Log.e(e);

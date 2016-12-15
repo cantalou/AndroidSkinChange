@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.SkinTypeArray;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.view.*;
@@ -15,13 +16,11 @@ import android.widget.ImageView;
 
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
-import com.cantalou.android.manager.system.SystemCompat;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.content.SkinContextWrapper;
 import com.cantalou.skin.content.res.ProxyResources;
-import com.cantalou.skin.content.res.ResourcesManager;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.layout.factory.ViewFactory;
@@ -92,6 +91,8 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
     private ActivityLifecycleManager activityLifecycleManager;
 
+    private SkinTypeArray skinTypeArray;
+
     /**
      * 串行执行ui更新任务
      */
@@ -132,6 +133,9 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
         activityLifecycleManager = ActivityLifecycleManager.getInstance();
         activityLifecycleManager.registerActivityLifecycleCallbacks(this);
+
+        skinTypeArray = new SkinTypeArray();
+        skinTypeArray.setSkinManager(this);
 
         Log.LOG_TAG_FLAG = "-skin";
     }
@@ -294,6 +298,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      * @param toRes    新资源
      */
     public void changeActivityResources(Activity activity, Resources toRes) {
+
         // ContextThemeWrapper add mResources field in JELLY_BEAN
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             Log.v("after JELLY_BEAN change Activity:{} to Resources :{} ,result:{} ", activity, toRes, set(activity, "mResources", toRes));
@@ -354,6 +359,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
         if (defaultResources == null) {
             defaultResources = new ProxyResources(activity.getResources());
+            set(defaultResources, "mCachedStyledAttributes", skinTypeArray);
             Log.v("init defaultResources and registerViewFactory ");
         }
 

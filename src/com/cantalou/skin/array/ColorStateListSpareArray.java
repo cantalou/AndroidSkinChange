@@ -35,15 +35,14 @@ public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
 
     @Override
     public ColorStateList get(int key) {
-        ColorStateList result = null;
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
             ProxyResources res = skinManager.getCurrentResources();
             if (res != null) {
-                result = res.getColorStateList(id);
+                return res.loadColorStateList(id);
             }
         }
-        return result != null ? result : skinManager.getDefaultResources().getColorStateList(id);
+        return originalCache.get(key) ;
     }
 
     public SparseArray<ColorStateList> getOriginalCache() {
