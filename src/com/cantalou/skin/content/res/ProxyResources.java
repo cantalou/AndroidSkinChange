@@ -66,11 +66,6 @@ public class ProxyResources extends Resources {
     }
 
     @Override
-    public int getColor(int id) throws NotFoundException {
-        return super.getColor(id);
-    }
-
-    @Override
     public XmlResourceParser getLayout(int id) throws NotFoundException {
         cacheKeyAndIdManager.registerLayout(id);
         return super.getLayout(id);
