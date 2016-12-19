@@ -75,6 +75,7 @@ public class SkinProxyResources extends ProxyResources {
      * @return 皮肤资源id, 不存在皮肤资源时,返回0
      */
     public synchronized int toSkinId(int id) {
+
         if (id == 0) {
             return 0;
         }
@@ -136,14 +137,14 @@ public class SkinProxyResources extends ProxyResources {
 
         Drawable result = null;
         try {
-            result = getDrawable(skinId);
+            result = loadDrawable(res, value, skinId);
         } catch (Exception e) {
             Log.e(e);
         }
 
         // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
         if (result == null && skinId != 0) {
-            result = getDrawable(skinId);
+            result =loadDrawable(this, value, id);
         }
         return result;
     }
