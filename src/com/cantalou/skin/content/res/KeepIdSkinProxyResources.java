@@ -1,12 +1,16 @@
 package com.cantalou.skin.content.res;
 
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.TypedValue;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.skin.ResourcesManager;
+import com.cantalou.skin.SkinManager;
 
 /**
  * 应用皮肤Resources代理类, 加载资源时优先加载皮肤资源包中的资源, 皮肤资源包 不存在指定的资源时, 使用默认资源.<br>
@@ -30,6 +34,8 @@ public class KeepIdSkinProxyResources extends ProxyResources {
 
     protected ResourcesManager resourcesManager;
 
+    protected SkinManager skinManager;
+
     /**
      * @param skin 皮肤资源
      * @param def  默认资源
@@ -37,69 +43,77 @@ public class KeepIdSkinProxyResources extends ProxyResources {
     public KeepIdSkinProxyResources(Resources skin, Resources def) {
         super(skin);
         this.def = def;
+        skinManager = SkinManager.getInstance();
         resourcesManager = ResourcesManager.getInstance();
     }
 
     public Drawable loadDrawable(int id) throws NotFoundException {
 
-        if (id == 0) {
+        if (notFoundedSkinIds.contains(id)) {
             return null;
         }
 
-        //系统资源直接返回
-        if ((id & APP_ID_MASK) != APP_ID_MASK) {
-            return getDrawable(id);
-        }
-
-        //皮肤资源包中不存在, 直接从默认资源包中返回
-        if (notFoundedSkinIds.contains(id)) {
-            Log.d("从皮肤资源包中不存在资源id:{}", toHex(id));
-            return def.getDrawable(id);
-        }
-
-        Drawable result = null;
+        Resources res = skinManager.getCurrentResources();
+        TypedValue value = typedValueCache;
         try {
-            result = super.getDrawable(id);
-            Log.d("从皮肤资源包中加载资源id:{},result:{}", toHex(id), result);
-        } catch (NotFoundException e) {
-            Log.e(e);
-            notFoundedSkinIds.put(id);
-            result = def.getDrawable(id);
-            Log.d("从皮肤资源包中加载资源失败id:{}, 从默认资源包加载", toHex(id));
+            res.getValue(id, value, true);
+            return loadDrawable(res, value, id);
+        } catch (Exception e) {
+            Log.w("Fail to loadDrawable from Resources {}  ,{}", res, e);
         }
-
-        return result;
+        return null;
     }
 
     public ColorStateList loadColorStateList(int id) throws NotFoundException {
 
-        if (id == 0) {
+        if (notFoundedSkinIds.contains(id)) {
             return null;
         }
 
-        //系统资源直接返回
-        if ((id & APP_ID_MASK) != APP_ID_MASK) {
-            return getColorStateList(id);
-        }
-
-        //皮肤资源包中不存在, 直接从默认资源包中返回
-        if (notFoundedSkinIds.contains(id)) {
-            Log.d("从皮肤资源包中不存在资源id:{}", toHex(id));
-            return def.getColorStateList(id);
-        }
-
-        ColorStateList result = null;
+        Resources res = skinManager.getCurrentResources();
+        TypedValue value = typedValueCache;
         try {
-            result = getColorStateList(id);
-            Log.d("从皮肤资源包中加载资源id:{},result:{}", toHex(id), result);
-        } catch (NotFoundException e) {
-            Log.e(e);
-            notFoundedSkinIds.put(id);
-            result = def.getColorStateList(id);
-            Log.d("从皮肤资源包中加载资源失败id:{}, 从默认资源包加载", toHex(id));
+            res.getValue(id, value, true);
+            return loadColorStateList(res, value, id);
+        } catch (Exception e) {
+            Log.w("Fail to loadColorStateList from Resources {}  ,{}", res, e);
+        }
+        return null;
+    }
+
+    @Override
+    public void getValue(int id, TypedValue outValue, boolean resolveRefs) throws NotFoundException {
+
+        if (notFoundedSkinIds.contains(id)) {
+            super.getValue(id, outValue, resolveRefs);
+            return ;
         }
 
-        return result;
+        Resources res = skinManager.getCurrentResources();
+        try {
+            res.getValue(id, outValue, resolveRefs);
+        } catch (Exception e) {
+            Log.w("Fail to getValue from Resources {}  ,{}", res, e);
+            super.getValue(id, outValue, resolveRefs);
+        }
+    }
+
+    @Override
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+    public void getValueForDensity(int id, int density, TypedValue outValue, boolean resolveRefs) throws NotFoundException {
+
+        if (notFoundedSkinIds.contains(id)) {
+            super.getValueForDensity(id, density, outValue, resolveRefs);
+            return ;
+        }
+
+        Resources res = skinManager.getCurrentResources();
+        try {
+            res.getValueForDensity(id, density, outValue, resolveRefs);
+        } catch (Exception e) {
+            Log.w("Fail to getValue from Resources {}  ,{}", res, e);
+            super.getValueForDensity(id, density, outValue, resolveRefs);
+        }
     }
 
     public void clearCache() {

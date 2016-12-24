@@ -149,14 +149,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     }
 
     /**
-     * 初始化<br/>
-     * 1.空实现触发ActivityLifecycleManager的初始化
-     */
-    public void init() {
-
-    }
-
-    /**
      * 注册自定义的ViewFactory到LayoutInflater中,实现对View生成的拦截
      *
      * @param li

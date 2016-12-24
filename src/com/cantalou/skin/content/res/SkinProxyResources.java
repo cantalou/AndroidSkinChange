@@ -142,10 +142,6 @@ public class SkinProxyResources extends ProxyResources {
             Log.e(e);
         }
 
-        // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
-        if (result == null && skinId != 0) {
-            result =loadDrawable(this, value, id);
-        }
         return result;
     }
 
@@ -172,15 +168,11 @@ public class SkinProxyResources extends ProxyResources {
 
         ColorStateList result = null;
         try {
-            result = loadColorStateList(skinId);
+            result = loadColorStateList(res, value, skinId);
         } catch (Exception e) {
             Log.e(e);
         }
 
-        // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
-        if (result == null && skinId != 0) {
-            result = loadColorStateList(id);
-        }
         return result;
     }
 

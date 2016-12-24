@@ -172,12 +172,12 @@ public class ResourcesManager {
             }
 
             // colorDrawable
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-                LongSparseArray<Drawable.ConstantState> originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
-                LongSparseArray<Drawable.ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedColorDrawables,
-                        cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
-                set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
-            }
+//            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
+//                LongSparseArray<Drawable.ConstantState> originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
+//                LongSparseArray<Drawable.ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedColorDrawables,
+//                        cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
+//                set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
+//            }
 
             // colorStateList
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

@@ -17,18 +17,15 @@ public class ImageViewHandler extends ViewHandler {
     @SuppressWarnings("deprecation")
     @Override
     protected void reload(View view, Resources res) {
-	super.reload(view, res);
-	if (src != 0) {
-	    ((ImageView) view).setImageDrawable(res.getDrawable(src));
-	}
+        super.reload(view, res);
+        if (src != 0) {
+            ((ImageView) view).setImageDrawable(res.getDrawable(src));
+        }
     }
 
     @Override
     public boolean parseAttr(Context context, AttributeSet attrs) {
-	src = getResourceId(attrs, "src");
-	if (src != 0) {
-	    cacheKeyAndIdManager.registerDrawable(src);
-	}
-	return super.parseAttr(context, attrs) || src != 0;
+        src = getResourceId(attrs, "src");
+        return super.parseAttr(context, attrs) || src != 0;
     }
 }
