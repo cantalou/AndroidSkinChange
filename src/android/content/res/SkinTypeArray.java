@@ -3,7 +3,9 @@ package android.content.res;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
+import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.skin.SkinManager;
+import com.cantalou.skin.content.res.ProxyResources;
 
 /**
  * @author Lin Zhiwei
@@ -11,21 +13,27 @@ import com.cantalou.skin.SkinManager;
  */
 public class SkinTypeArray extends TypedArray {
 
-    private SkinManager skinManager ;
+    private SkinManager skinManager;
 
     public void setSkinManager(SkinManager skinManager) {
         this.skinManager = skinManager;
+        Resources res = skinManager.getDefaultResources();
+        ReflectUtil.set(this, "mResources", res);
+        ReflectUtil.set(this, "mData", new int[0]);
     }
 
     @Override
     public int getColor(int index, int defValue) {
 
+        Resources res = skinManager.getCurrentResources();
+        if (!(res instanceof ProxyResources)) {
+            return super.getColor(index, defValue);
+        }
+
         TypedValue typedValue = new TypedValue();
         if (!getValue(index, typedValue)) {
             return defValue;
         }
-
-        Resources res = skinManager.getCurrentResources();
 
         final int type = typedValue.type;
         if (type == TypedValue.TYPE_NULL) {
@@ -42,12 +50,16 @@ public class SkinTypeArray extends TypedArray {
     @Override
     public Drawable getDrawable(int index) {
 
-        TypedValue typedValue = new TypedValue();
-        if (!getValue(index, typedValue)) {
+        Resources res = skinManager.getCurrentResources();
+        if (!(res instanceof ProxyResources)) {
             return super.getDrawable(index);
         }
 
-        Resources res = skinManager.getCurrentResources();
-        return res.getDrawable(typedValue.resourceId);
+        TypedValue typedValue = new TypedValue();
+        if (!getValue(index, typedValue) || !ProxyResources.isColor(typedValue)) {
+            return super.getDrawable(index);
+        }
+
+        return ((ProxyResources) res).loadDrawable(typedValue.resourceId);
     }
 }

@@ -134,7 +134,7 @@ public class ProxyResources extends Resources {
     }
 
 
-    protected final boolean isColor(TypedValue value){
+    public static final boolean isColor(TypedValue value){
         return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
     }
 
