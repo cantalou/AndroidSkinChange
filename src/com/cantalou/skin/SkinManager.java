@@ -170,6 +170,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     public void init(Context context) {
 
         this.context = context.getApplicationContext();
+        this.defaultResources = context.getResources();
 
         activityLifecycleManager = ActivityLifecycleManager.getInstance();
         activityLifecycleManager.registerActivityLifecycleCallbacks(this);
