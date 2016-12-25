@@ -25,7 +25,7 @@ public class KeepIdSkinProxyResources extends ProxyResources {
     /**
      * 默认资源
      */
-    protected Resources def;
+    protected Resources skinResource;
 
     /**
      * 皮肤资源不存在的id
@@ -41,8 +41,8 @@ public class KeepIdSkinProxyResources extends ProxyResources {
      * @param def  默认资源
      */
     public KeepIdSkinProxyResources(Resources skin, Resources def) {
-        super(skin);
-        this.def = def;
+        super(def);
+        skinResource = skin;
         skinManager = SkinManager.getInstance();
         resourcesManager = ResourcesManager.getInstance();
     }
@@ -53,13 +53,16 @@ public class KeepIdSkinProxyResources extends ProxyResources {
             return null;
         }
 
-        Resources res = skinManager.getCurrentResources();
+        Resources res = skinResource;
         TypedValue value = typedValueCache;
         try {
             res.getValue(id, value, true);
             return loadDrawable(res, value, id);
         } catch (Exception e) {
             Log.w("Fail to loadDrawable from Resources {}  ,{}", res, e);
+            if (e instanceof NotFoundException) {
+                notFoundedSkinIds.put(id);
+            }
         }
         return null;
     }
@@ -70,13 +73,16 @@ public class KeepIdSkinProxyResources extends ProxyResources {
             return null;
         }
 
-        Resources res = skinManager.getCurrentResources();
+        Resources res = skinResource;
         TypedValue value = typedValueCache;
         try {
             res.getValue(id, value, true);
             return loadColorStateList(res, value, id);
         } catch (Exception e) {
             Log.w("Fail to loadColorStateList from Resources {}  ,{}", res, e);
+            if (e instanceof NotFoundException) {
+                notFoundedSkinIds.put(id);
+            }
         }
         return null;
     }
@@ -86,15 +92,21 @@ public class KeepIdSkinProxyResources extends ProxyResources {
 
         if (notFoundedSkinIds.contains(id)) {
             super.getValue(id, outValue, resolveRefs);
-            return ;
+            return;
         }
 
-        Resources res = skinManager.getCurrentResources();
+        Resources res = skinResource;
         try {
-            res.getValue(id, outValue, resolveRefs);
+            super.getValue(id, outValue, resolveRefs);
+            if (isColor(outValue)) {
+                res.getValue(id, outValue, resolveRefs);
+            }
         } catch (Exception e) {
             Log.w("Fail to getValue from Resources {}  ,{}", res, e);
             super.getValue(id, outValue, resolveRefs);
+            if (e instanceof NotFoundException) {
+                notFoundedSkinIds.put(id);
+            }
         }
     }
 
@@ -104,31 +116,28 @@ public class KeepIdSkinProxyResources extends ProxyResources {
 
         if (notFoundedSkinIds.contains(id)) {
             super.getValueForDensity(id, density, outValue, resolveRefs);
-            return ;
+            return;
         }
 
-        Resources res = skinManager.getCurrentResources();
+        Resources res = skinResource;
         try {
-            res.getValueForDensity(id, density, outValue, resolveRefs);
+            super.getValueForDensity(id, density, outValue, resolveRefs);
+            if (isColor(outValue)) {
+                res.getValueForDensity(id, density, outValue, resolveRefs);
+            }
         } catch (Exception e) {
             Log.w("Fail to getValue from Resources {}  ,{}", res, e);
             super.getValueForDensity(id, density, outValue, resolveRefs);
+            if (e instanceof NotFoundException) {
+                notFoundedSkinIds.put(id);
+            }
         }
+
     }
 
     public void clearCache() {
         super.clearCache();
         notFoundedSkinIds.clear();
-    }
-
-    @Override
-    public XmlResourceParser getLayout(int id) throws NotFoundException {
-        return resourcesManager.isSafeLayout(id) ? super.getLayout(id) : def.getLayout(id);
-    }
-
-    @Override
-    public XmlResourceParser getXml(int id) throws NotFoundException {
-        return resourcesManager.isSafeLayout(id) ? super.getXml(id) : def.getXml(id);
     }
 
 }

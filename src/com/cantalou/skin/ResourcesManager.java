@@ -44,7 +44,7 @@ public class ResourcesManager {
     /**
      * 已载入的资源
      */
-    private HashMap<String, WeakReference<ProxyResources>> cacheResources = new HashMap<String, WeakReference<ProxyResources>>();
+    private HashMap<String, WeakReference<Resources>> cacheResources = new HashMap<String, WeakReference<Resources>>();
 
     /**
      * 确保替换布局文件是安全的<br/>
@@ -109,15 +109,15 @@ public class ResourcesManager {
      * @param path 资源路径
      * @return 代理Resources, 如果path文件不存在或者解析失败返回null
      */
-    public ProxyResources createProxyResource(Context context, String path, Resources defResources) {
+    public Resources createProxyResource(Context context, String path, Resources defResources) {
 
         if (DEFAULT_RESOURCES.equals(path)) {
             Log.d("skinPath is:{} , return defaultResources");
-            return defResources instanceof ProxyResources ? (ProxyResources) defResources : new ProxyResources(defResources);
+            return defResources ;
         }
 
-        ProxyResources proxyResources = null;
-        WeakReference<ProxyResources> resRef = cacheResources.get(path);
+        Resources proxyResources = null;
+        WeakReference<Resources> resRef = cacheResources.get(path);
         if (resRef != null) {
             proxyResources = resRef.get();
             if (proxyResources != null) {
@@ -133,7 +133,7 @@ public class ResourcesManager {
         proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
 
         synchronized (this) {
-            cacheResources.put(path, new WeakReference<ProxyResources>(proxyResources));
+            cacheResources.put(path, new WeakReference<Resources>(proxyResources));
         }
         return proxyResources;
     }
@@ -156,18 +156,18 @@ public class ResourcesManager {
             replaced = true;
 
             SkinManager skinManager = SkinManager.getInstance();
-            CacheKeyAndIdManager cacheKeyAndIdManager = skinManager.getCacheKeyAndIdManager();
+            CacheKeyIdManager cacheKeyIdManager = skinManager.getCacheKeyIdManager();
 
             // drawable
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
                 LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawablesArray[0],
-                        cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
+                        cacheKeyIdManager.getDrawableCacheKeyIdMap());
                 sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
             } else {
                 LongSparseArray<Drawable.ConstantState> originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
                 LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedDrawables,
-                        cacheKeyAndIdManager.getDrawableCacheKeyIdMap());
+                        cacheKeyIdManager.getDrawableCacheKeyIdMap());
                 set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
             }
 
@@ -175,7 +175,7 @@ public class ResourcesManager {
 //            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
 //                LongSparseArray<Drawable.ConstantState> originalPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
 //                LongSparseArray<Drawable.ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedColorDrawables,
-//                        cacheKeyAndIdManager.getColorDrawableCacheKeyIdMap());
+//                        cacheKeyIdManager.getColorDrawableCacheKeyIdMap());
 //                set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
 //            }
 
@@ -183,12 +183,12 @@ public class ResourcesManager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 LongSparseArray<ColorStateList> originalPreloadedColorStateLists16 = get(Resources.class, "sPreloadedColorStateLists");
                 LongSparseArray<ColorStateList> proxyPreloadedColorStateLists16 = new ColorStateListLongSpareArray(skinManager, originalPreloadedColorStateLists16,
-                        cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+                        cacheKeyIdManager.getColorStateListCacheKeyIdMap());
                 set(Resources.class, "sPreloadedColorStateLists", proxyPreloadedColorStateLists16);
             } else {
                 SparseArray<ColorStateList> originalPreloadedColorStateLists = get(Resources.class, "mPreloadedColorStateLists");
                 SparseArray<ColorStateList> proxyPreloadedColorStateLists = new ColorStateListSpareArray(skinManager, originalPreloadedColorStateLists,
-                        cacheKeyAndIdManager.getColorStateListCacheKeyIdMap());
+                        cacheKeyIdManager.getColorStateListCacheKeyIdMap());
                 set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
             }
         }

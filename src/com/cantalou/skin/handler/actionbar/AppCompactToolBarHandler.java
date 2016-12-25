@@ -39,17 +39,8 @@ public class AppCompactToolBarHandler extends ActionBarHandler {
 
     @Override
     public boolean parseAttr(Context context, AttributeSet attrs) {
-
         collapseIcon = getResourceId(attrs, "collapseIcon");
-        if (collapseIcon != 0) {
-            cacheKeyAndIdManager.registerDrawable(collapseIcon);
-        }
-
         navIcon = getResourceId(attrs, "navigationIcon");
-        if (navIcon != 0) {
-            cacheKeyAndIdManager.registerDrawable(navIcon);
-        }
-
         return super.parseAttr(context, attrs) || collapseIcon != 0 || navIcon != 0;
     }
 }

@@ -10,22 +10,27 @@ import android.content.res.Resources;
 import android.content.res.SkinTypeArray;
 import android.graphics.Bitmap;
 import android.os.*;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.LayoutInflater.Factory;
 import android.widget.ImageView;
 
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
+import com.cantalou.android.util.FileUtil;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.content.SkinContextWrapper;
-import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +65,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 默认资源
      */
-    private ProxyResources defaultResources;
+    private Resources defaultResources;
 
     /**
      * 资源名称
@@ -70,7 +75,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 资源
      */
-    private ProxyResources currentResources;
+    private Resources currentResources;
 
     /**
      * 资源切换时提交View刷新任务到UI线程
@@ -85,13 +90,15 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 资源缓存key和资源id管理对象
      */
-    private CacheKeyAndIdManager cacheKeyAndIdManager;
+    private CacheKeyIdManager cacheKeyIdManager;
 
     private ResourcesManager resourcesManager;
 
     private ActivityLifecycleManager activityLifecycleManager;
 
     private SkinTypeArray skinTypeArray;
+
+    private Context context;
 
     /**
      * 串行执行ui更新任务
@@ -124,15 +131,54 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         }
     };
 
+    private Thread parseNameIdThread = new Thread("parseNameIdThread") {
+        @Override
+        public void run() {
+            Resources res = context.getResources();
+            TypedValue out = new TypedValue();
+            BufferedReader br = null;
+            String line;
+            try {
+                InputStream is = context.getAssets().open("nameId.txt");
+                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                while ((line = br.readLine()) != null) {
+                    //type:name:id
+                    String[] typeNameId = line.split(":");
+                    int id = Integer.parseInt(typeNameId[2], 16);
+                    res.getValue(id, out, true);
+                    if ("color".equals(typeNameId[0])) {
+                        if (out.string != null && out.string.toString().endsWith(".xml")) {
+                            cacheKeyIdManager.registerColorStateList(id, out);
+                        } else {
+                            cacheKeyIdManager.registerDrawable(id, out);
+                        }
+                    } else if ("drawable".equals(typeNameId[0])) {
+                        cacheKeyIdManager.registerDrawable(id, out);
+                    }
+                }
+            } catch (IOException e) {
+                Log.w("Preload resource id key map error, {}", e);
+            } finally {
+                FileUtil.close(br);
+            }
+        }
+    };
+
     private SkinManager() {
+    }
 
-        cacheKeyAndIdManager = new CacheKeyAndIdManager();
-        cacheKeyAndIdManager.setSkinManager(this);
+    public void init(Context context) {
 
-        resourcesManager = ResourcesManager.getInstance();
+        this.context = context.getApplicationContext();
 
         activityLifecycleManager = ActivityLifecycleManager.getInstance();
         activityLifecycleManager.registerActivityLifecycleCallbacks(this);
+
+        cacheKeyIdManager = new CacheKeyIdManager();
+        cacheKeyIdManager.setSkinManager(this);
+        parseNameIdThread.start();
+
+        resourcesManager = ResourcesManager.getInstance();
 
         skinTypeArray = new SkinTypeArray();
         skinTypeArray.setSkinManager(this);
@@ -189,7 +235,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         }
 
         if (defaultResources == null) {
-            throw new IllegalStateException("defaultResources is not initialized. Call the method onAttach of SkinManage in Activity onAttach()");
+            throw new IllegalStateException("defaultResources is not initialized. Call the method beforeActivityOnCreate of SkinManage in Activity onAttach()");
         }
 
         final Context cxt = activity.getApplicationContext();
@@ -201,10 +247,10 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                ProxyResources originalResources = currentResources;
+                Resources originalResources = currentResources;
                 try {
                     Log.d("start change resource");
-                    final ProxyResources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
+                    final Resources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
                     if (res == null) {
                         return false;
                     }
@@ -350,7 +396,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     public void beforeActivityOnCreate(Activity activity, Bundle savedInstanceState) {
 
         if (defaultResources == null) {
-            defaultResources = new ProxyResources(activity.getResources());
+            defaultResources = activity.getResources();
             set(defaultResources, "mCachedStyledAttributes", skinTypeArray);
             Log.v("init defaultResources and registerViewFactory ");
         }
@@ -371,10 +417,10 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             currentSkinPath = prefSkinPath;
         }
 
-        ProxyResources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
-        currentResources = res;
+        Resources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
         try {
             changeActivityResources(activity, res);
+            currentResources = res;
         } catch (Exception e) {
             Log.e(e);
         }
@@ -454,11 +500,11 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         onResourcesChangeFinishListeners.remove(listener);
     }
 
-    public ProxyResources getCurrentResources() {
+    public Resources getCurrentResources() {
         return currentResources;
     }
 
-    public void setCurrentResources(ProxyResources currentResources) {
+    public void setCurrentResources(Resources currentResources) {
         this.currentResources = currentResources;
     }
 
@@ -470,8 +516,8 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         return activities;
     }
 
-    public CacheKeyAndIdManager getCacheKeyAndIdManager() {
-        return cacheKeyAndIdManager;
+    public CacheKeyIdManager getCacheKeyIdManager() {
+        return cacheKeyIdManager;
     }
 
 }

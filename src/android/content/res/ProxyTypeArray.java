@@ -11,7 +11,7 @@ import com.cantalou.skin.content.res.ProxyResources;
  */
 public class ProxyTypeArray extends TypedArray {
 
-    protected SkinManager skinManager ;
+    protected SkinManager skinManager;
 
     public void setSkinManager(SkinManager skinManager) {
         this.skinManager = skinManager;
@@ -25,16 +25,18 @@ public class ProxyTypeArray extends TypedArray {
             return defValue;
         }
 
-        ProxyResources res = skinManager.getCurrentResources();
-
         final int type = typedValue.type;
         if (type == TypedValue.TYPE_NULL) {
             return defValue;
         } else if (type >= TypedValue.TYPE_FIRST_INT && type <= TypedValue.TYPE_LAST_INT) {
-            return res.getColor(typedValue.resourceId);
+            try {
+                Resources res = skinManager.getCurrentResources();
+                return res.getColor(typedValue.resourceId);
+            } catch (Resources.NotFoundException e) {
+                return super.getColor(index, defValue);
+            }
         } else if (type == TypedValue.TYPE_STRING) {
-            ColorStateList csl = res.getColorStateList(typedValue.resourceId);
-            return csl.getDefaultColor();
+            return super.getColor(index, defValue);
         }
         return defValue;
     }

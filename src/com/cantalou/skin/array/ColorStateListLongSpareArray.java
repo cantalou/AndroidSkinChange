@@ -2,6 +2,7 @@ package com.cantalou.skin.array;
 
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Build;
 import android.util.LongSparseArray;
 
@@ -39,9 +40,9 @@ public class ColorStateListLongSpareArray extends LongSparseArray<ColorStateList
     public ColorStateList get(long key) {
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
-            ProxyResources res = skinManager.getCurrentResources();
-            if (res != null) {
-                return res.loadColorStateList(id);
+            Resources res = skinManager.getCurrentResources();
+            if (res != null && res instanceof ProxyResources) {
+                return ((ProxyResources) res).loadColorStateList(id);
             }
         }
         return originalCache.get(key);

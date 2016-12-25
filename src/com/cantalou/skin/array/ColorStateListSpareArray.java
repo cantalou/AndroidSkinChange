@@ -2,6 +2,7 @@ package com.cantalou.skin.array;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.util.SparseArray;
 
 import com.cantalou.android.util.array.SparseLongIntArray;
@@ -37,9 +38,9 @@ public class ColorStateListSpareArray extends SparseArray<ColorStateList> {
     public ColorStateList get(int key) {
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
-            ProxyResources res = skinManager.getCurrentResources();
-            if (res != null) {
-                return res.loadColorStateList(id);
+            Resources res = skinManager.getCurrentResources();
+            if (res != null && res instanceof ProxyResources) {
+                return ((ProxyResources) res).loadColorStateList(id);
             }
         }
         return originalCache.get(key) ;

@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.CacheKeyAndIdManager;
+import com.cantalou.skin.CacheKeyIdManager;
 import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.ProxyResources;
 
@@ -24,7 +24,7 @@ public abstract class AbstractHandler implements Cloneable {
      */
     private boolean called = false;
 
-    protected CacheKeyAndIdManager cacheKeyAndIdManager = SkinManager.getInstance().getCacheKeyAndIdManager();
+    protected CacheKeyIdManager cacheKeyIdManager = SkinManager.getInstance().getCacheKeyIdManager();
 
     public final AbstractHandler parse(Context context, AttributeSet attrs) {
         called = false;

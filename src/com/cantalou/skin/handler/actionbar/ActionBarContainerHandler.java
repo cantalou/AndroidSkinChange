@@ -68,9 +68,6 @@ public class ActionBarContainerHandler extends ActionBarHandler {
         }
         a.getValue(actionBarBackground, value);
         background = value.resourceId;
-        if (background != 0) {
-            cacheKeyAndIdManager.registerDrawable(background);
-        }
 
         // com.android.internal.R.styleable.ActionBar_backgroundStacked
         if (actionBarBackgroundStacked == null) {
@@ -78,9 +75,6 @@ public class ActionBarContainerHandler extends ActionBarHandler {
         }
         a.getValue(actionBarBackgroundStacked, value);
         stackedBackground = value.resourceId;
-        if (stackedBackground != 0) {
-            cacheKeyAndIdManager.registerDrawable(stackedBackground);
-        }
 
         return super.parseAttr(context, attrs) || background != 0 || stackedBackground != 0;
     }

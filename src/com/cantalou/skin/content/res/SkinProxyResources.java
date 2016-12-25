@@ -111,10 +111,6 @@ public class SkinProxyResources extends ProxyResources {
         return skinId;
     }
 
-    protected boolean isColor(TypedValue value) {
-        return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
-    }
-
     public Drawable loadDrawable(int id) throws NotFoundException {
         if (id == 0) {
             return null;
