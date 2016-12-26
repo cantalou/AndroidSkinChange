@@ -64,7 +64,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/src/androidTest/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/src/androidTest/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/src/androidTest/rs" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/docs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/bundles" />
@@ -74,17 +73,12 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/incremental-safeguard" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/lint" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/lint-cache" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/intermediates/transforms" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/libs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/publications" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/test-results" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../AndroidUtil/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
