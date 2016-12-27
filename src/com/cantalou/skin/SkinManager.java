@@ -7,17 +7,27 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.SkinTypeArray;
 import android.graphics.Bitmap;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
-import com.cantalou.android.util.*;
+import com.cantalou.android.util.FileUtil;
+import com.cantalou.android.util.Log;
+import com.cantalou.android.util.PrefUtil;
+import com.cantalou.android.util.StringUtils;
 import com.cantalou.skin.content.SkinContextWrapper;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
@@ -92,8 +102,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     private ResourcesManager resourcesManager;
 
     private ActivityLifecycleManager activityLifecycleManager;
-
-    private Object typeArrayPool;
 
     private Context context;
 
@@ -178,20 +186,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         parseNameIdThread.start();
 
         resourcesManager = ResourcesManager.getInstance();
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int cacheCount = 50;
-            typeArrayPool = ReflectUtil.newInstance("android.util.Pools$SynchronizedPool", new Class[]{int.class}, cacheCount);
-            Object[] pool = ReflectUtil.get(typeArrayPool, "mPool");
-            for (int i = 0; i < cacheCount; i++) {
-                SkinTypeArray sta = new SkinTypeArray();
-                sta.setSkinManager(this);
-                pool[i] = sta;
-            }
-            ReflectUtil.set(typeArrayPool, "mPoolSize", cacheCount);
-        }
-        replaceTypeArray(defaultResources);
 
         Log.LOG_TAG_FLAG = "-skin";
     }
@@ -405,8 +399,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     @Override
     public void beforeActivityOnCreate(Activity activity, Bundle savedInstanceState) {
 
-        replaceTypeArray(activity.getResources());
-
         activities.add(activity);
 
         Context baseContext = activity.getBaseContext();
@@ -429,16 +421,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             currentResources = res;
         } catch (Exception e) {
             Log.e(e);
-        }
-    }
-
-    private void replaceTypeArray(Resources res) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ReflectUtil.set(res, "mTypedArrayPool", typeArrayPool);
-        } else {
-            SkinTypeArray sta = new SkinTypeArray();
-            sta.setSkinManager(this);
-            ReflectUtil.set(res, "mCachedStyledAttributes", sta);
         }
     }
 
