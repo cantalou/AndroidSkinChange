@@ -17,7 +17,7 @@ import com.cantalou.android.util.array.BinarySearchIntArray;
  * @author cantalou
  * @date 2015年11月29日 下午3:15:02
  */
-public class SkinProxyResources extends StaticProxyResources {
+public class SkinProxyResources extends ProxyResources {
 
     /**
      * 皮肤资源
@@ -75,6 +75,7 @@ public class SkinProxyResources extends StaticProxyResources {
      * @return 皮肤资源id, 不存在皮肤资源时,返回0
      */
     public synchronized int toSkinId(int id) {
+
         if (id == 0) {
             return 0;
         }
@@ -110,10 +111,6 @@ public class SkinProxyResources extends StaticProxyResources {
         return skinId;
     }
 
-    protected boolean isColor(TypedValue value) {
-        return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
-    }
-
     public Drawable loadDrawable(int id) throws NotFoundException {
         if (id == 0) {
             return null;
@@ -141,10 +138,6 @@ public class SkinProxyResources extends StaticProxyResources {
             Log.e(e);
         }
 
-        // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
-        if (result == null && skinId != 0) {
-            result = loadDrawable(this, value, id);
-        }
         return result;
     }
 
@@ -176,10 +169,6 @@ public class SkinProxyResources extends StaticProxyResources {
             Log.e(e);
         }
 
-        // 如果皮肤中存在资源, 但加载失败则直接从默认资源中加载
-        if (result == null && skinId != 0) {
-            result = loadColorStateList(this, value, id);
-        }
         return result;
     }
 

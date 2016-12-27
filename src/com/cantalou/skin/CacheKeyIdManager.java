@@ -1,23 +1,16 @@
-/**
- *
- */
 package com.cantalou.skin;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.android.util.array.SparseLongIntArray;
-import com.cantalou.skin.content.res.SkinProxyResources;
+import com.cantalou.skin.content.res.ProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -34,23 +27,12 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
  * @author cantalou
  * @date 2016年1月31日 下午5:30:09
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public final class CacheKeyAndIdManager {
-
-    /**
-     * 是否检测不同资源id相同资源key的情况
-     */
-    public static boolean checkDuplicatedKey = true;
+public final class CacheKeyIdManager {
 
     /**
      * 资源缓存key与资源id的映射
      */
     private SparseLongIntArray drawableCacheKeyIdMap = new SparseLongIntArray();
-
-    /**
-     * 颜色缓存key与资源id的映射
-     */
-    private SparseLongIntArray colorDrawableCacheKeyIdMap = new SparseLongIntArray();
 
     /**
      * 颜色StateList缓存key与资源id的映射
@@ -63,14 +45,14 @@ public final class CacheKeyAndIdManager {
     private SparseIntArray menuItemIdAndIconIdMap = new SparseIntArray();
 
     /**
-     * 已处理过的资源id,包括图片,颜色,selector文件,xml文件
+     * 已注册扫描过的布局文件
      */
-    private BinarySearchIntArray handledDrawableId = new BinarySearchIntArray();
+    private BinarySearchIntArray registeredLayout = new BinarySearchIntArray();
 
     /**
-     * 缓存对象
+     * 已注册的资源id
      */
-    private TypedValue cacheValue = new TypedValue();
+    private BinarySearchIntArray registeredId = new BinarySearchIntArray();
 
     /**
      * 资源管理对象
@@ -83,75 +65,39 @@ public final class CacheKeyAndIdManager {
 
     private Object menuInflater;
 
-    CacheKeyAndIdManager() {
+    CacheKeyIdManager() {
     }
 
     /**
      * 注册图片资源id
      */
-    public synchronized void registerDrawable(int id) {
-
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-            return;
-        }
-
-        if (handledDrawableId.contains(id)) {
-            Log.v("Registered drawable id:{}, ignore", id);
-            return;
-        }
+    public synchronized void registerDrawable(int id, TypedValue value) {
+        registeredId.put(id);
         Resources defaultResources = skinManager.getDefaultResources();
-
-        TypedValue value = cacheValue;
-        defaultResources.getValue(id, value, true);
         long key;
-        int exitsId;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
-            boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
+        boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
+
+        if (!isColorDrawable) {
             key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
-            if (isColorDrawable) {
-                exitsId = colorDrawableCacheKeyIdMap.put(key, id);
-            } else {
-                exitsId = drawableCacheKeyIdMap.put(key, id);
-            }
-        } else {
-            key = (((long) value.assetCookie) << 32) | value.data;
-            exitsId = drawableCacheKeyIdMap.put(key, id);
+            drawableCacheKeyIdMap.put(key, id);
+            Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
         }
-        if (checkDuplicatedKey && exitsId > 0) {
-            throw new IllegalStateException("Different resources id maps to the same key, value:" + value);
-        }
-        Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
-        handledDrawableId.put(id);
     }
 
     /**
      * 注册资源id
      */
-    public synchronized void registerColorStateList(int id) {
-
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
-            return;
-        }
-
-        if (handledDrawableId.contains(id)) {
-            Log.v("Registered colorStateList id:{}, ignore", id);
-            return;
-        }
+    public synchronized void registerColorStateList(int id, TypedValue value) {
+        registeredId.put(id);
         Resources defaultResources = skinManager.getDefaultResources();
-
-        TypedValue value = cacheValue;
-        defaultResources.getValue(id, value, true);
         long key;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             key = (((long) value.assetCookie) << 32) | value.data;
         } else {
             key = (value.assetCookie << 24) | value.data;
         }
-        if (checkDuplicatedKey && colorStateListCacheKeyIdMap.put(key, id) > 0) {
-            throw new IllegalStateException("Different resources id maps to the same key,value:" + value);
-        }
+        colorStateListCacheKeyIdMap.put(key, id);
         Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
-        handledDrawableId.put(id);
     }
 
     /**
@@ -160,10 +106,10 @@ public final class CacheKeyAndIdManager {
      * @param id
      */
     public synchronized void registerMenu(int id) {
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+        if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
-        ArrayList<Activity> activities = skinManager.getActivitys();
+        ArrayList<Activity> activities = skinManager.getActivities();
         int size = activities.size();
         if (size == 0) {
             return;
@@ -197,7 +143,6 @@ public final class CacheKeyAndIdManager {
             for (Object menuItem : items) {
                 int iconResId = get(menuItem, "mIconResId");
                 if (iconResId > 0) {
-                    registerDrawable(iconResId);
                     int itemId = get(menuItem, "mId");
                     menuItemIdAndIconIdMap.put(itemId, iconResId);
                 }
@@ -213,38 +158,28 @@ public final class CacheKeyAndIdManager {
      * @param id
      */
     public synchronized void registerLayout(int id) {
-        if ((SkinProxyResources.APP_ID_MASK & id) != SkinProxyResources.APP_ID_MASK) {
+
+        if ((ProxyResources.APP_ID_MASK & id) != ProxyResources.APP_ID_MASK) {
             return;
         }
-        ArrayList<Activity> activities = skinManager.getActivitys();
+
+        if (registeredLayout.contains(id)) {
+            return;
+        }
+
+        ArrayList<Activity> activities = skinManager.getActivities();
         int size = activities.size();
         if (size == 0) {
             return;
         }
 
-        if (handledDrawableId.contains(id)) {
-            Log.v("Registered layout id:{}, ignore", id);
-            return;
-        }
-
         Resources defaultResources = skinManager.getDefaultResources();
         Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
-        handledDrawableId.put(id);
 
         if (isMenuLayout(defaultResources, id)) {
             registerMenu(id);
-        } else {
-            Activity activity = activities.get(size - 1);
-            LayoutInflater li = activity.getLayoutInflater();
-
-            try {
-                // Spcify parent view if layout contains merge element
-                ViewGroup parent = new FrameLayout(activity);
-                li.inflate(id, parent);
-            } catch (Exception e) {
-                Log.e(e);
-            }
         }
+        registeredLayout.put(id);
     }
 
     /**
@@ -284,10 +219,6 @@ public final class CacheKeyAndIdManager {
         return drawableCacheKeyIdMap;
     }
 
-    public SparseLongIntArray getColorDrawableCacheKeyIdMap() {
-        return colorDrawableCacheKeyIdMap;
-    }
-
     public SparseLongIntArray getColorStateListCacheKeyIdMap() {
         return colorStateListCacheKeyIdMap;
     }
@@ -302,9 +233,7 @@ public final class CacheKeyAndIdManager {
 
     public void reset() {
         drawableCacheKeyIdMap.clear();
-        colorDrawableCacheKeyIdMap.clear();
         colorStateListCacheKeyIdMap.clear();
         menuItemIdAndIconIdMap.clear();
-        handledDrawableId.clear();
     }
 }

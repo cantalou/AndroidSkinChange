@@ -7,9 +7,9 @@ import android.view.View;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.CacheKeyAndIdManager;
+import com.cantalou.skin.CacheKeyIdManager;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.content.res.SkinProxyResources;
+import com.cantalou.skin.content.res.ProxyResources;
 
 /**
  * @author cantalou
@@ -24,7 +24,7 @@ public abstract class AbstractHandler implements Cloneable {
      */
     private boolean called = false;
 
-    protected CacheKeyAndIdManager cacheKeyAndIdManager = SkinManager.getInstance().getCacheKeyAndIdManager();
+    protected CacheKeyIdManager cacheKeyIdManager = SkinManager.getInstance().getCacheKeyIdManager();
 
     public final AbstractHandler parse(Context context, AttributeSet attrs) {
         called = false;
@@ -80,12 +80,12 @@ public abstract class AbstractHandler implements Cloneable {
                 break;
             }
         }
-        return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
+        return (id & ProxyResources.APP_ID_MASK) == ProxyResources.APP_ID_MASK ? id : 0;
     }
 
     public final int getResourceId(AttributeSet attrs, int index) {
         int id = attrs.getAttributeResourceValue(index, 0);
-        return (id & SkinProxyResources.APP_ID_MASK) == SkinProxyResources.APP_ID_MASK ? id : 0;
+        return (id & ProxyResources.APP_ID_MASK) == ProxyResources.APP_ID_MASK ? id : 0;
     }
 
     @Override

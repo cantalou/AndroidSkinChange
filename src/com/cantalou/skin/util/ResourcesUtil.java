@@ -1,14 +1,19 @@
-package com.cantalou.skin.content.res;
+package com.cantalou.skin.util;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.content.res.XmlResourceParser;
-
+import android.util.TypedValue;
 import org.xmlpull.v1.XmlPullParser;
 
-public final class ResourcesCompat {
+/**
+ * @author Lin Zhiwei
+ * @date 16-10-11 下午10:43
+ */
+public class ResourcesUtil {
 
-    private ResourcesCompat() {
+    protected boolean isColor(TypedValue value) {
+        return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
     }
 
     public static int loadResourcesIdFromManifest(Activity activity, String attributeName) {

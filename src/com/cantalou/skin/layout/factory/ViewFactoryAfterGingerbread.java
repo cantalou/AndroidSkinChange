@@ -26,46 +26,46 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
     private Factory2 privateProxy;
 
     public void register(LayoutInflater li) {
-	super.register(li);
+        super.register(li);
 
-	factory2Proxy = li.getFactory2();
-	if (factory2Proxy != null) {
-	    ReflectUtil.set(li, "mFactorySet", false);
-	    li.setFactory2(this);
-	}
+        factory2Proxy = li.getFactory2();
+        if (factory2Proxy != null) {
+            ReflectUtil.set(li, "mFactorySet", false);
+            li.setFactory2(this);
+        }
 
-	privateProxy = ReflectUtil.get(li, "mPrivateFactory");
-	if (privateProxy != null) {
-	    ReflectUtil.set(li, "mPrivateFactory", this);
-	}
+        privateProxy = ReflectUtil.get(li, "mPrivateFactory");
+        if (privateProxy != null) {
+            ReflectUtil.set(li, "mPrivateFactory", this);
+        }
     }
 
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-	View view = null;
+        View view = null;
 
-	if (factory2Proxy != null) {
-	    view = factory2Proxy.onCreateView(parent, name, context, attrs);
-	}
-	if (view == null && privateProxy != null) {
-	    view = privateProxy.onCreateView(parent, name, context, attrs);
-	}
+        if (factory2Proxy != null) {
+            view = factory2Proxy.onCreateView(parent, name, context, attrs);
+        }
+        if (view == null && privateProxy != null) {
+            view = privateProxy.onCreateView(parent, name, context, attrs);
+        }
 
-	if (view != null) {
-	    AbstractHandler attrHandler = getHandler(name);
-	    if (attrHandler != null) {
-		attrHandler.parse(context, attrs);
-	    }
-	    view.setTag(ViewHandler.ATTR_HANDLER_KEY, attrHandler);
-	} else {
-	    view = super.onCreateView(name, context, attrs);
-	}
+        if (view != null) {
+            AbstractHandler attrHandler = getHandler(name);
+            if (attrHandler != null) {
+                attrHandler.parse(context, attrs);
+            }
+            view.setTag(ViewHandler.ATTR_HANDLER_KEY, attrHandler);
+        } else {
+            view = super.onCreateView(name, context, attrs);
+        }
 
-	return view;
+        return view;
     }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-	return factoryProxy == null ? null : super.onCreateView(name, context, attrs);
+        return factoryProxy == null ? null : super.onCreateView(name, context, attrs);
     }
 
 }

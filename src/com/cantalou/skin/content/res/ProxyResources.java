@@ -13,7 +13,7 @@ import android.util.TypedValue;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.CacheKeyAndIdManager;
+import com.cantalou.skin.CacheKeyIdManager;
 import com.cantalou.skin.SkinManager;
 
 import java.io.InputStream;
@@ -21,11 +21,13 @@ import java.io.InputStream;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
+ * 代理获取资源<p>
+ * 1.实现loadDrawable(int id)和loadColorStateList(int id)自定义加载资源<p>
+ *
  * @author cantalou
  * @date 2015年12月12日 下午11:07:07
  */
-@SuppressWarnings("deprecation")
-public abstract class ProxyResources extends Resources {
+public class ProxyResources extends Resources {
 
     public static final boolean logEnable = true;
 
@@ -53,50 +55,19 @@ public abstract class ProxyResources extends Resources {
      */
     protected String[] resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE + 1];
 
-    protected CacheKeyAndIdManager cacheKeyAndIdManager;
+    protected CacheKeyIdManager cacheKeyIdManager;
 
     protected final TypedValue typedValueCache = new TypedValue();
 
     public ProxyResources(Resources res) {
         super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
-        cacheKeyAndIdManager = SkinManager.getInstance().getCacheKeyAndIdManager();
-        replaceCacheEntry();
+        cacheKeyIdManager = SkinManager.getInstance().getCacheKeyIdManager();
     }
 
     @Override
-    public int getColor(int id) throws NotFoundException {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getColor(id);
-    }
-
-    @Override
-    public ColorStateList getColorStateList(int id) throws NotFoundException {
-        cacheKeyAndIdManager.registerColorStateList(id);
-        return super.getColorStateList(id);
-    }
-
-    @Override
-    public Drawable getDrawable(int id, Theme theme) throws NotFoundException {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawable(id, theme);
-    }
-
-    @Override
-    public Drawable getDrawable(int id) throws NotFoundException {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawable(id);
-    }
-
-    @Override
-    public Drawable getDrawableForDensity(int id, int density, Theme theme) {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawableForDensity(id, density, theme);
-    }
-
-    @Override
-    public Drawable getDrawableForDensity(int id, int density) throws NotFoundException {
-        cacheKeyAndIdManager.registerDrawable(id);
-        return super.getDrawableForDensity(id, density);
+    public XmlResourceParser getLayout(int id) throws NotFoundException {
+        cacheKeyIdManager.registerLayout(id);
+        return super.getLayout(id);
     }
 
     protected String toString(TypedValue value) {
@@ -142,6 +113,13 @@ public abstract class ProxyResources extends Resources {
         }
     }
 
+    /**
+     * 尝试使用 loadDrawable(Resources, TypedValue, int)方法进行自定义的资源加载,失败是再调用getDrawable(int)加载
+     *
+     * @param id 资源id
+     * @return 资源
+     * @throws NotFoundException
+     */
     public Drawable loadDrawable(int id) throws NotFoundException {
         TypedValue value = typedValueCache;
         getValue(id, value, true);
@@ -155,14 +133,13 @@ public abstract class ProxyResources extends Resources {
         return dr;
     }
 
-    @Override
-    public XmlResourceParser getLayout(int id) throws NotFoundException {
-        cacheKeyAndIdManager.registerLayout(id);
-        return super.getLayout(id);
+
+    public static final boolean isColor(TypedValue value){
+        return value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
     }
 
     /**
-     * 实现Resource.loadDrawable方法, 增加在加载图片资源时内存占用调整
+     * 和Resource.getDrawable(int)一样的加载资源实现, 增加在加载图片资源时内存占用调整
      *
      * @param res
      * @param value
@@ -171,7 +148,7 @@ public abstract class ProxyResources extends Resources {
      * @throws NotFoundException
      */
     protected Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {
-        boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
+        boolean isColorDrawable = isColor(value);
         Drawable dr = null;
         if (isColorDrawable) {
             dr = new ColorDrawable(value.data);
@@ -234,7 +211,7 @@ public abstract class ProxyResources extends Resources {
     protected ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException {
 
         ColorStateList csl = null;
-        if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+        if (isColor(value)) {
             csl = ColorStateList.valueOf(value.data);
             return csl;
         }
@@ -270,5 +247,4 @@ public abstract class ProxyResources extends Resources {
         resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
     }
 
-    public abstract void replaceCacheEntry();
 }

@@ -32,7 +32,7 @@ public class ActionMenuItemViewHandler extends ActionBarHandler {
             return;
         }
 
-        int iconResId = cacheKeyAndIdManager.getMenuItemIdAndIconIdMap().get(itemId);
+        int iconResId = cacheKeyIdManager.getMenuItemIdAndIconIdMap().get(itemId);
         if (iconResId != 0) {
             invoke(view, "setIcon", new Class<?>[]{Drawable.class}, res.getDrawable(iconResId));
         }

@@ -43,20 +43,20 @@ public class SkinInstrumentation extends Instrumentation {
     @Override
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void callActivityOnCreate(Activity activity, Bundle icicle, PersistableBundle persistentState) {
-        skinManager.callActivityOnCreate(activity);
+        skinManager.beforeActivityOnCreate(activity, icicle);
         targetInstrumentation.callActivityOnCreate(activity, icicle, persistentState);
     }
 
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle) {
-        skinManager.callActivityOnCreate(activity);
+        skinManager.beforeActivityOnCreate(activity, icicle);
         targetInstrumentation.callActivityOnCreate(activity, icicle);
     }
 
     @Override
     public void callActivityOnDestroy(Activity activity) {
         targetInstrumentation.callActivityOnDestroy(activity);
-        skinManager.onDestroy(activity);
+        skinManager.onActivityDestroyed(activity);
     }
 
     @Override
@@ -157,6 +157,7 @@ public class SkinInstrumentation extends Instrumentation {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void callActivityOnSaveInstanceState(Activity activity, Bundle outState, PersistableBundle outPersistentState) {
         targetInstrumentation.callActivityOnSaveInstanceState(activity, outState, outPersistentState);
     }
@@ -207,6 +208,7 @@ public class SkinInstrumentation extends Instrumentation {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public UiAutomation getUiAutomation() {
         return targetInstrumentation.getUiAutomation();
     }
