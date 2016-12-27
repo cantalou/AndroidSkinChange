@@ -5,7 +5,6 @@ import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 
-import android.content.res.SkinTypeArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.LongSparseArray;
@@ -96,7 +95,6 @@ public class ResourcesManager {
                 return null;
             }
             skinResources = new SkinResources(am, defResources, resourcesPath);
-            set(skinResources, "mCachedStyledAttributes", new SkinTypeArray());
         } catch (Throwable e) {
             Log.e(e, "Fail to init AssetManager");
         }
