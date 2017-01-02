@@ -36,8 +36,8 @@ public class ActionBarViewHandler extends ActionBarHandler {
     private int icon;
 
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
         if (logo != 0) {
             ReflectUtil.invoke(view, "setLogo", new Class[]{Drawable.class}, res.getDrawable(logo));
         }

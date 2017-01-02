@@ -32,8 +32,8 @@ public class TextViewHandler extends ViewHandler {
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
 
         TextView tv = (TextView) view;
 

@@ -54,6 +54,12 @@ public final class CacheKeyIdManager {
      */
     private BinarySearchIntArray registeredId = new BinarySearchIntArray();
 
+
+    /**
+     * 已注册的Color资源id
+     */
+    private BinarySearchIntArray registeredColorId = new BinarySearchIntArray();
+
     /**
      * 资源管理对象
      */
@@ -81,6 +87,8 @@ public final class CacheKeyIdManager {
             key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
             drawableCacheKeyIdMap.put(key, id);
             Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
+        } else {
+            registeredColorId.put(id);
         }
     }
 

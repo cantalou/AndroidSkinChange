@@ -295,7 +295,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      * @param a   activity
      * @param res 资源
      */
-    public void change(final Activity a, Resources res) {
+    protected void change(final Activity a, Resources res) {
 
         changeActivityResources(a, res);
 
@@ -340,7 +340,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      * @param toRes    新资源
      */
     public void changeActivityResources(Activity activity, Resources toRes) {
-
         // ContextThemeWrapper add mResources field in JELLY_BEAN
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             Log.v("after JELLY_BEAN change Activity:{} to Resources :{} ,result:{} ", activity, toRes, set(activity, "mResources", toRes));
@@ -353,10 +352,10 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 1.递归调用实现了OnResourcesChangeListener接口的View
      * 2.调用对应的ViewHandler进行View资源的重新加载
+     *  @param v
      *
-     * @param v
      */
-    private void onResourcesChange(View v) {
+    public void onResourcesChange(View v) {
 
         if (v == null) {
             return;
@@ -368,11 +367,11 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
         Object tag = v.getTag(ViewHandler.ATTR_HANDLER_KEY);
         if (tag != null && tag instanceof ViewHandler) {
-            ((AbstractHandler) tag).reloadAttr(v, currentResources);
+            ((AbstractHandler) tag).reload(v, currentResources, false);
         } else {
             AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
             if (ah != null) {
-                ah.reloadAttr(v, currentResources);
+                ah.reload(v, currentResources, false);
             }
         }
 

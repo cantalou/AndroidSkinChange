@@ -2,6 +2,7 @@ package com.cantalou.skin.layout.factory;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater.Factory2;
 import android.view.View;
 
 import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.skin.ResourcesManager;
+import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
 
@@ -25,6 +28,8 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
 
     private Factory2 privateProxy;
 
+    private SkinManager skinManager;
+
     public void register(LayoutInflater li) {
         super.register(li);
 
@@ -38,6 +43,8 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
         if (privateProxy != null) {
             ReflectUtil.set(li, "mPrivateFactory", this);
         }
+
+        skinManager = SkinManager.getInstance();
     }
 
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
@@ -49,15 +56,25 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
         if (view == null && privateProxy != null) {
             view = privateProxy.onCreateView(parent, name, context, attrs);
         }
-
+        AbstractHandler attrHandler = null;
         if (view != null) {
-            AbstractHandler attrHandler = getHandler(name);
+            attrHandler = getHandler(name);
             if (attrHandler != null) {
                 attrHandler.parse(context, attrs);
             }
             view.setTag(ViewHandler.ATTR_HANDLER_KEY, attrHandler);
         } else {
             view = super.onCreateView(name, context, attrs);
+        }
+
+        if (!skinManager.getCurrentSkin().equals(ResourcesManager.DEFAULT_RESOURCES)) {
+            if (attrHandler == null) {
+                attrHandler = (AbstractHandler) view.getTag(ViewHandler.ATTR_HANDLER_KEY);
+            }
+            if (attrHandler != null) {
+                Resources res = skinManager.getCurrentResources();
+                attrHandler.reload(view, res, true);
+            }
         }
 
         return view;

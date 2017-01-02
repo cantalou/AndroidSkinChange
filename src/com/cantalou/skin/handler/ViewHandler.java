@@ -11,11 +11,12 @@ import android.view.View;
  */
 @SuppressWarnings("deprecation")
 public class ViewHandler extends AbstractHandler {
+
     protected int background;
 
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
         if (background != 0) {
             view.setBackgroundDrawable(res.getDrawable(background));
         }
@@ -26,6 +27,4 @@ public class ViewHandler extends AbstractHandler {
         background = getResourceId(attrs, "background");
         return super.parseAttr(context, attrs) || background != 0;
     }
-
-
 }

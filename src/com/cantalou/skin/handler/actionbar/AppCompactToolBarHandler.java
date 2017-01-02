@@ -20,8 +20,8 @@ public class AppCompactToolBarHandler extends ActionBarHandler {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
         if (navIcon != 0) {
             ReflectUtil.invoke(view, "setNavigationIcon", new Class<?>[]{Drawable.class}, res.getDrawable(navIcon));
         }

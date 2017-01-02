@@ -21,8 +21,8 @@ public class ListViewHandler extends ViewHandler {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
         if (divider != 0) {
             ((ListView) view).setDivider(res.getDrawable(divider));
         }

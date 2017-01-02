@@ -20,8 +20,8 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 public class ActionMenuItemViewHandler extends ActionBarHandler {
 
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
         MenuItem itemData = get(view, "mItemData");
         if (itemData == null) {
             return;

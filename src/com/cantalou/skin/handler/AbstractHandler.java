@@ -11,6 +11,9 @@ import com.cantalou.skin.CacheKeyIdManager;
 import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.content.res.ProxyResources;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 /**
  * @author cantalou
  * @date 2016年2月29日 上午10:48:21
@@ -24,7 +27,11 @@ public abstract class AbstractHandler implements Cloneable {
      */
     private boolean called = false;
 
+    protected String bestCompactR = null;
+
     protected CacheKeyIdManager cacheKeyIdManager = SkinManager.getInstance().getCacheKeyIdManager();
+
+    protected HashMap<String, Object> cacheCompatValue = new HashMap<>();
 
     public final AbstractHandler parse(Context context, AttributeSet attrs) {
         called = false;
@@ -33,30 +40,6 @@ public abstract class AbstractHandler implements Cloneable {
             throw new IllegalStateException("super parse(AttributeSet attrs) must be call");
         }
         return result ? this : null;
-    }
-
-    /**
-     * 重新加载资源
-     *
-     * @param view view对象
-     * @param res  资源对象
-     */
-    public final void reloadAttr(View view, Resources res) {
-        called = false;
-        reload(view, res);
-        if (!called) {
-            throw new IllegalStateException("super reload(View view, Resources res) must be call");
-        }
-    }
-
-    /**
-     * 重新加载资源
-     *
-     * @param view view对象
-     * @param res  资源对象
-     */
-    protected void reload(View view, Resources res) {
-        called = true;
     }
 
     /**
@@ -69,6 +52,33 @@ public abstract class AbstractHandler implements Cloneable {
         called = true;
         return false;
     }
+
+    /**
+     * 重新加载资源
+     *
+     * @param view      view对象
+     * @param res       资源对象
+     * @param onlyColor
+     */
+    public final void reload(View view, Resources res, boolean onlyColor) {
+        called = false;
+        reloadAttr(view, res, onlyColor);
+        if (!called) {
+            throw new IllegalStateException("super reload(View view, Resources res) must be call");
+        }
+    }
+
+    /**
+     * 重新加载资源
+     *
+     * @param view      view对象
+     * @param res       资源对象
+     * @param onlyColor
+     */
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        called = true;
+    }
+
 
     public final int getResourceId(AttributeSet attrs, String name) {
         int id = 0;
@@ -98,23 +108,29 @@ public abstract class AbstractHandler implements Cloneable {
         }
     }
 
-    protected String bestCompactR = null;
 
     /**
      * 获取R类的常量值
      *
-     * @param type
+     * @param type 类型名称 如:style
      * @param attrNames
      * @param <T>
      * @return
      */
     protected <T> T getCompactValue(String type, String... attrNames) {
-        T result = null;
+
+        String key = type + Arrays.toString(attrNames);
+        T result = (T) cacheCompatValue.get(key);
+        if (result != null) {
+            return result;
+        }
+
         if (bestCompactR != null) {
             for (String attrName : attrNames) {
                 Class<?> target = ReflectUtil.forName(bestCompactR + "$" + type);
                 result = ReflectUtil.get(target, attrName);
                 if (result != null) {
+                    cacheCompatValue.put(key, result);
                     return result;
                 }
             }
@@ -125,6 +141,7 @@ public abstract class AbstractHandler implements Cloneable {
                 result = ReflectUtil.get(target, attrName);
                 if (result != null) {
                     bestCompactR = compactRName;
+                    cacheCompatValue.put(key, result);
                     return result;
                 }
             }

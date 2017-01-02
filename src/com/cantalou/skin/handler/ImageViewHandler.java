@@ -16,8 +16,8 @@ public class ImageViewHandler extends ViewHandler {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
         if (src != 0) {
             ((ImageView) view).setImageDrawable(res.getDrawable(src));
         }

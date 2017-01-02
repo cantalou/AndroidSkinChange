@@ -32,8 +32,8 @@ public class ActionBarContainerHandler extends ActionBarHandler {
     private Integer actionBarBackgroundStacked;
 
     @Override
-    protected void reload(View view, Resources res) {
-        super.reload(view, res);
+    protected void reloadAttr(View view, Resources res, boolean onlyColor) {
+        super.reloadAttr(view, res, onlyColor);
 
         if (background != 0) {
             ReflectUtil.invoke(view, "setPrimaryBackground", new Class<?>[]{Drawable.class}, res.getDrawable(background));
