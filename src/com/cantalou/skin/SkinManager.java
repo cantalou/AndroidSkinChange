@@ -1,27 +1,17 @@
 package com.cantalou.skin;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.*;
 import android.util.TypedValue;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
+import android.view.*;
 import android.view.LayoutInflater.Factory;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
-
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
 import com.cantalou.android.util.FileUtil;
@@ -139,7 +129,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     private Thread parseNameIdThread = new Thread("parseNameIdThread") {
         @Override
         public void run() {
-            Resources res = context.getResources();
+            Resources res = defaultResources;
             TypedValue out = new TypedValue();
             BufferedReader br = null;
             String line;
@@ -242,6 +232,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             throw new IllegalStateException("defaultResources is not initialized. Call the method beforeActivityOnCreate of SkinManage in Activity onAttach()");
         }
 
+        showSkinChangeAnimation(activity);
         final Context cxt = activity.getApplicationContext();
         new AsyncTask<Void, Void, Boolean>() {
             @Override
@@ -286,7 +277,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             }
         }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
-        showSkinChangeAnimation(activity);
+
     }
 
     /**
@@ -352,8 +343,8 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 1.递归调用实现了OnResourcesChangeListener接口的View
      * 2.调用对应的ViewHandler进行View资源的重新加载
-     *  @param v
      *
+     * @param v
      */
     public void onResourcesChange(View v) {
 
@@ -436,13 +427,10 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             }
 
             decor.setDrawingCacheEnabled(true);
-            Bitmap temp = Bitmap.createBitmap(decor.getDrawingCache());
-            decor.setDrawingCacheEnabled(false);
+            Bitmap src = decor.getDrawingCache();
+            Bitmap temp = Bitmap.createBitmap(src);
 
             final ImageView iv = new ImageView(activity);
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            decor.addView(iv, lp);
-
             iv.setImageBitmap(temp);
             iv.setFocusable(true);
             iv.setFocusableInTouchMode(true);
@@ -461,15 +449,28 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                 }
             });
 
-            ObjectAnimator oa = ObjectAnimator.ofFloat(iv, "alpha", 1.0F, 0.1F);
-            oa.setDuration(800);
-            oa.addListener(new AnimatorListenerAdapter() {
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            decor.addView(iv, lp);
+
+            AlphaAnimation aa = new AlphaAnimation(1F, 0F);
+            aa.setDuration(800);
+            aa.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationEnd(Animator animation) {
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
                     decor.removeView(iv);
+                    decor.setDrawingCacheEnabled(false);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
                 }
             });
-            oa.start();
+            iv.setAnimation(aa);
+            aa.start();
 
         } catch (Throwable e) {
             Log.e(e);

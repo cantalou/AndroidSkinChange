@@ -56,7 +56,7 @@ public class KeepIdSkinProxyResources extends ProxyResources {
         Resources res = skinResource;
         TypedValue value = typedValueCache;
         try {
-            res.getValue(id, value, true);
+            getValue(id, value, true);
             return loadDrawable(res, value, id);
         } catch (Exception e) {
             Log.w("Fail to loadDrawable from Resources {}  ,{}", res, e);
@@ -76,7 +76,7 @@ public class KeepIdSkinProxyResources extends ProxyResources {
         Resources res = skinResource;
         TypedValue value = typedValueCache;
         try {
-            res.getValue(id, value, true);
+            getValue(id, value, true);
             return loadColorStateList(res, value, id);
         } catch (Exception e) {
             Log.w("Fail to loadColorStateList from Resources {}  ,{}", res, e);
