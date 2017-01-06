@@ -32,6 +32,5 @@ Android 换肤/夜间模式, 基于插件式的资源切换方案
 
 #效果
 ![image](https://github.com/cantalou/androidSkinChange/blob/master/jdfw.gif)
-#实现原理
-通过替换Activity的mResources和mTheme两个属性</br>
+#实现原理  
 <a href="http://blog.csdn.net/cantalou/article/details/49708469">http://blog.csdn.net/cantalou/article/details/49708469</a>
