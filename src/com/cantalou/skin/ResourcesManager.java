@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
+
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.StringUtils;
 import com.cantalou.android.util.array.BinarySearchIntArray;
@@ -16,6 +16,7 @@ import com.cantalou.skin.array.ColorStateListLongSpareArray;
 import com.cantalou.skin.array.ColorStateListSpareArray;
 import com.cantalou.skin.array.DrawableLongSpareArray;
 import com.cantalou.skin.content.res.KeepIdSkinProxyResources;
+import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
 
@@ -39,6 +40,11 @@ public class ResourcesManager {
      * 默认资源
      */
     public static final String DEFAULT_RESOURCES = "defaultResources";
+
+    /**
+     * 默认夜间资源
+     */
+    public static final String DEFAULT_RESOURCES_NIGHT = "defaultResourcesNight";
 
     /**
      * 已载入的资源
@@ -111,7 +117,7 @@ public class ResourcesManager {
 
         if (DEFAULT_RESOURCES.equals(path)) {
             Log.d("skinPath is:{} , return defaultResources");
-            return defResources ;
+            return defResources;
         }
 
         Resources proxyResources = null;
@@ -123,12 +129,16 @@ public class ResourcesManager {
             }
         }
 
-        Resources skinResources = createResource(context, path, defResources);
-        if (skinResources == null) {
-            Log.w("Fail to create resources path :{}", path);
-            return null;
+        if (DEFAULT_RESOURCES_NIGHT.equals(path)) {
+            proxyResources = new NightResources(context.getPackageName(), defResources);
+        } else {
+            Resources skinResources = createResource(context, path, defResources);
+            if (skinResources == null) {
+                Log.w("Fail to create resources path :{}", path);
+                return null;
+            }
+            proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
         }
-        proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
 
         synchronized (this) {
             cacheResources.put(path, new WeakReference<Resources>(proxyResources));
