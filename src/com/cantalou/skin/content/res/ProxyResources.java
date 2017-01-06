@@ -158,11 +158,10 @@ public class ProxyResources extends Resources {
             }
 
             String file = value.string.toString();
-
             if (file.endsWith(".xml")) {
                 try {
-                    XmlResourceParser rp = invoke(res, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
-                    dr = Drawable.createFromXml(res, rp);
+                    XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "drawable");
+                    dr = Drawable.createFromXml(this, rp);
                     rp.close();
                 } catch (Exception e) {
                     Log.w(e, "File {} from drawable resource ID #0x{} not found in {}", file, Integer.toHexString(id), res);
@@ -226,8 +225,8 @@ public class ProxyResources extends Resources {
 
         if (file.endsWith(".xml")) {
             try {
-                XmlResourceParser rp = invoke(res, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
-                csl = ColorStateList.createFromXml(res, rp);
+                XmlResourceParser rp = invoke(this, "loadXmlResourceParser", loadXmlResourceParserParam, file, id, value.assetCookie, "colorstatelist");
+                csl = ColorStateList.createFromXml(this, rp);
                 rp.close();
             } catch (Exception e) {
                 Log.w("File {} from color state list resource ID #0x{} not found in {}", file, Integer.toHexString(id), res);
