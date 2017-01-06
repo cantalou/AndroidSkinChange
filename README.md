@@ -12,10 +12,9 @@ Android 换肤/夜间模式, 基于插件式的资源切换方案
      <li> 在代码中动态设置View的background, ImageView的src, TextView的textColor, drawableLeft等</li>
      <li> 在代码中通过new View()生成的视图</li>
    </ul>
-2. 不支持layout资源切换, 即layout资源只会使用app内自带的资源文件
+2. 不支持layout资源切换, 即layout资源只会使用App内自带的资源文件, 不会使用皮肤包的布局文件
 3. 不支持drawable中xml类型资源的切换, 不同版本间同一个xml文件不得修改
-4. 不支持padding, margin, textSize等类型的资源切换
-5. 获取LayoutInflater必须使用Activity.getLayoutInflater
+4. 获取LayoutInflater必须使用Activity.getLayoutInflater
 
 #使用方法
 ##集成
@@ -24,25 +23,12 @@ Android 换肤/夜间模式, 基于插件式的资源切换方案
         compile 'com.cantalou:android-skin-change:1+'</br>
     }</br>
 
-2. 代码集成的两种方式:</br>
-    2.1 在BaseActivity(项目所有Activity的父类)或者所有的Activity的中添加如下代码:</br>
-        @Override</br>
-	protected void onCreate() {</br>
-	    SkinManager.getInstance().onAttach(this);</br>
-		super.onCreate();</br>
-	}</br>
-
-	@Override</br>
-	protected void onDestroy() {</br>
-		SkinManager.getInstance().onDestroy(this);</br>
-		super.onDestroy();</br>
-	}</br> 
-
-     2.2 在自定义的Application的onCreate中添加如下代码:</br>
-        SkinManager.getInstance().initByReplaceInstrumentation(this)；</br>
-
-3.使用方式</br>
-  SkinManager.getInstance().changeResources(activityInsatance, "/filepath/red.apk");
+2. 代码集成方式:</br>
+    2.1 在自定义的Application的onCreate中添加如下代码:</br>
+        SkinManager.getInstance().init(this);</br>
+	
+    2.2 更换皮肤</br>
+        SkinManager.getInstance().changeResources(activityInsatance, "/filepath/red.apk");
 
 #效果
 ![image](https://github.com/cantalou/androidSkinChange/blob/master/jdfw.gif)
