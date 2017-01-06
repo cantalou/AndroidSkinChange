@@ -24,14 +24,14 @@ Android 换肤/夜间模式, 基于插件式的资源切换方案
     }</br>
 
 2. 集成方式:</br>
-   2.1 在build.gradle文件中如下代码:</br>
+  2.1 在build.gradle文件中如下代码:</br>
         apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/keepResourcesId.gradle'</br>
         apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/genNameId.gradle
 	
-   2.1 在自定义的Application的onCreate中添加如下代码:</br>
+  2.1 在自定义的Application的onCreate中添加如下代码:</br>
         SkinManager.getInstance().init(this);</br>
 	
-   2.2 更换皮肤</br>
+  2.2 更换皮肤</br>
         SkinManager.getInstance().changeResources(activityInsatance, "/filepath/red.apk");
 
 #效果
