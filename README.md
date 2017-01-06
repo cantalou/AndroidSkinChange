@@ -25,7 +25,7 @@ Android 换肤/夜间模式, 基于插件式的资源切换方案
 
 2. 集成方式:</br>
     2.1 在build.gradle文件中如下代码:</br>
-        apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/keepResourcesId.gradle'
+        apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/keepResourcesId.gradle'</br>
         apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/genNameId.gradle
 	
     2.1 在自定义的Application的onCreate中添加如下代码:</br>
