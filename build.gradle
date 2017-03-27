@@ -14,8 +14,8 @@ repositories {
     jcenter()
 }
 dependencies {
-//    compile 'com.cantalou:android-util:1.0.+'
-    compile project(':AndroidUtil')
+    compile 'com.cantalou:android-util:1.0.7'
+    //compile project(':AndroidUtil')
 }
 
 android {
@@ -27,7 +27,7 @@ android {
     }
 
     compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 14

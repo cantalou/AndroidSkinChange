@@ -16,7 +16,6 @@ import com.cantalou.skin.array.ColorStateListLongSpareArray;
 import com.cantalou.skin.array.ColorStateListSpareArray;
 import com.cantalou.skin.array.DrawableLongSpareArray;
 import com.cantalou.skin.content.res.KeepIdSkinProxyResources;
-import com.cantalou.skin.content.res.NightResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
 
@@ -29,8 +28,6 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
- * 3.
- *
  * @author cantalou
  * @date 2016年5月2日 下午9:11:12
  */
@@ -40,11 +37,6 @@ public class ResourcesManager {
      * 默认资源
      */
     public static final String DEFAULT_RESOURCES = "defaultResources";
-
-    /**
-     * 默认夜间资源
-     */
-    public static final String DEFAULT_RESOURCES_NIGHT = "defaultResourcesNight";
 
     /**
      * 已载入的资源
@@ -129,16 +121,13 @@ public class ResourcesManager {
             }
         }
 
-        if (DEFAULT_RESOURCES_NIGHT.equals(path)) {
-            proxyResources = new NightResources(context.getPackageName(), defResources);
-        } else {
-            Resources skinResources = createResource(context, path, defResources);
-            if (skinResources == null) {
-                Log.w("Fail to create resources path :{}", path);
-                return null;
-            }
-            proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
+
+        Resources skinResources = createResource(context, path, defResources);
+        if (skinResources == null) {
+            Log.w("Fail to create resources path :{}", path);
+            return null;
         }
+        proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
 
         synchronized (this) {
             cacheResources.put(path, new WeakReference<Resources>(proxyResources));

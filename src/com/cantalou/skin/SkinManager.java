@@ -34,7 +34,6 @@ import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
@@ -148,8 +147,13 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                 while ((line = br.readLine()) != null) {
                     //type:name:id
                     String[] typeNameId = line.split(":");
-                    int id = Integer.parseInt(typeNameId[2], 16);
-                    res.getValue(id, out, true);
+                    int id = 0;
+                    try {
+                        id = Integer.parseInt(typeNameId[2], 16);
+                        res.getValue(id, out, true);
+                    } catch (Resources.NotFoundException e) {
+                        continue;
+                    }
                     if ("color".equals(typeNameId[0])) {
                         if (out.string != null && out.string.toString().endsWith(".xml")) {
                             cacheKeyIdManager.registerColorStateList(id, out);
@@ -160,7 +164,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                         cacheKeyIdManager.registerDrawable(id, out);
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.w("Preload resource id key map error, {}", e);
             } finally {
                 FileUtil.close(br);

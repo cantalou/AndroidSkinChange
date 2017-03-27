@@ -147,7 +147,7 @@ public class ProxyResources extends Resources {
      * @return
      * @throws NotFoundException
      */
-    protected Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {
+    protected final Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {
         boolean isColorDrawable = isColor(value);
         Drawable dr = null;
         if (isColorDrawable) {
@@ -209,7 +209,7 @@ public class ProxyResources extends Resources {
         return csl;
     }
 
-    protected ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException {
+    protected final ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException {
 
         ColorStateList csl = null;
         if (isColor(value)) {
