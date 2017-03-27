@@ -312,19 +312,23 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             });
         }
 
-        final List<?> fragments = get(a, "mFragments.mAdded");
-        if (fragments != null && fragments.size() > 0) {
-            for (final Object f : fragments) {
-                if (f instanceof OnResourcesChangeFinishListener) {
-                    uiSerialTasks.offer(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((OnResourcesChangeFinishListener) f).onResourcesChangeFinish(true);
-                        }
-                    });
+        Object fragmentManager = get(a, "mFragments");
+        if (fragmentManager != null) {
+            final List<?> fragments = get(a, "mFragments.mAdded");
+            if (fragments != null && fragments.size() > 0) {
+                for (final Object f : fragments) {
+                    if (f instanceof OnResourcesChangeFinishListener) {
+                        uiSerialTasks.offer(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((OnResourcesChangeFinishListener) f).onResourcesChangeFinish(true);
+                            }
+                        });
+                    }
                 }
             }
         }
+
 
         final Window w = a.getWindow();
         if (w != null) {
