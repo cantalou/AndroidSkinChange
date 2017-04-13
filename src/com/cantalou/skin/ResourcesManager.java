@@ -18,7 +18,7 @@ import com.cantalou.skin.array.ColorStateListLongSpareArray;
 import com.cantalou.skin.array.ColorStateListLongSpareArrayForM;
 import com.cantalou.skin.array.ColorStateListSpareArray;
 import com.cantalou.skin.array.DrawableLongSpareArray;
-import com.cantalou.skin.content.res.KeepIdSkinProxyResources;
+import com.cantalou.skin.content.res.KeepIdProxyResources;
 import com.cantalou.skin.content.res.ProxyResources;
 import com.cantalou.skin.content.res.SkinResources;
 
@@ -31,6 +31,10 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
+ * 资源管理类<br/>
+ * 1.创建Resources的代理对象<br/>
+ * 2.替换系统资源静态缓存字段, 用于拦截所有的资源请求<br/>
+ *
  * @author cantalou
  * @date 2016年5月2日 下午9:11:12
  */
@@ -111,7 +115,7 @@ public class ResourcesManager {
     public Resources createProxyResource(Context context, String path, Resources defResources) {
 
         if (DEFAULT_RESOURCES.equals(path)) {
-            Log.d("skinPath is:{} , return defaultResources");
+            Log.d("resourcePath is:{} , return defaultResources {}", path, defResources);
             return defResources;
         }
 
@@ -124,13 +128,12 @@ public class ResourcesManager {
             }
         }
 
-
         Resources skinResources = createResource(context, path, defResources);
         if (skinResources == null) {
             Log.w("Fail to create resources path :{}", path);
             return null;
         }
-        proxyResources = new KeepIdSkinProxyResources(skinResources, defResources);
+        proxyResources = new KeepIdProxyResources(skinResources, defResources);
 
         synchronized (this) {
             cacheResources.put(path, new WeakReference<Resources>(proxyResources));
@@ -156,26 +159,37 @@ public class ResourcesManager {
             replaced = true;
 
             SkinManager skinManager = SkinManager.getInstance();
-            CacheKeyIdManager cacheKeyIdManager = skinManager.getCacheKeyIdManager();
+            ResourcesCacheKeyIdManager resourcesCacheKeyIdManager = skinManager.getResourcesCacheKeyIdManager();
 
             // drawable
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            SparseLongIntArray keyIdMap = resourcesCacheKeyIdManager.getDrawableCacheKeyIdMap();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                //
                 LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
                 LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawablesArray[0],
-                        cacheKeyIdManager.getDrawableCacheKeyIdMap());
+                        keyIdMap);
+                sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
+
+                LongSparseArray<Drawable.ConstantState> sPreloadedColorDrawables = get(Resources.class, "sPreloadedColorDrawables");
+                LongSparseArray<Drawable.ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, sPreloadedColorDrawables,
+                        keyIdMap);
+                set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
+
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawablesArray = get(Resources.class, "sPreloadedDrawables");
+                LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawablesArray[0], keyIdMap);
                 sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
             } else {
-                LongSparseArray<Drawable.ConstantState> originalPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
-                LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, originalPreloadedDrawables,
-                        cacheKeyIdManager.getDrawableCacheKeyIdMap());
+                LongSparseArray<Drawable.ConstantState> sPreloadedDrawables = get(Resources.class, "sPreloadedDrawables");
+                LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawables, keyIdMap);
                 set(Resources.class, "sPreloadedDrawables", proxyPreloadedDrawables);
             }
 
 
             // colorStateList
+            keyIdMap = resourcesCacheKeyIdManager.getColorStateListCacheKeyIdMap();
             Object originalPreCSL = get(Resources.class, "sPreloadedColorStateLists");
             Object proxyPreloadedColorStateLists;
-            SparseLongIntArray keyIdMap = cacheKeyIdManager.getColorStateListCacheKeyIdMap();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 proxyPreloadedColorStateLists = new ColorStateListLongSpareArrayForM(skinManager, (LongSparseArray<ConstantState<ColorStateList>>) originalPreCSL, keyIdMap);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

@@ -13,11 +13,12 @@ import android.util.TypedValue;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.CacheKeyIdManager;
+import com.cantalou.skin.ResourcesCacheKeyIdManager;
 import com.cantalou.skin.SkinManager;
 
 import java.io.InputStream;
 
+import static com.cantalou.android.skin.BuildConfig.DEBUG;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
@@ -29,8 +30,6 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
  */
 public class ProxyResources extends Resources {
 
-    public static final boolean logEnable = true;
-
     /**
      * app资源id前缀
      */
@@ -41,32 +40,32 @@ public class ProxyResources extends Resources {
      */
     public static final int RESOURCE_NAME_CACHE_SIZE = 31;
 
-    protected static final Class<?>[] loadXmlResourceParserParam = new Class[]{String.class, int.class, int.class, String.class};
-
-    protected static final Class<?>[] openNonAssetParam = new Class[]{int.class, String.class, int.class};
-
     /**
      * 资源名称缓存id
      */
     protected int[] resourceNameIdCache = new int[RESOURCE_NAME_CACHE_SIZE + 1];
 
     /**
-     * 资源名称缓存
+     * 资源名称缓存, 减少短时间内重复调用getResourceName的次数
      */
     protected String[] resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE + 1];
 
-    protected CacheKeyIdManager cacheKeyIdManager;
+    protected static final Class<?>[] loadXmlResourceParserParam = new Class[]{String.class, int.class, int.class, String.class};
+
+    protected static final Class<?>[] openNonAssetParam = new Class[]{int.class, String.class, int.class};
+
+    protected ResourcesCacheKeyIdManager resourcesCacheKeyIdManager;
 
     protected final TypedValue typedValueCache = new TypedValue();
 
     public ProxyResources(Resources res) {
         super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
-        cacheKeyIdManager = SkinManager.getInstance().getCacheKeyIdManager();
+        resourcesCacheKeyIdManager = SkinManager.getInstance().getResourcesCacheKeyIdManager();
     }
 
     @Override
     public XmlResourceParser getLayout(int id) throws NotFoundException {
-        cacheKeyIdManager.registerLayout(id);
+        resourcesCacheKeyIdManager.registerLayout(id);
         return super.getLayout(id);
     }
 
@@ -92,29 +91,31 @@ public class ProxyResources extends Resources {
     }
 
     @Override
-    public synchronized String getResourceName(int resId) throws NotFoundException {
+    public String getResourceName(int resId) throws NotFoundException {
 
         if (resId == 0) {
             return "";
         }
 
         int index = resId & RESOURCE_NAME_CACHE_SIZE;
+        String name = null;
         if (resourceNameIdCache[index] == resId) {
-            return resourceNameCache[index];
+            name = resourceNameCache[index];
         }
 
-        try {
-            String name = super.getResourceName(resId);
-            resourceNameIdCache[index] = resId;
-            resourceNameCache[index] = name;
-            return name;
-        } catch (Exception e) {
-            return null;
+        if (name == null || resourceNameIdCache[index] != resId) {
+            try {
+                name = super.getResourceName(resId);
+                resourceNameIdCache[index] = resId;
+                resourceNameCache[index] = name;
+            } catch (Exception e) {
+            }
         }
+        return name;
     }
 
     /**
-     * 尝试使用 loadDrawable(Resources, TypedValue, int)方法进行自定义的资源加载,失败是再调用getDrawable(int)加载
+     * 尝试使用 loadDrawable(Resources, TypedValue, int)方法进行自定义的资源加载, 失败时再调用getDrawable(int)加载
      *
      * @param id 资源id
      * @return 资源
@@ -126,8 +127,8 @@ public class ProxyResources extends Resources {
         Drawable dr = loadDrawable(this, value, id);
         if (dr == null) {
             dr = getDrawable(id);
-            if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
-                Log.v("loadDrawable(Resources, TypedValue, int) return null, retry load value:{} from :{} result:{} ", toString(value), this, dr);
+            if (DEBUG && (id & APP_ID_MASK) == APP_ID_MASK) {
+                Log.v("loadDrawable(Resources, TypedValue, int) return null, retry from getDrawable value:{} from :{} result:{} ", toString(value), this, dr);
             }
         }
         return dr;
@@ -190,7 +191,7 @@ public class ProxyResources extends Resources {
             dr.setChangingConfigurations(value.changingConfigurations);
         }
 
-        if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+        if (DEBUG && (id & APP_ID_MASK) == APP_ID_MASK) {
             Log.v("load value:{} from :{} result:{} ", toString(value), res, dr);
         }
         return dr;
@@ -202,7 +203,7 @@ public class ProxyResources extends Resources {
         ColorStateList csl = loadColorStateList(this, value, id);
         if (csl == null) {
             csl = getColorStateList(id);
-            if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+            if (DEBUG && (id & APP_ID_MASK) == APP_ID_MASK) {
                 Log.v("loadColorStateList(Resources, TypedValue, int) return null, retry load value:{} from :{} result:{} ", toString(value), this, csl);
             }
         }
@@ -236,7 +237,7 @@ public class ProxyResources extends Resources {
             throw new NotFoundException("File " + file + " from drawable resource ID #0x" + Integer.toHexString(id) + ": .xml extension required");
         }
 
-        if (logEnable && (id & APP_ID_MASK) == APP_ID_MASK) {
+        if (DEBUG && (id & APP_ID_MASK) == APP_ID_MASK) {
             Log.v("load value:{} from :{} result:{} ", toString(value), res, csl);
         }
 

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 
+import com.cantalou.android.util.FileUtil;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.android.util.array.SparseLongIntArray;
@@ -14,6 +15,9 @@ import com.cantalou.skin.content.res.ProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -24,10 +28,16 @@ import static com.cantalou.android.util.ReflectUtil.get;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
+ * Resources中资源id和缓存key映射的管理类, 以实现缓存key到资源id的反向查询(key -> id)<p>
+ * TypeValue value; <br>
+ * 1.Drawable Resources : key = (((long) value.assetCookie) << 32) | value.data<br>
+ * 2.Color Resources : key = value.data<br>
+ * 3.Color Selector : key = (((long) value.assetCookie) << 32) | value.data;
+ *
  * @author cantalou
  * @date 2016年1月31日 下午5:30:09
  */
-public final class CacheKeyIdManager {
+public final class ResourcesCacheKeyIdManager {
 
     /**
      * 资源缓存key与资源id的映射
@@ -54,12 +64,6 @@ public final class CacheKeyIdManager {
      */
     private BinarySearchIntArray registeredId = new BinarySearchIntArray();
 
-
-    /**
-     * 已注册的Color资源id
-     */
-    private BinarySearchIntArray registeredColorId = new BinarySearchIntArray();
-
     /**
      * 资源管理对象
      */
@@ -71,7 +75,47 @@ public final class CacheKeyIdManager {
 
     private Object menuInflater;
 
-    CacheKeyIdManager() {
+    private Thread parseNameIdThread = new Thread("parseNameIdThread") {
+        @Override
+        public void run() {
+            Resources res = skinManager.getDefaultResources();
+            TypedValue out = new TypedValue();
+            BufferedReader br = null;
+            String line;
+            long startTime = System.currentTimeMillis();
+            try {
+                InputStream is = res.getAssets().open("nameId.txt");
+                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                while ((line = br.readLine()) != null) {
+                    //type:name:id
+                    String[] typeNameId = line.split(":");
+                    int id = 0;
+                    try {
+                        id = Integer.parseInt(typeNameId[2], 16);
+                        res.getValue(id, out, true);
+                    } catch (Resources.NotFoundException e) {
+                        continue;
+                    }
+                    if ("color".equals(typeNameId[0])) {
+                        if (out.string != null && out.string.toString().endsWith(".xml")) {
+                            registerColorStateList(id, out);
+                        } else {
+                            registerDrawable(id, out);
+                        }
+                    } else if ("drawable".equals(typeNameId[0]) || "mipmap".equals(typeNameId[0])) {
+                        registerDrawable(id, out);
+                    }
+                }
+            } catch (Exception e) {
+                Log.w("Preload resource id key map error, {}", e);
+            } finally {
+                FileUtil.close(br);
+            }
+            Log.i("Parse nameId.txt finish , time {}ms", System.currentTimeMillis() - startTime);
+        }
+    };
+
+    ResourcesCacheKeyIdManager() {
     }
 
     /**
@@ -83,13 +127,10 @@ public final class CacheKeyIdManager {
         long key;
         boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
 
-        if (!isColorDrawable) {
-            key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
-            drawableCacheKeyIdMap.put(key, id);
-            Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
-        } else {
-            registeredColorId.put(id);
-        }
+        key = isColorDrawable ? value.data : (((long) value.assetCookie) << 32) | value.data;
+        drawableCacheKeyIdMap.put(key, id);
+        Log.v("register drawable {} 0x{} to key:{}", defaultResources.getResourceName(id), Integer.toHexString(id), key);
+
     }
 
     /**
@@ -237,6 +278,7 @@ public final class CacheKeyIdManager {
 
     public void setSkinManager(SkinManager skinManager) {
         this.skinManager = skinManager;
+        parseNameIdThread.start();
     }
 
     public void reset() {

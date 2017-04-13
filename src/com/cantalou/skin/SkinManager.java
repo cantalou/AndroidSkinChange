@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleCallbacksAdapter;
 import com.cantalou.android.manager.lifecycle.ActivityLifecycleManager;
-import com.cantalou.android.util.FileUtil;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.PrefUtil;
 import com.cantalou.android.util.StringUtils;
@@ -33,14 +31,12 @@ import com.cantalou.skin.handler.ViewHandler;
 import com.cantalou.skin.layout.factory.ViewFactory;
 import com.cantalou.skin.layout.factory.ViewFactoryAfterGingerbread;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.cantalou.android.util.ReflectUtil.get;
+import static com.cantalou.android.util.ReflectUtil.invoke;
 import static com.cantalou.android.util.ReflectUtil.set;
 
 /**
@@ -95,7 +91,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 资源缓存key和资源id管理对象
      */
-    private CacheKeyIdManager cacheKeyIdManager;
+    private ResourcesCacheKeyIdManager resourcesCacheKeyIdManager;
 
     private ResourcesManager resourcesManager;
 
@@ -134,43 +130,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         }
     };
 
-    private Thread parseNameIdThread = new Thread("parseNameIdThread") {
-        @Override
-        public void run() {
-            Resources res = defaultResources;
-            TypedValue out = new TypedValue();
-            BufferedReader br = null;
-            String line;
-            try {
-                InputStream is = context.getAssets().open("nameId.txt");
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                while ((line = br.readLine()) != null) {
-                    //type:name:id
-                    String[] typeNameId = line.split(":");
-                    int id = 0;
-                    try {
-                        id = Integer.parseInt(typeNameId[2], 16);
-                        res.getValue(id, out, true);
-                    } catch (Resources.NotFoundException e) {
-                        continue;
-                    }
-                    if ("color".equals(typeNameId[0])) {
-                        if (out.string != null && out.string.toString().endsWith(".xml")) {
-                            cacheKeyIdManager.registerColorStateList(id, out);
-                        } else {
-                            cacheKeyIdManager.registerDrawable(id, out);
-                        }
-                    } else if ("drawable".equals(typeNameId[0])) {
-                        cacheKeyIdManager.registerDrawable(id, out);
-                    }
-                }
-            } catch (Exception e) {
-                Log.w("Preload resource id key map error, {}", e);
-            } finally {
-                FileUtil.close(br);
-            }
-        }
-    };
 
     private SkinManager() {
     }
@@ -184,9 +143,9 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         activityLifecycleManager = ActivityLifecycleManager.getInstance();
         activityLifecycleManager.registerActivityLifecycleCallbacks(this);
 
-        cacheKeyIdManager = new CacheKeyIdManager();
-        cacheKeyIdManager.setSkinManager(this);
-        parseNameIdThread.start();
+        resourcesCacheKeyIdManager = new ResourcesCacheKeyIdManager();
+        resourcesCacheKeyIdManager.setSkinManager(this);
+
 
         resourcesManager = ResourcesManager.getInstance();
 
@@ -314,7 +273,15 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
         Object fragmentManager = get(a, "mFragments");
         if (fragmentManager != null) {
-            final List<?> fragments = get(a, "mFragments.mAdded");
+            List<?> fragments = get(fragmentManager, "mAdded");
+            if (fragments == null) {
+                fragmentManager = invoke(fragmentManager, "getFragmentManager");
+                if (fragmentManager == null) {
+                    fragmentManager = invoke(fragmentManager, "getSupportFragmentManager");
+                }
+                fragments = get(fragmentManager, "mAdded");
+            }
+
             if (fragments != null && fragments.size() > 0) {
                 for (final Object f : fragments) {
                     if (f instanceof OnResourcesChangeFinishListener) {
@@ -379,7 +346,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         } else {
             AbstractHandler ah = ViewFactory.getHandler(v.getClass().getName());
             if (ah != null) {
-                ah.reload(v, currentResources, false);
+               // ah.reload(v, currentResources, false);
             }
         }
 
@@ -531,8 +498,8 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         return activities;
     }
 
-    public CacheKeyIdManager getCacheKeyIdManager() {
-        return cacheKeyIdManager;
+    public ResourcesCacheKeyIdManager getResourcesCacheKeyIdManager() {
+        return resourcesCacheKeyIdManager;
     }
 
 }

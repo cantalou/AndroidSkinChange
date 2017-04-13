@@ -11,61 +11,32 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 
 /**
- * 皮肤Resources代理类<br>
- * 加载资源时使用皮肤资源包中的资源进行替换, 皮肤资源包 不存在指定的资源时, 使用默认资源.
+ * Resources代理类<p>
+ * 加载资源时使用资源包中的资源进行替换, 资源包不存在指定的资源时, 使用默认资源.
  *
  * @author cantalou
- * @date 2015年11月29日 下午3:15:02
+ * @date 2016年11月29日 下午3:15:02
  */
-public class SkinProxyResources extends ProxyResources {
+public class MessIdProxyResources extends KeepIdProxyResources {
 
     /**
-     * 皮肤资源
+     * 资源id映射, App内置资源和资源包中资源的同名资源id映射<br/>
+     * App内:   name:icon, id:0x7F010001<br/>
+     * 资源包内: name:icon, id:0x7F010002<br/>
+     * 0x7F010001 -> 0x7F010002
      */
-    protected Resources skinResources;
+    protected SparseIntArray[] idMap = new SparseIntArray[7];
 
     /**
-     * 应用包名
+     * App内存在,但资源包中不存在的id
      */
+    protected BinarySearchIntArray notFoundedIds = new BinarySearchIntArray();
+
     protected String packageName;
 
-    /**
-     * 皮肤资源
-     */
-    protected String skinPath;
-
-    /**
-     * 皮肤资源id映射
-     */
-    protected SparseIntArray skinIdMap = new SparseIntArray();
-
-    /**
-     * 皮肤资源不存在的id
-     */
-    protected BinarySearchIntArray notFoundedSkinIds = new BinarySearchIntArray();
-
-    /**
-     * Create a new ProxyResources object
-     *
-     * @param skinRes     skin resources
-     * @param defRes      default resources
-     * @param packageName
-     * @param skinPath
-     */
-    public SkinProxyResources(String packageName, Resources skinRes, Resources defRes, String skinPath) {
-        super(defRes);
-        this.skinResources = skinRes;
+    public MessIdProxyResources(Resources skin, Resources def, String packageName) {
+        super(skin, def);
         this.packageName = packageName;
-        this.skinPath = skinPath;
-    }
-
-    /**
-     * Create a new ProxyResources
-     *
-     * @param defRes default resources
-     */
-    public SkinProxyResources(Resources defRes) {
-        this("", null, defRes, "");
     }
 
     /**
@@ -84,12 +55,13 @@ public class SkinProxyResources extends ProxyResources {
             return 0;
         }
 
-        if (notFoundedSkinIds.contains(id)) {
+        if (notFoundedIds.contains(id)) {
             Log.v("resource id :{} toSkinId not found ", toHex(id));
             return 0;
         }
 
-        int skinId = skinIdMap.get(id);
+        int index = id & 0x00000007;
+        int skinId = idMap[index].get(id);
         if (skinId != 0) {
             return skinId;
         }
@@ -100,39 +72,38 @@ public class SkinProxyResources extends ProxyResources {
             return 0;
         }
 
-        skinId = skinResources.getIdentifier(name, null, packageName);
+        skinId = skinResource.getIdentifier(name, null, packageName);
         if (skinId == 0) {
-            notFoundedSkinIds.put(id);
+            notFoundedIds.put(id);
             Log.v("resource id :{} getIdentifier(name, null, packageName) return null", toHex(id));
         } else {
-            skinIdMap.put(id, skinId);
+            idMap[index].put(id, skinId);
         }
         Log.v("convert name:{},id:{} to skin id:{}", name, toHex(id), toHex(skinId));
         return skinId;
     }
 
     public Drawable loadDrawable(int id) throws NotFoundException {
+
         if (id == 0) {
             return null;
         }
 
-        TypedValue value = typedValueCache;
-        getValue(id, value, true);
-
-        Resources res;
-        int skinId;
-        if ((id & APP_ID_MASK) != APP_ID_MASK || (skinId = toSkinId(id)) == 0) {
-            res = this;
-            skinId = id;
-        } else {
-            res = skinResources;
-            if (isColor(value)) {
-                res.getValue(skinId, value, true);
-            }
+        if ((id & APP_ID_MASK) != APP_ID_MASK) {
+            return getDrawable(id);
         }
+
+        int skinId = toSkinId(id);
+        if (skinId == 0) {
+            return super.loadDrawable(id);
+        }
+
+        Resources res = skinResource;
+        TypedValue value = typedValueCache;
 
         Drawable result = null;
         try {
+            res.getValue(skinId, value, true);
             result = loadDrawable(res, value, skinId);
         } catch (Exception e) {
             Log.e(e);
@@ -156,7 +127,7 @@ public class SkinProxyResources extends ProxyResources {
             res = this;
             skinId = id;
         } else {
-            res = skinResources;
+            res = skinResource;
             if (isColor(value)) {
                 res.getValue(skinId, value, true);
             }
@@ -174,18 +145,10 @@ public class SkinProxyResources extends ProxyResources {
 
     public void clearCache() {
         super.clearCache();
-        skinIdMap.clear();
-        notFoundedSkinIds.clear();
+        for (SparseIntArray sia : idMap) {
+            sia.clear();
+        }
+        notFoundedIds.clear();
     }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" + skinPath + "}";
-    }
-
-    public Resources getSkinResources() {
-        return skinResources;
-    }
-
 
 }
