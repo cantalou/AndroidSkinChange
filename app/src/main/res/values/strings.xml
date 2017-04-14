@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidTest</string>
+    <string name="hello">Hello test!</string>
+    <string name="action_settings1">Settings1</string>
+    <string name="action_settings2">Settings2</string>
+
+    <string name="skin_color">蓝色</string>
+    <string name="skin_text">文本</string>
+</resources>

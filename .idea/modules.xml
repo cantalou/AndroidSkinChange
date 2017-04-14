@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidSkinChange.iml" filepath="$PROJECT_DIR$/AndroidSkinChange.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../AndroidUtil/androidUtil.iml" filepath="$PROJECT_DIR$/../AndroidUtil/androidUtil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../AndroidUtil/AndroidUtil.iml" filepath="$PROJECT_DIR$/../AndroidUtil/AndroidUtil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>
 </project>

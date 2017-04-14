@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cantalou.android.sample"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="21"/>
+
+    <application
+        android:name=".SampleApplication"
+        android:theme="@style/AppBaseTheme"
+        android:allowBackup="true">
+        <activity android:name=".activity.SkinActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.SkinTwoActivity"></activity>
+        <activity android:name=".activity.SkinFragmentActivity"></activity>
+    </application>
+
+</manifest>

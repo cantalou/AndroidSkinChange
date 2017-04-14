@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.wy.test.skin.SkinActivity">
+    <item
+        android:id="@+id/action_1"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="always"
+        android:title="@string/action_settings1"/>
+
+    <item
+        android:id="@+id/action_2"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="always"
+        android:title="@string/action_settings2"/>
+</menu>
