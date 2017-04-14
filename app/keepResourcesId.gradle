@@ -1,0 +1,452 @@
+android.aaptOptions.additionalParameters("-P", "${buildDir}/outputs/public.xml")
+
+ext.publicDir = "${rootDir}/public/"
+file(publicDir).mkdirs()
+
+ext.publicFile = file("${publicDir}/public.xml")
+ext.paddingFile = file("${publicDir}/padding.xml")
+ext.skipFile = file("${publicDir}/skip.xml")
+ext.timestampFile = file("${publicDir}/timestamp.txt")
+
+afterEvaluate {
+    android.applicationVariants.each { variant ->
+
+        def capitalizeName = variant.name.capitalize()
+        def mergeTask = tasks.findByName("merge${capitalizeName}Resources")
+
+        mergeTask.doLast {
+
+            def splitDataFlat = "#:#"
+            def change = false;
+            def resDir = android.sourceSets.main.res.srcDirs[0]
+            println resDir
+            if(!resDir){
+                resDir = "${projectDir}/src/main/res"
+            }
+            def newTimestampMap = getTimestamp(file(resDir.toString()))
+
+            def oldTimestampMap = [:]
+            if (timestampFile.exists()) {
+                timestampFile.eachLine {
+                    if (it.size() > 0) {
+                        def item = it.split(splitDataFlat)
+                        oldTimestampMap.put(item[0], item[1])
+                    }
+                }
+            } else {
+                change = true
+            }
+
+
+
+            if (!change) {
+                if (newTimestampMap.size() != oldTimestampMap.size()) {
+                    change = true
+                    println "文件数量发生变化 新文件数量:${newTimestampMap.size()}, 旧文件数量:${oldTimestampMap.size()}"
+                } else {
+                    for (entry in oldTimestampMap) {
+                        if (!(Long.parseLong(entry.value) == newTimestampMap.get(entry.key))) {
+                            change = true
+                            println "资源文件${entry.key}发生变化, 上一次修改时间:${entry.value}, 最新修改时间:${newTimestampMap.get(entry.key)}"
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (change) {
+                ['ids.xml', 'public.xml', 'padding.xml'].each {
+                    file("${mergeTask.outputDir}/values/${it}").delete()
+                }
+                println "新资源删除了资源, 删除values下 'ids.xml', 'public.xml', 'padding.xml' 文件"
+                timestampFile.withWriter { out ->
+                    newTimestampMap.each { k, v ->
+                        out.println "${k}${splitDataFlat}${v}"
+                    }
+                }
+                println "Update timestampFile"
+            } else {
+                println "timestampFile UP-TO-DATE"
+            }
+        }
+
+        def task = tasks.findByName("process${capitalizeName}Resources");
+        task.doLast {
+
+            println "开始执行keep resource id 任务"
+            def valuesDir = "${mergeTask.outputDir}/values"
+
+            def generatedPublic = file("${buildDir}/outputs/public.xml")
+            if (!generatedPublic.exists()) {
+                println "不存在${generatedPublic}文件"
+                return
+            }
+
+            def skipItem = [] as HashSet
+            skipItem.addAll(getItems(skipFile))
+            if (!skipItem.empty) {
+                println("存在需要忽略的节点数:${skipItem.size()}")
+            }
+
+            if (!publicFile.exists()) {
+                println "旧的public.xml文件不存在直接复制一份"
+                copy {
+                    from generatedPublic
+                    into publicDir
+                }
+                reorderPublicXml skipItem
+                println "根据public.xml生成ids.xml文件"
+                generateId("${valuesDir}/values.xml")
+                return
+            }
+
+            //新导出的public节点
+            def newItem = [] as LinkedHashSet
+            newItem.addAll(getItems(generatedPublic))
+
+            //旧的public节点
+            def oldItem = []
+            def deletedItem = []
+            getItems(publicFile).each {
+                if (skipItem.contains(it)) {
+                    //被忽略的节点
+                } else if (newItem.contains(it)) {
+                    oldItem << it
+                } else {
+                    //旧public文件存在, 但新public文件里面删除的节点
+                    deletedItem << it
+                }
+            }
+
+            def buildType = variant.getBuildType()
+            def releaseMode = buildType.isMinifyEnabled() && buildType.name.equalsIgnoreCase("release")
+
+            def padding = getItems(paddingFile)
+            //println "旧public-padding.xml 文件存在,已有节点${padding.toString()}"
+
+            if (deletedItem.size() > 0) {
+                if (releaseMode) {
+                    skipItem.addAll(deletedItem)
+                    writeSkipXml skipItem
+                    writePublicXml oldItem
+                    reorderPublicXml skipItem
+                    generateId("${valuesDir}/values.xml")
+                    println "Release模式下存在删除的节点:${deletedItem.size()}, 将节点添加到skip.xml文件中,skip节点:${skipItem.size()}"
+                } else {
+                    padding.addAll(deletedItem)
+                    writePaddingXml(padding)
+                    writePublicXml oldItem
+                    reorderPublicXml skipItem
+                    generateId("${valuesDir}/values.xml")
+                    println "Debug模式下存在被删除的节点, 新版本public.xml 文件删除了${deletedItem.size()}个资源, 增加public-padding节点,总数:${padding.size()}"
+                }
+            }
+
+            def existPublicInValues = file("${valuesDir}/public.xml").exists()
+            if (!existPublicInValues) {
+                println "values文件夹不存在public.xml文件,需要复制public.xml,padding.xml, ids.xml文件到values文件夹下重新执行process${capitalizeName}Resources task"
+
+                reorderPublicXml skipItem
+
+                if (!file("${publicDir}/ids.xml").exists()) {
+                    println "ids.xml文件不存在重新生成"
+                    generateId("${valuesDir}/values.xml")
+                }
+
+                copyPublicFilesIntoValuesDir valuesDir
+                if (releaseMode) {
+                    throw new RuntimeException("Release混淆模式下无法直接Task重新执行, 只拷贝文件到values文件夹下, 需要手动再次执行打包命令(命令中不要包含clean)")
+                } else {
+                    it.execute()
+                }
+                return
+            }
+
+            def oldSize = oldItem.size() + padding.size() + (releaseMode ? 0 : skipItem.size())
+            println "newSize:${newItem.size()},oldSize:${oldItem.size()},paddingSize:${padding.size()},skipSize:${skipItem.size()} containsAll:${newItem.containsAll(oldItem)}"
+            if (newItem.size() == oldSize && newItem.containsAll(oldItem)) {
+                println "新旧public文件内容相同"
+            } else {
+                println "values文件夹存在public.xml文件,有新增节点, 直接复制一份"
+                if (!padding.empty) {
+                    newItem.removeAll { item ->
+                        padding.any { it.id.equals(item.id) }
+                    }
+                }
+                writePublicXml newItem
+                reorderPublicXml skipItem
+                println "重新生成ids.xml文件"
+                generateId("${valuesDir}/values.xml")
+                copyPublicFilesIntoValuesDir valuesDir
+                if (releaseMode) {
+                    throw new RuntimeException("Release混淆模式下无法直接Task重新执行, 只拷贝文件到values文件夹下, 需要手动再次执行打包命令(命令中不要包含clean)")
+                } else {
+                    it.execute()
+                }
+            }
+        }
+    }
+
+
+    task buildJarTask(type: Jar) {
+
+        destinationDir = file("${buildDir}/intermediates/bundles/")
+        appendix = ""
+        baseName = "androidJar"
+        version = "1.0.0"
+        classifier = "debug"
+
+        //后缀名
+        extension = "jar"
+        archiveName = "class.jar"
+
+        //需打包的资源所在的路径集
+        def srcClassDir = []
+        android.applicationVariants.all { variant ->
+            srcClassDir.add("${project.buildDir.absolutePath}/intermediates/classes/${variant.dirName}")
+        }
+        //初始化资源路径集
+        from srcClassDir
+    }
+
+
+    if (gradle.startParameter.taskNames.find {
+        it.contains("assemble")
+    } != null) {
+        //第4件事
+        android.applicationVariants.all { variant ->
+            tasks.each { task ->
+                if (task.name.equalsIgnoreCase("assemble" + variant.name)) {
+                    task.doLast {
+                        println "导出jar包"
+                        buildJarTask.execute()
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+def getTimestamp(File file) {
+
+    if (!file.exists()) {
+        return
+    }
+
+    def timestampMap = [:]
+    file.eachFileRecurse { f ->
+        timestampMap.put f.getAbsolutePath(), f.lastModified()
+    }
+    return timestampMap
+}
+
+/**
+ * 根据skip和padding文件的内容删除多余的节点, 重新编号资源id
+ * @param items
+ * @return
+ */
+def reorderPublicXml(def skipItem) {
+
+    println "根据skip.xml和padding.xml文件重新排序资源id,从public.xml文件中删除"
+
+    def paddingItem = getItems(paddingFile)
+
+    if (skipItem.isEmpty() && paddingItem.isEmpty()) {
+        return;
+    }
+
+    def paddingIds = paddingItem*.id as HashSet
+    //println "padding id ${paddingIds}"
+
+    def oldItemMap = [:] as LinkedHashMap
+    def oldItem = []
+    getItems(publicFile).each {
+        if (!skipItem.contains(it)) {
+            def list = oldItemMap.get(it.type)
+            if (list == null) {
+                list = []
+                oldItemMap.put(it.type, list)
+            }
+            list << it
+        }
+    }
+
+    oldItemMap.each { k, v ->
+
+        //根据id值由小到大排序
+        java.util.Collections.sort(v, new Comparator<Item>() {
+            @Override
+            int compare(Item lhs, Item rhs) {
+                return lhs.id.compareTo(rhs.id)
+            }
+        })
+
+        //获取类型id初始值
+        def newId = Integer.parseInt(v.get(0).id.substring(2), 16) & 0xFFFF0000
+        def hexVal
+        v.each {
+            hexVal = "0x" + Long.toString(newId, 16)
+            while (paddingIds.contains(hexVal)) {
+                //println "id ${hexVal} 已存在跳过"
+                newId++
+                hexVal = "0x" + Long.toString(newId, 16)
+            }
+            it.id = hexVal
+            newId++
+            oldItem << it
+        }
+    }
+
+    def size = paddingItem.size()
+    for (int i = 0; i < paddingItem.size(); i++) {
+        def item = paddingItem.get(i)
+        def list = oldItemMap.get(item.type)
+        if (list != null && list.size() > 0 && Integer.parseInt(item.id.substring(2), 16) > Integer.parseInt(list.get(list.size() - 1).id.substring(2), 16)) {
+            paddingItem.remove(i--)
+        }
+    }
+    if (size > paddingItem.size()) {
+        writePaddingXml paddingItem
+    }
+
+    writePublicXml oldItem
+}
+
+def getItems(def file) {
+    def padding = []
+    def text
+    if (file.exists() && !(text = file.getText()).empty) {
+        def paddingResources = new XmlSlurper().parseText(text)
+        paddingResources.children().each {
+            padding << new Item(it)
+        }
+    }
+    padding
+}
+
+def writeSkipXml(def items) {
+    skipFile.withWriter { out ->
+        out.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+        out.println("<resources>")
+        items.each {
+            out.println("<public name=\"${it.name}\" type=\"${it.type}\" id=\"\"/>")
+        }
+        out.println("</resources>")
+    }
+}
+
+def writePaddingXml(def items) {
+    paddingFile.withWriter { out ->
+        out.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+        out.println("<resources>")
+        items.each {
+            out.println("<public-padding type=\"${it.type}\" name=\"${it.name}\" start=\"${it.id}\" end=\"${it.id}\" id=\"${it.id}\"/>")
+        }
+        out.println("</resources>")
+    }
+}
+
+def writePublicXml(def items) {
+    publicFile.withWriter { out ->
+        out.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+        out.println("<resources>")
+        items.each {
+            out.println("<public type=\"${it.type}\" name=\"${it.name}\"  id=\"${it.id}\" />")
+        }
+        out.println("</resources>")
+    }
+}
+
+def copyPublicFilesIntoValuesDir(def destDir) {
+    copy {
+        from publicDir
+        into destDir
+        include 'ids.xml', 'public.xml', 'padding.xml'
+    }
+}
+
+/**
+ * 生成ids.xml文件, 再通过public.xml文件固定这些id值
+ *
+ * @param valueFile 合并后的资源文件
+ * @param skipItem 需要忽略的节点
+ * @return
+ */
+def generateId(def valueFile) {
+
+    if (!publicFile.exists()) {
+        return;
+    }
+
+    //app中自定义的id和padding里面的id
+    def existsIds = []
+    [file(valueFile), paddingFile].each {
+        if (it.exists()) {
+            def content = it.getText()
+            if (!content.empty) {
+                new XmlSlurper().parseText(content).item.each {
+                    def type = it.@type.text()
+                    if (type.equals("id")) {
+                        def name = it.@name.text()
+                        existsIds.add(name)
+                    }
+                }
+            }
+        }
+    }
+
+    //app自动生成的id
+    def ids = []
+    def resources = new XmlSlurper().parse(publicFile)
+    resources.public.each {
+        def type = it.@type.text()
+        def name = it.@name.text()
+        if (type.equals("id") && !existsIds.contains(name)) {
+            ids.add(name)
+        }
+    }
+
+    def destIds = file("${publicDir}/ids.xml")
+    destIds.withWriter { out ->
+        out.println "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        out.println "<resources>"
+        ids.each {
+            out.println "<item type=\"id\" name=\"${it}\" />"
+        }
+        out.println "</resources>"
+    }
+}
+
+class Item {
+
+    def type
+    def name
+    def id
+
+    Item(def node) {
+        this.type = node.@type.text()
+        this.name = node.@name.text()
+        this.id = node.@id.text()
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+        Item item = (Item) o
+        return name.equals(item.name) && type.equals(item.type)
+    }
+
+    int hashCode() {
+        return name.hashCode() * 37 + type.hashCode()
+    }
+
+    @Override
+    public String toString() {
+        return "\nItem{" +
+                "type=" + type +
+                ", name=" + name +
+                ", id=" + id +
+                '}'
+    }
+}

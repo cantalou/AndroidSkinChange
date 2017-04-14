@@ -1,0 +1,39 @@
+android.aaptOptions.additionalParameters("-P", "${buildDir}/outputs/public.xml")
+
+afterEvaluate {
+
+    android.applicationVariants.each { variant ->
+
+        def capitalizeName = variant.name.capitalize()
+
+        def compileTask = tasks.findByName("compile${capitalizeName}Sources")
+        compileTask.doLast {
+
+            //新导出的public节点
+            def items = []
+            def resources = new XmlSlurper().parse("${buildDir}/outputs/public.xml")
+            resources.public.each {
+                def type = it.@type.text()
+                def name = it.@name.text()
+                def id = it.@id.text().substring(2)
+                if ("color".equals(type) || "drawable".equals(type) || "mipmap".equals(type)) {
+                    items << [type, name, id]
+                }
+            }
+
+            //写入文件
+            if (items.size() > 0) {
+                file("${buildDir}/intermediates/assets/${capitalizeName}").mkdirs()
+                file("${buildDir}/intermediates/assets/${capitalizeName}/nameId.txt").withWriter("UTF-8", { w ->
+                    items.each { item ->
+                        item.each {
+                            w << it
+                            w << ":"
+                        }
+                        w.println()
+                    }
+                })
+            }
+        }
+    }
+}

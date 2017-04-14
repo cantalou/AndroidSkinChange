@@ -1,4 +1,8 @@
 apply plugin: 'com.android.application'
+//apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/keepResourcesId.gradle'
+apply from: './keepResourcesId.gradle'
+//apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/genNameId.gradle'
+apply from: './genNameId.gradle'
 
 android {
 

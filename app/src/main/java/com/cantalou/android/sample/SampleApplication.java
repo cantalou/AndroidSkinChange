@@ -2,7 +2,7 @@ package com.cantalou.android.sample;
 
 import android.app.Application;
 
-import skin.SkinManager;
+import com.cantalou.skin.SkinManager;
 
 /**
  * Project Name: AndroidSkinChange<p>
