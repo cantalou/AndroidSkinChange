@@ -120,18 +120,6 @@ public class MessIdProxyResources extends KeepIdProxyResources {
         }
 
         return super.loadDrawable(skinId);
-//        Resources res = proxyResource;
-//        TypedValue value = typedValueCache;
-//
-//        Drawable result = null;
-//        try {
-//            proxyResource.getValue(skinId, value, true);
-//            result = loadDrawable(proxyResource, value, skinId);
-//        } catch (Exception e) {
-//            Log.e(e);
-//        }
-//
-//        return result;
     }
 
     public ColorStateList loadColorStateList(int id) throws NotFoundException {
@@ -140,27 +128,17 @@ public class MessIdProxyResources extends KeepIdProxyResources {
             return null;
         }
 
+        if ((id & APP_ID_MASK) != APP_ID_MASK) {
+            return getColorStateList(id);
+        }
+
         int skinId = toSkinId(id);
         if (skinId == 0) {
             return super.loadColorStateList(id);
         }
 
-        TypedValue value = typedValueCache;
-        getValue(id, value, true);
+        return super.loadColorStateList(skinId);
 
-        Resources res = proxyResource;
-        if (isColor(value)) {
-            res.getValue(skinId, value, true);
-        }
-
-        ColorStateList result = null;
-        try {
-            result = loadColorStateList(res, value, skinId);
-        } catch (Exception e) {
-            Log.e(e);
-        }
-
-        return result;
     }
 
     @Override
@@ -175,6 +153,11 @@ public class MessIdProxyResources extends KeepIdProxyResources {
             return;
         }
 
+        super.getValue(id, outValue, resolveRefs);
+        if (outValue.string != null && outValue.string.toString().contains("layout")) {
+            return;
+        }
+
         int skinId = toSkinId(id);
         if (skinId == 0) {
             super.getValue(id, outValue, resolveRefs);
@@ -183,7 +166,7 @@ public class MessIdProxyResources extends KeepIdProxyResources {
 
         Resources res = proxyResource;
         try {
-            res.getValue(skinId, outValue, resolveRefs);
+            super.getValue(skinId, outValue, resolveRefs);
         } catch (Exception e) {
             Log.e(e);
         }

@@ -9,44 +9,9 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a752cc05-11d3-4e07-83e4-8e60c05be5cd" name="Default" comment="1.&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/genNameId.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/keepResourcesId.gradle" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/content/res/SkinResources.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/actionbar/ActionMenuItemViewHandler.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="a752cc05-11d3-4e07-83e4-8e60c05be5cd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cantalou/android/sample/SampleApplication.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cantalou/android/sample/SampleApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/OnResourcesChangeFinishListener.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/OnResourcesChangeFinishListener.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/ResourcesCacheKeyIdManager.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/ResourcesCacheKeyIdManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/ResourcesManager.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/ResourcesManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/SkinInstrumentation.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/SkinInstrumentation.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/SkinManager.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/SkinManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/array/ColorStateListLongSpareArray.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/array/ColorStateListLongSpareArray.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/array/ColorStateListLongSpareArrayForM.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/array/ColorStateListLongSpareArrayForM.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/array/ColorStateListSpareArray.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/array/ColorStateListSpareArray.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/array/DrawableLongSpareArray.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/array/DrawableLongSpareArray.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/content/SkinContextWrapper.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/SkinContextWrapper.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/content/res/KeepIdProxyResources.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/KeepIdProxyResources.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/content/res/MessIdProxyResources.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/content/res/ProxyResources.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/ProxyResources.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/AbstractHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/AbstractHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/AttrHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/AttrHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/ImageViewHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/ImageViewHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/ListViewHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/ListViewHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/TextViewHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/TextViewHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/ViewHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/ViewHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/actionbar/ActionBarContainerHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/actionbar/ActionBarContainerHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/actionbar/ActionBarHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/actionbar/ActionBarHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/actionbar/ActionBarViewHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/actionbar/ActionBarViewHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/handler/actionbar/AppCompactToolBarHandler.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/handler/actionbar/AppCompactToolBarHandler.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/layout/factory/ViewFactory.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/factory/ViewFactory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/layout/factory/ViewFactoryAfterGingerbread.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/factory/ViewFactoryAfterGingerbread.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/library/src/main/java/skin/util/ResourcesUtil.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/util/ResourcesUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java" afterPath="$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java" />
     </list>
     <ignored path="androidSkinChange.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -84,8 +49,18 @@
       <file leaf-file-name="MessIdProxyResources.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="123" column="45" selection-start-line="123" selection-start-column="45" selection-end-line="123" selection-end-column="45" />
+            <state relative-caret-position="345">
+              <caret line="166" column="21" selection-start-line="166" selection-start-column="18" selection-end-line="166" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TypedValue.java" pinned="false" current-in-tab="false">
+        <entry file="file://D:/android/sources/android-23/android/util/TypedValue.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="164">
+              <caret line="172" column="24" selection-start-line="172" selection-start-column="24" selection-end-line="172" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -111,6 +86,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Resources.java" pinned="false" current-in-tab="false">
+        <entry file="file://D:/android/sources/android-23/android/content/res/Resources.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="163">
+              <caret line="1344" column="16" selection-start-line="1344" selection-start-column="16" selection-end-line="1344" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ProxyResources.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/ProxyResources.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -126,8 +111,8 @@
       <file leaf-file-name="SkinActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cantalou/android/sample/activity/SkinActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="103" column="20" selection-start-line="103" selection-start-column="20" selection-end-line="103" selection-end-column="20" />
+            <state relative-caret-position="175">
+              <caret line="70" column="61" selection-start-line="70" selection-start-column="61" selection-end-line="70" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -135,12 +120,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Context.java" pinned="false" current-in-tab="false">
-        <entry file="file://D:/android/sources/android-23/android/content/Context.java">
+      <file leaf-file-name="ResourcesCacheKeyIdManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/ResourcesCacheKeyIdManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="534" column="7" selection-start-line="534" selection-start-column="7" selection-end-line="534" selection-end-column="7" />
-              <folding />
+            <state relative-caret-position="195">
+              <caret line="242" column="42" selection-start-line="242" selection-start-column="42" selection-end-line="242" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -148,18 +135,8 @@
       <file leaf-file-name="KeepIdProxyResources.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/KeepIdProxyResources.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="471">
-              <caret line="85" column="37" selection-start-line="85" selection-start-column="37" selection-end-line="85" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResourcesManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/ResourcesManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="141" column="7" selection-start-line="141" selection-start-column="7" selection-end-line="141" selection-end-column="7" />
+            <state relative-caret-position="56">
+              <caret line="90" column="16" selection-start-line="90" selection-start-column="16" selection-end-line="90" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -5919,7 +5896,7 @@
     <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../AndroidUtil/build.gradle" />
-    <property name="SearchEverywhereHistoryKey" value="skinma&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/com/cantalou/skin/SkinManager.java&#10;mess&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java&#10;publi&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/app/build/outputs/public.xml&#10;ResourcesCacheKeyIdManager&#9;PSI&#9;JAVA://skin.ResourcesCacheKeyIdManager&#10;SupportMenuInflater&#9;PSI&#9;JAVA://android.support.v7.view.SupportMenuInflater&#10;cache&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/skin/ResourcesCacheKeyIdManager.java&#10;resour&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/skin/ResourcesManager.java&#10;textv&#9;PSI&#9;JAVA://android.widget.TextView&#10;skin&#9;FILE&#9;file://D:/workspace/androidSkinChange/src/com/cantalou/skin/SkinManager.java&#10;skinm&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/src/com/cantalou/skin/SkinManager.java" />
+    <property name="SearchEverywhereHistoryKey" value="ResourcesCacheKeyIdManager&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/com/cantalou/skin/ResourcesCacheKeyIdManager.java&#10;skinma&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/com/cantalou/skin/SkinManager.java&#10;mess&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java&#10;publi&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/app/build/outputs/public.xml&#10;SupportMenuInflater&#9;PSI&#9;JAVA://android.support.v7.view.SupportMenuInflater&#10;cache&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/skin/ResourcesCacheKeyIdManager.java&#10;resour&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/library/src/main/java/skin/ResourcesManager.java&#10;textv&#9;PSI&#9;JAVA://android.widget.TextView&#10;skin&#9;FILE&#9;file://D:/workspace/androidSkinChange/src/com/cantalou/skin/SkinManager.java&#10;skinm&#9;FILE&#9;file://D:/workspace/AndroidSkinChange/src/com/cantalou/skin/SkinManager.java" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="251" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="263" />
@@ -6432,7 +6409,14 @@
       <option name="project" value="LOCAL" />
       <updated>1492137827712</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="1.项目结构修改&#10;">
+      <created>1492168193451</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1492168193451</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -6444,11 +6428,11 @@
     <layout>
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26532888" sideWeight="0.77398723" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.509476" sideWeight="0.7707889" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18729097" sideWeight="0.7110874" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38907468" sideWeight="0.7084222" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39464882" sideWeight="0.4914712" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -6458,7 +6442,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.54738015" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16833891" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26532888" sideWeight="0.2260128" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.509476" sideWeight="0.22921109" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1705757" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Freeline" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.4978678" order="1" side_tool="false" content_ui="tabs" />
@@ -6502,23 +6486,24 @@
     <MESSAGE value="1" />
     <MESSAGE value="1&#10;" />
     <MESSAGE value="1.修改项目结构&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.修改项目结构&#10;" />
+    <MESSAGE value="1.项目结构修改&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.项目结构修改&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="29" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java</url>
+          <line>156</line>
+          <properties />
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="31" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cantalou/skin/SkinFragmentActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cantalou/skin/SkinActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1008">
@@ -6829,16 +6814,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/ResourcesCacheKeyIdManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="208" column="0" selection-start-line="208" selection-start-column="0" selection-end-line="208" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/android/sources/android-23/android/util/AttributeSet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
@@ -6904,14 +6879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build/outputs/public.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="225" column="74" selection-start-line="225" selection-start-column="66" selection-end-line="225" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/array/DrawableLongSpareArray.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -6930,36 +6897,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/KeepIdProxyResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="85" column="37" selection-start-line="85" selection-start-column="37" selection-end-line="85" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/android/sources/android-23/android/content/res/Resources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="2663" column="0" selection-start-line="2663" selection-start-column="0" selection-end-line="2663" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cantalou/android/sample/activity/SkinActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="103" column="20" selection-start-line="103" selection-start-column="20" selection-end-line="103" selection-end-column="20" />
+        <state relative-caret-position="175">
+          <caret line="70" column="61" selection-start-line="70" selection-start-column="61" selection-end-line="70" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/ResourcesCacheKeyIdManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="242" column="42" selection-start-line="242" selection-start-column="42" selection-end-line="242" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/android/sources/android-23/android/content/res/Resources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="1344" column="16" selection-start-line="1344" selection-start-column="16" selection-end-line="1344" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build/outputs/public.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="225" column="74" selection-start-line="225" selection-start-column="66" selection-end-line="225" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/KeepIdProxyResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="90" column="16" selection-start-line="90" selection-start-column="16" selection-end-line="90" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/android/sources/android-23/android/util/TypedValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="172" column="24" selection-start-line="172" selection-start-column="24" selection-end-line="172" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/library/src/main/java/com/cantalou/skin/content/res/MessIdProxyResources.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="123" column="45" selection-start-line="123" selection-start-column="45" selection-end-line="123" selection-end-column="45" />
+        <state relative-caret-position="345">
+          <caret line="166" column="21" selection-start-line="166" selection-start-column="18" selection-end-line="166" selection-end-column="21" />
           <folding />
         </state>
       </provider>
