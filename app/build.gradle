@@ -6,12 +6,12 @@ apply from: './genNameId.gradle'
 
 android {
 
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.0"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 22
         applicationId "com.cantalou.android.sample"
     }
 
@@ -29,5 +29,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':library')
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:22+'
 }

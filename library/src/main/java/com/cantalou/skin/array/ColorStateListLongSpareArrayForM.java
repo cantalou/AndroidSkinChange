@@ -18,7 +18,7 @@ import com.cantalou.skin.content.res.ProxyResources;
  * @author cantalou
  * @date 2016年4月13日 下午11:00:14
  */
-@TargetApi(Build.VERSION_CODES.M)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 public class ColorStateListLongSpareArrayForM extends LongSparseArray<ConstantState<ColorStateList>> {
 
     private SparseLongIntArray resourceIdKeyMap;
