@@ -5,8 +5,8 @@ E:\workspace\AndroidSkinChange\app\src\main\res\drawable-xhdpi#:#1492180799234
 E:\workspace\AndroidSkinChange\app\src\main\res\drawable-xhdpi\ac_launcher.png#:#1492180799181
 E:\workspace\AndroidSkinChange\app\src\main\res\drawable-xhdpi\ic_launcher.png#:#1492180799183
 E:\workspace\AndroidSkinChange\app\src\main\res\drawable-xhdpi\ic_launcher_not_in_skin.png#:#1492180799235
-E:\workspace\AndroidSkinChange\app\src\main\res\layout#:#1492186310849
-E:\workspace\AndroidSkinChange\app\src\main\res\layout\activity_skin.xml#:#1492186310796
+E:\workspace\AndroidSkinChange\app\src\main\res\layout#:#1492309047486
+E:\workspace\AndroidSkinChange\app\src\main\res\layout\activity_skin.xml#:#1492309047488
 E:\workspace\AndroidSkinChange\app\src\main\res\menu#:#1492180799267
 E:\workspace\AndroidSkinChange\app\src\main\res\menu\skin.xml#:#1492180799269
 E:\workspace\AndroidSkinChange\app\src\main\res\values#:#1492180799274

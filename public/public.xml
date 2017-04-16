@@ -841,13 +841,8 @@
 <public type="id" name="search_voice_btn"  id="0x7f0b004e" />
 <public type="id" name="skin_container"  id="0x7f0b0050" />
 <public type="id" name="first_icon"  id="0x7f0b0051" />
-<public type="id" name="red"  id="0x7f0b0052" />
-<public type="id" name="def"  id="0x7f0b0053" />
-<public type="id" name="activity"  id="0x7f0b0054" />
-<public type="id" name="fragment"  id="0x7f0b0055" />
 <public type="id" name="action_1"  id="0x7f0b0063" />
 <public type="id" name="action_2"  id="0x7f0b0064" />
-<public type="id" name="textView"  id="0x7f0b0065" />
 <public type="id" name="dialog"  id="0x7f0b0066" />
 <public type="id" name="dropdown"  id="0x7f0b0067" />
 <public type="id" name="multiply"  id="0x7f0b0068" />
@@ -879,5 +874,10 @@
 <public type="id" name="text"  id="0x7f0b0082" />
 <public type="id" name="info"  id="0x7f0b0083" />
 <public type="id" name="end_padder"  id="0x7f0b0084" />
+<public type="id" name="red"  id="0x7f0b0085" />
+<public type="id" name="def"  id="0x7f0b0086" />
+<public type="id" name="activity"  id="0x7f0b0087" />
+<public type="id" name="fragment"  id="0x7f0b0088" />
+<public type="id" name="textView"  id="0x7f0b0089" />
 <public type="menu" name="skin"  id="0x7f0c0000" />
 </resources>

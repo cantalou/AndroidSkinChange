@@ -30,10 +30,11 @@ public class DrawableLongSpareArray extends LongSparseArray<Drawable.ConstantSta
 
     @Override
     public Drawable.ConstantState get(long key) {
+
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
             Resources res = skinManager.getCurrentResources();
-            if (res != null && res instanceof ProxyResources) {
+            if (res != null && res instanceof ProxyResources && !((ProxyResources) res).isCurrentLoading()) {
                 Drawable dr = ((ProxyResources) res).loadDrawable(id);
                 if (dr != null) {
                     return dr.getConstantState();

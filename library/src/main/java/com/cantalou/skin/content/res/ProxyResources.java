@@ -21,6 +21,8 @@ import com.cantalou.skin.SkinManager;
 
 import java.io.InputStream;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
@@ -59,6 +61,11 @@ public class ProxyResources extends Resources {
     protected ResourcesCacheKeyIdManager resourcesCacheKeyIdManager;
 
     protected final TypedValue typedValueCache = new TypedValue();
+
+    /**
+     * 用于标记当前正在加载资源
+     */
+    public static final ThreadLocal<Resources> loadingFlag = new ThreadLocal<Resources>();
 
     public ProxyResources(Resources res) {
         super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
@@ -150,6 +157,9 @@ public class ProxyResources extends Resources {
      * @throws NotFoundException
      */
     protected final Drawable loadDrawable(Resources res, TypedValue value, int id) throws NotFoundException {
+
+        loadingFlag.set(res);
+
         boolean isColorDrawable = isColor(value);
         Drawable dr = null;
         if (isColorDrawable) {
@@ -173,7 +183,7 @@ public class ProxyResources extends Resources {
 
                     InputStream is = ReflectUtil.invoke(res.getAssets(), "openNonAsset", openNonAssetParam, value.assetCookie, file, AssetManager.ACCESS_STREAMING);
                     BitmapFactory.Options opts = new BitmapFactory.Options();
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         opts.inPreferredConfig = Bitmap.Config.RGB_565;
                         ReflectUtil.set(opts, "inNativeAlloc", true);
                     }
@@ -195,6 +205,9 @@ public class ProxyResources extends Resources {
         if (BuildConfig.DEBUG && (id & APP_ID_MASK) == APP_ID_MASK) {
             Log.v("load value:{} from :{} result:{} ", toString(value), res, dr);
         }
+
+        loadingFlag.remove();
+
         return dr;
     }
 
@@ -212,6 +225,8 @@ public class ProxyResources extends Resources {
     }
 
     protected final ColorStateList loadColorStateList(Resources res, TypedValue value, int id) throws NotFoundException {
+
+        loadingFlag.set(res);
 
         ColorStateList csl = null;
         if (isColor(value)) {
@@ -242,6 +257,8 @@ public class ProxyResources extends Resources {
             Log.v("load value:{} from :{} result:{} ", toString(value), res, csl);
         }
 
+        loadingFlag.remove();
+
         return csl;
     }
 
@@ -250,4 +267,12 @@ public class ProxyResources extends Resources {
         resourceNameCache = new String[RESOURCE_NAME_CACHE_SIZE];
     }
 
+    /**
+     * 判断当前Resources是否正在加载资源， 防止资源加载嵌套
+     *
+     * @return
+     */
+    public boolean isCurrentLoading() {
+        return loadingFlag.get() != null;
+    }
 }

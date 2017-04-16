@@ -278,4 +278,9 @@
 <public-padding type="id" name="text" start="0x7f0b0060" end="0x7f0b0060" id="0x7f0b0060"/>
 <public-padding type="id" name="info" start="0x7f0b0061" end="0x7f0b0061" id="0x7f0b0061"/>
 <public-padding type="id" name="end_padder" start="0x7f0b0062" end="0x7f0b0062" id="0x7f0b0062"/>
+<public-padding type="id" name="red" start="0x7f0b0052" end="0x7f0b0052" id="0x7f0b0052"/>
+<public-padding type="id" name="def" start="0x7f0b0053" end="0x7f0b0053" id="0x7f0b0053"/>
+<public-padding type="id" name="activity" start="0x7f0b0054" end="0x7f0b0054" id="0x7f0b0054"/>
+<public-padding type="id" name="fragment" start="0x7f0b0055" end="0x7f0b0055" id="0x7f0b0055"/>
+<public-padding type="id" name="textView" start="0x7f0b0065" end="0x7f0b0065" id="0x7f0b0065"/>
 </resources>
