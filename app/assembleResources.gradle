@@ -1,0 +1,44 @@
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
+
+afterEvaluate {
+
+    def assembleTask = tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
+    org.gradle.api.Task assembleResourcesTask = tasks.create("assembleResourcesTask") {
+        doLast {
+            android.applicatioinVariant.all.each { variant ->
+                variant.outputs.each { output ->
+                    output.outputFile
+                }
+            }
+        }
+    }
+    assembleResourcesTask.dependsOn assembleTask
+}
+
+static shrinkResources(String dest) {
+    def deletePattern = ["assets", "META-INF", "classes.dex", "layout.*", "menu.*"]
+    file(dest).eachFileRecurse { file ->
+        deletePattern.each { pattern ->
+            if (file.name.matches(pattern)) {
+                file.deleteDir();
+            }
+        }
+    }
+}
+
+static void unzip(File zipFile, String dest) {
+    ZipFile zFile = new ZipFile(zipFile);
+    zFile.setFileNameCharset("UTF-8");
+    zFile.extractAll(dest);
+}
+
+
+static void zip(String src, String dest) {
+    ZipParameters parameters = new ZipParameters();
+    parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+    parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+    new ZipFile(dest).addFolder(src, parameters);
+}

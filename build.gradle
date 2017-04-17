@@ -5,6 +5,7 @@ buildscript {
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
         classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'net.lingala.zip4j:zip4j:1.3.2'
     }
 }
 
