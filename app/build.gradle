@@ -7,7 +7,7 @@ apply from: './genNameId.gradle'
 android {
 
     compileSdkVersion 22
-    buildToolsVersion "22.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 14

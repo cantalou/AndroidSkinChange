@@ -186,13 +186,15 @@ public class ResourcesManager {
 
             // colorStateList
             keyIdMap = resourcesCacheKeyIdManager.getColorStateListCacheKeyIdMap();
-            Object originalPreCSL = ReflectUtil.get(Resources.class, "sPreloadedColorStateLists");
             Object proxyPreloadedColorStateLists;
             if (Build.VERSION.SDK_INT >= 23) {
+                Object originalPreCSL = ReflectUtil.get(Resources.class, "sPreloadedColorStateLists");
                 proxyPreloadedColorStateLists = new ColorStateListLongSpareArrayForM(skinManager, (LongSparseArray<ConstantState<ColorStateList>>) originalPreCSL, keyIdMap);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                Object originalPreCSL = ReflectUtil.get(Resources.class, "sPreloadedColorStateLists");
                 proxyPreloadedColorStateLists = new ColorStateListLongSpareArray(skinManager, (LongSparseArray<ColorStateList>) originalPreCSL, keyIdMap);
             } else {
+                Object originalPreCSL = ReflectUtil.get(Resources.class, "mPreloadedColorStateLists");
                 proxyPreloadedColorStateLists = new ColorStateListSpareArray(skinManager, (SparseArray<ColorStateList>) originalPreCSL, keyIdMap);
             }
             ReflectUtil.set(Resources.class, "mPreloadedColorStateLists", proxyPreloadedColorStateLists);
