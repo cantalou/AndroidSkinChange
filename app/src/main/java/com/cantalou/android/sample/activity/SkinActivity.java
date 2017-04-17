@@ -3,24 +3,25 @@ package com.cantalou.android.sample.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.cantalou.android.sample.R;
 import com.cantalou.android.util.FileUtil;
-
-import java.io.File;
-
 import com.cantalou.skin.OnResourcesChangeFinishListener;
 import com.cantalou.skin.ResourcesManager;
 import com.cantalou.skin.SkinManager;
 
-public class SkinActivity extends AppCompatActivity implements OnClickListener, OnResourcesChangeFinishListener {
+import java.io.File;
+
+public class SkinActivity extends FragmentActivity implements OnClickListener, OnResourcesChangeFinishListener {
 
     private SkinManager skinManager = SkinManager.getInstance();
 
@@ -50,6 +51,8 @@ public class SkinActivity extends AppCompatActivity implements OnClickListener, 
             FileUtil.copyAssetsFile(this, "red.apk", dir + "red.apk");
             hasNotCopy = false;
         }
+        BitmapDrawable d = (BitmapDrawable) ((StateListDrawable) ((ImageView) findViewById(R.id.first_icon)).getDrawable()).getCurrent();
+        d.setColorFilter(d.getPaint().getColorFilter());
     }
 
     @Override
@@ -104,9 +107,6 @@ public class SkinActivity extends AppCompatActivity implements OnClickListener, 
             default:
                 break;
         }
-
-        int value = skinManager.getCurrentResources().getColor(R.color.new_blue_not_in_skin);
-        Toast.makeText(this, value + "", Toast.LENGTH_LONG).show();
     }
 
     @Override

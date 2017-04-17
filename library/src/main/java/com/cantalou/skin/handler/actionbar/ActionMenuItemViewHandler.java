@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cantalou.android.util.ReflectUtil;
+import com.cantalou.skin.handler.actionbar.ActionBarHandler;
 
+import static com.cantalou.android.util.ReflectUtil.get;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**

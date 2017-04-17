@@ -161,7 +161,7 @@ public class ResourcesManager {
 
             // drawable
             SparseLongIntArray keyIdMap = resourcesCacheKeyIdManager.getDrawableCacheKeyIdMap();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 //
                 LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawablesArray = ReflectUtil.get(Resources.class, "sPreloadedDrawables");
                 LongSparseArray<Drawable.ConstantState> proxyPreloadedDrawables = new DrawableLongSpareArray(skinManager, sPreloadedDrawablesArray[0],
@@ -188,7 +188,7 @@ public class ResourcesManager {
             keyIdMap = resourcesCacheKeyIdManager.getColorStateListCacheKeyIdMap();
             Object originalPreCSL = ReflectUtil.get(Resources.class, "sPreloadedColorStateLists");
             Object proxyPreloadedColorStateLists;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 proxyPreloadedColorStateLists = new ColorStateListLongSpareArrayForM(skinManager, (LongSparseArray<ConstantState<ColorStateList>>) originalPreCSL, keyIdMap);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 proxyPreloadedColorStateLists = new ColorStateListLongSpareArray(skinManager, (LongSparseArray<ColorStateList>) originalPreCSL, keyIdMap);

@@ -1,10 +1,13 @@
 package com.cantalou.skin.content.res;
 
 import android.annotation.TargetApi;
+import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 
 import com.cantalou.android.util.Log;
@@ -108,6 +111,10 @@ public class KeepIdProxyResources extends ProxyResources {
                 notFoundedInProxyIds.put(id);
             }
         }
+    }
+
+    public void superGetValue(int id, TypedValue outValue, boolean resolveRefs) throws NotFoundException {
+        super.getValue(id, outValue, resolveRefs);
     }
 
     @Override

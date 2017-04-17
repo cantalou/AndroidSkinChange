@@ -14,11 +14,12 @@ public class SkinResources extends Resources {
      * Create a new SkinResources object on top of an existing set of assets in
      * an AssetManager.
      *
-     * @param assets Previously created AssetManager.
-     * @param defRes
+     * @param assets
+     *            Previously created AssetManager.
+     * @param res
      */
-    public SkinResources(AssetManager assets, Resources defRes, String skinName) {
-        super(assets, defRes.getDisplayMetrics(), defRes.getConfiguration());
+    public SkinResources(AssetManager assets, Resources res, String skinName) {
+        super(assets, res.getDisplayMetrics(), res.getConfiguration());
         this.skinName = skinName;
     }
 
@@ -26,5 +27,4 @@ public class SkinResources extends Resources {
     public String toString() {
         return getClass().getSimpleName() + "{" + skinName + "}";
     }
-
 }

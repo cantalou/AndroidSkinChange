@@ -18,7 +18,7 @@ import com.cantalou.skin.content.res.ProxyResources;
  * @author cantalou
  * @date 2016年4月13日 下午11:00:14
  */
-@TargetApi(Build.VERSION_CODES.M)
+@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
 public class ColorStateListLongSpareArrayForM extends LongSparseArray<ConstantState<ColorStateList>> {
 
     private SparseLongIntArray resourceIdKeyMap;
@@ -38,10 +38,11 @@ public class ColorStateListLongSpareArrayForM extends LongSparseArray<ConstantSt
 
     @Override
     public ConstantState<ColorStateList> get(long key) {
+
         int id = resourceIdKeyMap.get(key);
         if (id != 0) {
             Resources res = skinManager.getCurrentResources();
-            if (res != null && res instanceof ProxyResources) {
+            if (res != null && res instanceof ProxyResources && !((ProxyResources) res).isCurrentLoading()) {
                 ColorStateList csl = ((ProxyResources) res).loadColorStateList(id);
                 return ReflectUtil.invoke(csl, "getConstantState");
             }

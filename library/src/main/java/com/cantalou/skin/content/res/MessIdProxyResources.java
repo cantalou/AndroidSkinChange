@@ -141,6 +141,7 @@ public class MessIdProxyResources extends KeepIdProxyResources {
 
     }
 
+
     @Override
     public void getValue(int id, TypedValue outValue, boolean resolveRefs) throws NotFoundException {
 
@@ -153,23 +154,24 @@ public class MessIdProxyResources extends KeepIdProxyResources {
             return;
         }
 
-        super.getValue(id, outValue, resolveRefs);
+        superGetValue(id, outValue, resolveRefs);
         if (outValue.string != null && outValue.string.toString().contains("layout")) {
             return;
         }
 
         int skinId = toSkinId(id);
         if (skinId == 0) {
-            super.getValue(id, outValue, resolveRefs);
             return;
         }
 
-        Resources res = proxyResource;
-        try {
-            super.getValue(skinId, outValue, resolveRefs);
-        } catch (Exception e) {
-            Log.e(e);
+        if(isColor(outValue)){
+            try {
+                proxyResource.getValue(skinId, outValue, resolveRefs);
+            } catch (Exception e) {
+                Log.e(e);
+            }
         }
+
     }
 
     public void clearCache() {

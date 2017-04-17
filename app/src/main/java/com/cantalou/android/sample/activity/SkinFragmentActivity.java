@@ -1,8 +1,10 @@
 package com.cantalou.android.sample.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.cantalou.android.sample.R;
 import com.cantalou.android.util.Log;
-
 import com.cantalou.skin.SkinManager;
 
 public class SkinFragmentActivity extends FragmentActivity {
@@ -42,7 +43,7 @@ public class SkinFragmentActivity extends FragmentActivity {
 		super.onDestroy();
 	}
 
-	public static class NestFragment extends Fragment {
+	class NestFragment extends Fragment {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

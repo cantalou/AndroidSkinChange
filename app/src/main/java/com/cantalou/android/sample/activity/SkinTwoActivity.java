@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import com.cantalou.android.sample.R;
-
 import com.cantalou.skin.SkinManager;
+
 
 public class SkinTwoActivity extends Activity
 {
