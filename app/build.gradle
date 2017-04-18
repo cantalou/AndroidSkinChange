@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply from: './keepResourcesId.gradle'
 //apply from: 'https://raw.githubusercontent.com/cantalou/GradlePublic/master/genNameId.gradle'
 apply from: './genNameId.gradle'
+apply from: './assembleResources.gradle'
 
 android {
 

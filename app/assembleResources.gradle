@@ -1,40 +1,54 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.lingala.zip4j:zip4j:1.3.2'
+    }
+}
+
 import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
-afterEvaluate {
 
-    def assembleTask = tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
-    org.gradle.api.Task assembleResourcesTask = tasks.create("assembleResourcesTask") {
-        doLast {
-            android.applicatioinVariant.all.each { variant ->
-                variant.outputs.each { output ->
-                    output.outputFile
-                }
+task assembleResourcesTask  {
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            File out = output.outputFile
+            if(out.exists()){
+                def destDir = out.absolutePath.replace(".apk", "")
+                unzip(out, destDir)
+                shrinkResources(destDir)
+                zip(destDir, destDir + ".res")
             }
         }
     }
-    assembleResourcesTask.dependsOn assembleTask
 }
+assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
 
 static shrinkResources(String dest) {
     def deletePattern = ["assets", "META-INF", "classes.dex", "layout.*", "menu.*"]
-    file(dest).eachFileRecurse { file ->
-        deletePattern.each { pattern ->
-            if (file.name.matches(pattern)) {
-                file.deleteDir();
+    try {
+        new File(dest).eachFileRecurse { file ->
+            deletePattern.each { pattern ->
+                if (file.exists() && file.name.matches(pattern)) {
+                    file.deleteDir();
+                }
             }
         }
+    } catch (Exception e) {
+        e.printStackTrace()
     }
+
 }
 
 static void unzip(File zipFile, String dest) {
+    new File(dest).mkdirs()
     ZipFile zFile = new ZipFile(zipFile);
     zFile.setFileNameCharset("UTF-8");
     zFile.extractAll(dest);
 }
-
 
 static void zip(String src, String dest) {
     ZipParameters parameters = new ZipParameters();
