@@ -12,7 +12,8 @@ import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
 
-task assembleResourcesTask  {
+task assembleResourcesTask <<  {
+
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             File out = output.outputFile
@@ -25,7 +26,11 @@ task assembleResourcesTask  {
         }
     }
 }
-assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
+
+afterEvaluate {
+    assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
+}
+
 
 static shrinkResources(String dest) {
     def deletePattern = ["assets", "META-INF", "classes.dex", "layout.*", "menu.*"]
