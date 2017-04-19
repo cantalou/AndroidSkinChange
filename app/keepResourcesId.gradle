@@ -186,45 +186,6 @@ afterEvaluate {
             }
         }
     }
-
-
-    task buildJarTask(type: Jar) {
-
-        destinationDir = file("${buildDir}/intermediates/bundles/")
-        appendix = ""
-        baseName = "androidJar"
-        version = "1.0.0"
-        classifier = "debug"
-
-        //后缀名
-        extension = "jar"
-        archiveName = "class.jar"
-
-        //需打包的资源所在的路径集
-        def srcClassDir = []
-        android.applicationVariants.all { variant ->
-            srcClassDir.add("${project.buildDir.absolutePath}/intermediates/classes/${variant.dirName}")
-        }
-        //初始化资源路径集
-        from srcClassDir
-    }
-
-
-    if (gradle.startParameter.taskNames.find {
-        it.contains("assemble")
-    } != null) {
-        //第4件事
-        android.applicationVariants.all { variant ->
-            tasks.each { task ->
-                if (task.name.equalsIgnoreCase("assemble" + variant.name)) {
-                    task.doLast {
-                        println "导出jar包"
-                        buildJarTask.execute()
-                    }
-                }
-            }
-        }
-    }
 }
 
 

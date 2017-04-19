@@ -12,15 +12,15 @@ import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
 
-task assembleResourcesTask <<  {
+task assembleResourcesTask << {
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             File out = output.outputFile
-            if(out.exists()){
+            if (out.exists()) {
                 def destDir = out.absolutePath.replace(".apk", "")
                 unzip(out, destDir)
-                shrinkResources(destDir)
+                shrinkResources(new File(destDir))
                 zip(destDir, destDir + ".res")
             }
         }
@@ -32,20 +32,28 @@ afterEvaluate {
 }
 
 
-static shrinkResources(String dest) {
-    def deletePattern = ["assets", "META-INF", "classes.dex", "layout.*", "menu.*"]
-    try {
-        new File(dest).eachFileRecurse { file ->
-            deletePattern.each { pattern ->
-                if (file.exists() && file.name.matches(pattern)) {
-                    file.deleteDir();
-                }
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace()
+static shrinkResources(File file) {
+    def deletePattern = ["assets", "META-INF", "classes.dex", "layout.*xml", "menu.*xml"]
+    if (!file.exists()) {
+        return
     }
 
+    if (file.isFile()) {
+        deletePattern.each { pattern ->
+            if (file.name.matches(pattern)) {
+                file.delete();
+                return;
+            }
+        }
+    }
+
+    File[] listFile = file.listFiles()
+    if (listFile == null) {
+        return
+    }
+    listFile.each {
+        shrinkResources(it)
+    }
 }
 
 static void unzip(File zipFile, String dest) {
