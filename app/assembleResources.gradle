@@ -13,15 +13,16 @@ import net.lingala.zip4j.util.Zip4jConstants;
 
 
 task assembleResourcesTask << {
-
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             File out = output.outputFile
             if (out.exists()) {
                 def destDir = out.absolutePath.replace(".apk", "")
                 unzip(out, destDir)
-                shrinkResources(new File(destDir))
+                def unzipDirFile = new File(destDir)
+                shrinkResources(unzipDirFile)
                 zip(destDir, destDir + ".res")
+                unzipDirFile.deleteDir()
             }
         }
     }
