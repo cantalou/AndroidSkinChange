@@ -22,7 +22,7 @@ task assembleResourcesTask << {
                 def unzipDirFile = new File(destDir)
                 shrinkResources(unzipDirFile)
                 zip(destDir, destDir + ".res")
-                unzipDirFile.deleteDir()
+                //unzipDirFile.deleteDir()
             }
         }
     }
@@ -34,16 +34,15 @@ afterEvaluate {
 
 
 static shrinkResources(File file) {
-    def deletePattern = ["assets", "META-INF", "classes.dex", "layout.*xml", "menu.*xml"]
+    def deletePattern = [".*assets.*", ".*META-INF.*", ".*\\.dex", ".*res.layout.*xml", ".*res.menu.*xml"]
     if (!file.exists()) {
         return
     }
 
     if (file.isFile()) {
         deletePattern.each { pattern ->
-            if (file.name.matches(pattern)) {
-                file.delete();
-                return;
+            if (file.absolutePath.matches(pattern)) {
+                println "Delete file ${file.absolutePath} , ${file.isFile() ? file.delete() : file.deleteDir()}"
             }
         }
     }
@@ -68,5 +67,16 @@ static void zip(String src, String dest) {
     ZipParameters parameters = new ZipParameters();
     parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
     parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
-    new ZipFile(dest).addFolder(src, parameters);
+    def zipFile = new ZipFile(dest)
+    if (zipFile.getFile()) {
+        zipFile.getFile().delete()
+    }
+    new File(src).listFiles().each {
+        if (it.isFile()) {
+            zipFile.addFile(it, parameters);
+        } else {
+            zipFile.addFolder(it, parameters);
+        }
+    }
+
 }
