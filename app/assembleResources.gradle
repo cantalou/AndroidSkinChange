@@ -1,0 +1,82 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.lingala.zip4j:zip4j:1.3.2'
+    }
+}
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
+
+
+task assembleResourcesTask << {
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            File out = output.outputFile
+            if (out.exists()) {
+                def destDir = out.absolutePath.replace(".apk", "")
+                unzip(out, destDir)
+                def unzipDirFile = new File(destDir)
+                shrinkResources(unzipDirFile)
+                zip(destDir, destDir + ".res")
+                //unzipDirFile.deleteDir()
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
+}
+
+
+static shrinkResources(File file) {
+    def deletePattern = [".*assets.*", ".*META-INF.*", ".*\\.dex", ".*res.layout.*xml", ".*res.menu.*xml"]
+    if (!file.exists()) {
+        return
+    }
+
+    if (file.isFile()) {
+        deletePattern.each { pattern ->
+            if (file.absolutePath.matches(pattern)) {
+                println "Delete file ${file.absolutePath} , ${file.isFile() ? file.delete() : file.deleteDir()}"
+            }
+        }
+    }
+
+    File[] listFile = file.listFiles()
+    if (listFile == null) {
+        return
+    }
+    listFile.each {
+        shrinkResources(it)
+    }
+}
+
+static void unzip(File zipFile, String dest) {
+    new File(dest).mkdirs()
+    ZipFile zFile = new ZipFile(zipFile);
+    zFile.setFileNameCharset("UTF-8");
+    zFile.extractAll(dest);
+}
+
+static void zip(String src, String dest) {
+    ZipParameters parameters = new ZipParameters();
+    parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+    parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+    def zipFile = new ZipFile(dest)
+    if (zipFile.getFile()) {
+        zipFile.getFile().delete()
+    }
+    new File(src).listFiles().each {
+        if (it.isFile()) {
+            zipFile.addFile(it, parameters);
+        } else {
+            zipFile.addFolder(it, parameters);
+        }
+    }
+
+}
