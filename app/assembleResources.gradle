@@ -7,9 +7,10 @@ buildscript {
     }
 }
 
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.util.Zip4jConstants;
+import net.lingala.zip4j.core.ZipFile
+import net.lingala.zip4j.model.ZipParameters
+import net.lingala.zip4j.util.Zip4jConstants
+import net.lingala.zip4j.model.FileHeader
 
 
 task assembleResourcesTask << {
@@ -22,7 +23,7 @@ task assembleResourcesTask << {
                 def unzipDirFile = new File(destDir)
                 shrinkResources(unzipDirFile)
                 zip(destDir, destDir + ".res")
-                //unzipDirFile.deleteDir()
+                unzipDirFile.deleteDir()
             }
         }
     }
@@ -30,6 +31,33 @@ task assembleResourcesTask << {
 
 afterEvaluate {
     assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
+}
+
+
+static shrinkResources1(File file) {
+    def deletePattern = [".*assets.*", ".*META-INF.*", ".*\\.dex", ".*res.layout.*xml", ".*res.menu.*xml"]
+    if (!file.exists()) {
+        return
+    }
+
+    ZipFile zipFile = new ZipFile(file);
+    def fileHeaders = zipFile.getFileHeaders()
+    fileHeaders.clone().each { FileHeader fileHeader ->
+        deletePattern.each { pattern ->
+            def filePath = fileHeader.fileName
+            if (filePath.matches(pattern)) {
+                try {
+                    println "Delete file ${filePath}"
+                    zipFile.removeFile(fileHeader)
+                } catch (Exception e) {
+                    e.printStackTrace()
+                    //println "Delete file ${filePath} , ${e.message}"
+                    throw e
+                }
+            }
+        }
+    }
+
 }
 
 
