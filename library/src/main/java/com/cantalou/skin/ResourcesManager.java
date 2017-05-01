@@ -168,10 +168,10 @@ public class ResourcesManager {
                         keyIdMap);
                 sPreloadedDrawablesArray[0] = proxyPreloadedDrawables;
 
-                LongSparseArray<Drawable.ConstantState> sPreloadedColorDrawables = ReflectUtil.get(Resources.class, "sPreloadedColorDrawables");
-                LongSparseArray<Drawable.ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, sPreloadedColorDrawables,
-                        keyIdMap);
-                ReflectUtil.set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
+//                LongSparseArray<Drawable.ConstantState> sPreloadedColorDrawables = ReflectUtil.get(Resources.class, "sPreloadedColorDrawables");
+//                LongSparseArray<Drawable.ConstantState> proxyPreloadedColorDrawables = new DrawableLongSpareArray(skinManager, sPreloadedColorDrawables,
+//                        keyIdMap);
+//                ReflectUtil.set(Resources.class, "sPreloadedColorDrawables", proxyPreloadedColorDrawables);
 
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawablesArray = ReflectUtil.get(Resources.class, "sPreloadedDrawables");
