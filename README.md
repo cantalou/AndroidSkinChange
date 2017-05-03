@@ -1,4 +1,4 @@
-SkinChange  
+#SkinChange  
 Android 换肤 /夜间 模式, 基于插件式的资源切换方案
 
 特点 
