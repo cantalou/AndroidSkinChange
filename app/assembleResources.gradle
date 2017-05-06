@@ -31,7 +31,7 @@ task assembleResourcesTask << {
 
 afterEvaluate {
     assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
-    tasks.find { it.name.matches(/^acompile(.*?)JavaWithJavac$/) }.each { it.enabled = false }
+    tasks.find { it.name.matches(/^compile(.*?)JavaWithJavac$/) }.each { it.enabled = false }
 }
 
 
