@@ -31,6 +31,7 @@ task assembleResourcesTask << {
 
 afterEvaluate {
     assembleResourcesTask.dependsOn tasks.find() { it.name.matches(/^assemble(.*?)Debug$/) }
+    tasks.find { it.name.matches(/^acompile(.*?)JavaWithJavac$/) }.each { it.enabled = false }
 }
 
 
@@ -73,7 +74,7 @@ static shrinkResources(File file) {
                 println "Delete file ${file.absolutePath} , ${file.delete()}"
             }
         }
-    }else{
+    } else {
         File[] listFile = file.listFiles()
         if (listFile == null) {
             return
