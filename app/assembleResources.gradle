@@ -70,17 +70,22 @@ static shrinkResources(File file) {
     if (file.isFile()) {
         deletePattern.each { pattern ->
             if (file.absolutePath.matches(pattern)) {
-                println "Delete file ${file.absolutePath} , ${file.isFile() ? file.delete() : file.deleteDir()}"
+                println "Delete file ${file.absolutePath} , ${file.delete()}"
             }
         }
-    }
-
-    File[] listFile = file.listFiles()
-    if (listFile == null) {
-        return
-    }
-    listFile.each {
-        shrinkResources(it)
+    }else{
+        File[] listFile = file.listFiles()
+        if (listFile == null) {
+            return
+        }
+        listFile.each {
+            shrinkResources(it)
+        }
+        deletePattern.each { pattern ->
+            if (file.absolutePath.matches(pattern)) {
+                println "Delete file ${file.absolutePath} , ${file.deleteDir()}"
+            }
+        }
     }
 }
 
