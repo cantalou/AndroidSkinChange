@@ -22,8 +22,8 @@ Android 换肤 /夜间 模式, 基于插件式的资源切换方案
     dependencies {  
         compile 'com.cantalou:android-skin-change:1+'  
     }  
-    apply from: 'https://raw.githubusercontent.com/cantalou/AndroidSkinChange/master/keepResourcesId.gradle'  
-    apply from: 'https://raw.githubusercontent.com/cantalou/AndroidSkinChange/master/genNameId.gradle'  
+    apply from: 'https://raw.githubusercontent.com/cantalou/AndroidSkinChange/master/app/keepResourcesId.gradle'  
+    apply from: 'https://raw.githubusercontent.com/cantalou/AndroidSkinChange/master/app/genNameId.gradle'  
     apply from: 'https://raw.githubusercontent.com/cantalou/AndroidSkinChange/master/app/assembleResources.gradle'
     
 2. 代码集成:  
