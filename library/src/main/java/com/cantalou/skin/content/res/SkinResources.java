@@ -3,11 +3,9 @@ package com.cantalou.skin.content.res;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 
+
 public class SkinResources extends Resources {
 
-    /**
-     * 皮肤资源包名
-     */
     protected String skinName;
 
     /**

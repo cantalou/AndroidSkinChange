@@ -7,9 +7,7 @@ import android.view.View;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.ResourcesCacheKeyIdManager;
-import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.hook.ProxyResources;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,8 +26,6 @@ public abstract class AbstractHandler implements Cloneable {
     private boolean called = false;
 
     protected String bestCompactR = null;
-
-    protected ResourcesCacheKeyIdManager resourcesCacheKeyIdManager = SkinManager.getInstance().getResourcesCacheKeyIdManager();
 
     protected HashMap<String, Object> cacheCompatValue = new HashMap<>();
 

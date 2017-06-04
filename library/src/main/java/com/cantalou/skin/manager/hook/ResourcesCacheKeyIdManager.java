@@ -1,4 +1,4 @@
-package com.cantalou.skin;
+package com.cantalou.skin.manager.hook;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -12,7 +12,8 @@ import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.array.BinarySearchIntArray;
 import com.cantalou.android.util.array.SparseLongIntArray;
-import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.SkinManager;
+import com.cantalou.skin.content.res.hook.ProxyResources;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -73,16 +74,17 @@ public final class ResourcesCacheKeyIdManager {
 
     private Object menuInflater;
 
+    private Resources defaultResources;
+
     private Thread parseNameIdThread = new Thread("parseNameIdThread") {
         @Override
         public void run() {
-            Resources res = skinManager.getDefaultResources();
             TypedValue out = new TypedValue();
             BufferedReader br = null;
             String line;
             long startTime = System.currentTimeMillis();
             try {
-                InputStream is = res.getAssets().open("nameId.txt");
+                InputStream is = defaultResources.getAssets().open("nameId.txt");
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                 while ((line = br.readLine()) != null) {
                     //type:name:id
@@ -90,7 +92,7 @@ public final class ResourcesCacheKeyIdManager {
                     int id = 0;
                     try {
                         id = Integer.parseInt(typeNameId[2], 16);
-                        res.getValue(id, out, true);
+                        defaultResources.getValue(id, out, true);
                     } catch (Resources.NotFoundException e) {
                         continue;
                     }
@@ -113,7 +115,8 @@ public final class ResourcesCacheKeyIdManager {
         }
     };
 
-    ResourcesCacheKeyIdManager() {
+    public ResourcesCacheKeyIdManager(Resources resources) {
+        defaultResources = resources;
     }
 
     /**
@@ -121,7 +124,6 @@ public final class ResourcesCacheKeyIdManager {
      */
     public synchronized void registerDrawable(int id, TypedValue value) {
         registeredId.put(id);
-        Resources defaultResources = skinManager.getDefaultResources();
         long key;
         boolean isColorDrawable = value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
 
@@ -136,7 +138,6 @@ public final class ResourcesCacheKeyIdManager {
      */
     public synchronized void registerColorStateList(int id, TypedValue value) {
         registeredId.put(id);
-        Resources defaultResources = skinManager.getDefaultResources();
         long key;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             key = (((long) value.assetCookie) << 32) | value.data;
@@ -221,7 +222,6 @@ public final class ResourcesCacheKeyIdManager {
         }
         registeredLayout.put(id);
 
-        Resources defaultResources = skinManager.getDefaultResources();
         Log.v("register layout {} 0x{}", defaultResources.getResourceName(id), Integer.toHexString(id));
 
         if (isMenuLayout(defaultResources, id)) {

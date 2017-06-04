@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.hook.ProxyResources;
 
 /**
  * @author cantalou

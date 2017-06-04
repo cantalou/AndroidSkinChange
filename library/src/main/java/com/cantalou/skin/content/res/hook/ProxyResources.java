@@ -1,4 +1,4 @@
-package com.cantalou.skin.content.res;
+package com.cantalou.skin.content.res.hook;
 
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
@@ -8,21 +8,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.TypedValue;
 
 import com.cantalou.android.skin.BuildConfig;
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.ResourcesCacheKeyIdManager;
+import com.cantalou.skin.manager.hook.ResourcesCacheKeyIdManager;
 import com.cantalou.skin.SkinManager;
 
 import java.io.InputStream;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.cantalou.android.util.ReflectUtil.invoke;
 
 /**
@@ -30,7 +27,7 @@ import static com.cantalou.android.util.ReflectUtil.invoke;
  * 1.实现loadDrawable(int id)和loadColorStateList(int id)自定义加载资源<p>
  *
  * @author cantalou
- * @date 2015年12月12日 下午11:07:07
+ * @date 2015-12-12 下午11:07:07
  */
 public class ProxyResources extends Resources {
 
@@ -58,8 +55,6 @@ public class ProxyResources extends Resources {
 
     protected static final Class<?>[] openNonAssetParam = new Class[]{int.class, String.class, int.class};
 
-    protected ResourcesCacheKeyIdManager resourcesCacheKeyIdManager;
-
     protected final TypedValue typedValueCache = new TypedValue();
 
     /**
@@ -69,12 +64,10 @@ public class ProxyResources extends Resources {
 
     public ProxyResources(Resources res) {
         super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
-        resourcesCacheKeyIdManager = SkinManager.getInstance().getResourcesCacheKeyIdManager();
     }
 
     @Override
     public XmlResourceParser getLayout(int id) throws NotFoundException {
-        resourcesCacheKeyIdManager.registerLayout(id);
         return super.getLayout(id);
     }
 

@@ -8,7 +8,7 @@ import android.util.LongSparseArray;
 
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.hook.ProxyResources;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class DrawableLongSpareArray extends LongSparseArray<Drawable.ConstantState> {

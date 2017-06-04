@@ -1,19 +1,14 @@
-package com.cantalou.skin.content.res;
+package com.cantalou.skin.content.res.hook;
 
 import android.annotation.TargetApi;
-import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 
 import com.cantalou.android.util.Log;
 import com.cantalou.android.util.array.BinarySearchIntArray;
-import com.cantalou.skin.ResourcesManager;
-import com.cantalou.skin.SkinManager;
 
 /**
  * Resources代理类<p>
@@ -35,10 +30,6 @@ public class KeepIdProxyResources extends ProxyResources {
      */
     protected BinarySearchIntArray notFoundedInProxyIds = new BinarySearchIntArray();
 
-    protected ResourcesManager resourcesManager;
-
-    protected SkinManager skinManager;
-
     /**
      * @param proxyResource 被代理资源
      * @param def           默认资源
@@ -46,8 +37,6 @@ public class KeepIdProxyResources extends ProxyResources {
     public KeepIdProxyResources(Resources proxyResource, Resources def) {
         super(def);
         this.proxyResource = proxyResource;
-        skinManager = SkinManager.getInstance();
-        resourcesManager = ResourcesManager.getInstance();
     }
 
     @Override

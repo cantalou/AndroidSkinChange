@@ -10,7 +10,7 @@ import android.view.LayoutInflater.Factory2;
 import android.view.View;
 
 import com.cantalou.android.util.ReflectUtil;
-import com.cantalou.skin.ResourcesManager;
+import com.cantalou.skin.manager.hook.HookPreloadResourcesManager;
 import com.cantalou.skin.SkinManager;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
@@ -67,7 +67,7 @@ public class ViewFactoryAfterGingerbread extends ViewFactory implements Factory2
             view = super.onCreateView(name, context, attrs);
         }
 
-        if (!skinManager.getCurrentSkin().equals(ResourcesManager.DEFAULT_RESOURCES)) {
+        if (!skinManager.getCurrentSkin().equals(HookPreloadResourcesManager.DEFAULT_RESOURCES)) {
             if (attrHandler == null) {
                 attrHandler = (AbstractHandler) view.getTag(ViewHandler.ATTR_HANDLER_KEY);
             }

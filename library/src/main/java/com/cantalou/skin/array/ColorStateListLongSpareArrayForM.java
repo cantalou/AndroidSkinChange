@@ -10,7 +10,7 @@ import android.util.LongSparseArray;
 import com.cantalou.android.util.ReflectUtil;
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.hook.ProxyResources;
 
 /**
  * 系统版本高于Build.VERSION_CODES.M时Resources类的静态变量mPreloadedColorStateLists使用的是LongSparseArray<android.content.res.ConstantState<ColorStateList>>类型
@@ -18,7 +18,7 @@ import com.cantalou.skin.content.res.ProxyResources;
  * @author cantalou
  * @date 2016年4月13日 下午11:00:14
  */
-@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+@TargetApi(22)
 public class ColorStateListLongSpareArrayForM extends LongSparseArray<ConstantState<ColorStateList>> {
 
     private SparseLongIntArray resourceIdKeyMap;

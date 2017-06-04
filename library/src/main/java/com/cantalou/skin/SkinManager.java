@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -31,6 +32,9 @@ import com.cantalou.skin.factory.ViewFactory;
 import com.cantalou.skin.factory.ViewFactoryAfterGingerbread;
 import com.cantalou.skin.handler.AbstractHandler;
 import com.cantalou.skin.handler.ViewHandler;
+import com.cantalou.skin.manager.ResourcesManager;
+import com.cantalou.skin.manager.ResourcesManagerFactory;
+import com.cantalou.skin.manager.hook.HookPreloadResourcesManager;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -58,17 +62,12 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     /**
      * 当前是否正在切换资源
      */
-    volatile boolean changingResource = false;
-
-    /**
-     * 默认资源
-     */
-    private Resources defaultResources;
+    volatile int changingResourceToken;
 
     /**
      * 资源名称
      */
-    String currentSkinPath = ResourcesManager.DEFAULT_RESOURCES;
+    String currentSkinPath = HookPreloadResourcesManager.DEFAULT_RESOURCES;
 
     /**
      * 资源
@@ -84,11 +83,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      * 资源切换结束回调
      */
     private ArrayList<OnResourcesChangeFinishListener> onResourcesChangeFinishListeners = new ArrayList<OnResourcesChangeFinishListener>();
-
-    /**
-     * 资源缓存key和资源id管理对象
-     */
-    private ResourcesCacheKeyIdManager resourcesCacheKeyIdManager;
 
     private ResourcesManager resourcesManager;
 
@@ -133,20 +127,17 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
     private SkinManager() {
     }
 
-    public void init(Context context) {
+    public void init(Context context, ResourcesManagerFactory factory) {
 
         this.context = context.getApplicationContext();
-        this.defaultResources = context.getResources();
-
 
         activityLifecycleManager = ActivityLifecycleManager.getInstance();
         activityLifecycleManager.registerActivityLifecycleCallbacks(this);
 
-        resourcesCacheKeyIdManager = new ResourcesCacheKeyIdManager();
-        resourcesCacheKeyIdManager.setSkinManager(this);
-
-
-        resourcesManager = ResourcesManager.getInstance();
+        if (factory == null) {
+            factory = new ResourcesManagerFactory();
+        }
+        resourcesManager = factory.createResourcesManager(context);
 
         Log.LOG_TAG_FLAG = "-skin";
     }
@@ -193,30 +184,23 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      * @param path     资源文件路径
      */
     @SuppressWarnings("unchecked")
-    public void changeResources(Activity activity, final String path) {
+    public void changeResources(final Activity activity, final String path) {
 
         if (StringUtils.isBlank(path)) {
             throw new IllegalArgumentException("skinPath could not be empty");
         }
 
-        if (defaultResources == null) {
-            throw new IllegalStateException("defaultResources was not initialized. Call SkinManager.init() in Application.onCreate() or call SkinManager.beforeActivityOnCreate() in every Activity onAttach()");
-        }
-
         showSkinChangeAnimation(activity);
         final Context cxt = activity.getApplicationContext();
+        changingResourceToken = activity.hashCode();
         new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected void onPreExecute() {
-                changingResource = true;
-            }
 
             @Override
             protected Boolean doInBackground(Void... params) {
                 Resources originalResources = currentResources;
                 try {
                     Log.d("start change resource");
-                    final Resources res = resourcesManager.createProxyResource(cxt, path, defaultResources);
+                    final Resources res = resourcesManager.createResources(cxt, path);
                     if (res == null) {
                         return false;
                     }
@@ -244,7 +228,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                 for (OnResourcesChangeFinishListener listener : list) {
                     listener.onResourcesChangeFinish(result);
                 }
-                changingResource = false;
+                changingResourceToken = 0;
             }
         }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
@@ -261,50 +245,61 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
 
         changeActivityResources(a, res);
 
-        if (a instanceof OnResourcesChangeFinishListener) {
-            uiSerialTasks.offer(new Runnable() {
-                @Override
-                public void run() {
-                    ((OnResourcesChangeFinishListener) a).onResourcesChangeFinish(true);
-                }
-            });
-        }
+        if (changingResourceToken == a.hashCode()) {
 
-        Object fragmentManager = ReflectUtil.get(a, "mFragments");
-        if (fragmentManager != null) {
-            List<?> fragments = ReflectUtil.get(fragmentManager, "mAdded");
-            if (fragments == null) {
-                fragmentManager = ReflectUtil.invoke(fragmentManager, "getFragmentManager");
-                if (fragmentManager == null) {
-                    fragmentManager = ReflectUtil.invoke(fragmentManager, "getSupportFragmentManager");
-                }
-                fragments = ReflectUtil.get(fragmentManager, "mAdded");
+            if (a instanceof OnResourcesChangeFinishListener) {
+                uiSerialTasks.offer(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((OnResourcesChangeFinishListener) a).onResourcesChangeFinish(true);
+                    }
+                });
             }
 
-            if (fragments != null && fragments.size() > 0) {
-                for (final Object f : fragments) {
-                    if (f instanceof OnResourcesChangeFinishListener) {
-                        uiSerialTasks.offer(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((OnResourcesChangeFinishListener) f).onResourcesChangeFinish(true);
-                            }
-                        });
+            Object fragmentManager = ReflectUtil.get(a, "mFragments");
+            if (fragmentManager != null) {
+                List<?> fragments = ReflectUtil.get(fragmentManager, "mAdded");
+                if (fragments == null) {
+                    fragmentManager = ReflectUtil.invoke(fragmentManager, "getFragmentManager");
+                    if (fragmentManager == null) {
+                        fragmentManager = ReflectUtil.invoke(fragmentManager, "getSupportFragmentManager");
+                    }
+                    fragments = ReflectUtil.get(fragmentManager, "mAdded");
+                }
+
+                if (fragments != null && fragments.size() > 0) {
+                    for (final Object f : fragments) {
+                        if (f instanceof OnResourcesChangeFinishListener) {
+                            uiSerialTasks.offer(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((OnResourcesChangeFinishListener) f).onResourcesChangeFinish(true);
+                                }
+                            });
+                        }
                     }
                 }
             }
-        }
 
-
-        final Window w = a.getWindow();
-        if (w != null) {
+            final Window w = a.getWindow();
+            if (w != null) {
+                uiSerialTasks.offer(new Runnable() {
+                    @Override
+                    public void run() {
+                        onResourcesChange(w.getDecorView());
+                    }
+                });
+            }
+        } else {
             uiSerialTasks.offer(new Runnable() {
                 @Override
                 public void run() {
-                    onResourcesChange(w.getDecorView());
+                    a.recreate();
                 }
             });
         }
+
+
     }
 
     /**
@@ -389,7 +384,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             currentSkinPath = prefSkinPath;
         }
 
-        Resources res = resourcesManager.createProxyResource(activity, currentSkinPath, defaultResources);
+        Resources res = resourcesManager.createResources(activity, currentSkinPath);
         try {
             changeActivityResources(activity, res);
             currentResources = res;
@@ -403,8 +398,9 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      *
      * @param activity 要显示渐变动画的界面
      */
-    private void showSkinChangeAnimation(Activity activity) {
+    private void showSkinChangeAnimation(final Activity activity) {
         try {
+
             final ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
             if (decor == null) {
                 return;
@@ -413,6 +409,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
             decor.setDrawingCacheEnabled(true);
             Bitmap src = decor.getDrawingCache();
             Bitmap temp = Bitmap.createBitmap(src);
+            decor.setDrawingCacheEnabled(false);
 
             final ImageView iv = new ImageView(activity);
             iv.setImageBitmap(temp);
@@ -433,7 +430,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                 }
             });
 
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             decor.addView(iv, lp);
 
             AlphaAnimation aa = new AlphaAnimation(1F, 0F);
@@ -446,7 +443,6 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     decor.removeView(iv);
-                    decor.setDrawingCacheEnabled(false);
                 }
 
                 @Override
@@ -467,7 +463,7 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
      * @return 是 true
      */
     public boolean isChangingResource() {
-        return changingResource;
+        return changingResourceToken != 0;
     }
 
     public String getCurrentSkin() {
@@ -490,16 +486,8 @@ public class SkinManager extends ActivityLifecycleCallbacksAdapter {
         this.currentResources = currentResources;
     }
 
-    public Resources getDefaultResources() {
-        return defaultResources;
-    }
-
     public ArrayList<Activity> getActivities() {
         return activities;
-    }
-
-    public ResourcesCacheKeyIdManager getResourcesCacheKeyIdManager() {
-        return resourcesCacheKeyIdManager;
     }
 
 }

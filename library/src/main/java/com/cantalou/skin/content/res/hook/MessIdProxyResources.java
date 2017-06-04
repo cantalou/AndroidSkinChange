@@ -1,4 +1,4 @@
-package com.cantalou.skin.content.res;
+package com.cantalou.skin.content.res.hook;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;

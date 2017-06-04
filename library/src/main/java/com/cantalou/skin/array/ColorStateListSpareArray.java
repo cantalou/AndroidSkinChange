@@ -7,7 +7,7 @@ import android.util.SparseArray;
 
 import com.cantalou.android.util.array.SparseLongIntArray;
 import com.cantalou.skin.SkinManager;
-import com.cantalou.skin.content.res.ProxyResources;
+import com.cantalou.skin.content.res.hook.ProxyResources;
 
 /**
  * 系统版本低于Build.VERSION_CODES.

@@ -9,8 +9,8 @@ import android.util.TypedValue;
 import org.xmlpull.v1.XmlPullParser;
 
 /**
- * @author Lin Zhiwei
- * @date 16-10-11 下午10:43
+ * @author cantalou
+ * @date 2016-10-11 下午10:43
  */
 public class ResourcesUtil {
 
@@ -122,12 +122,10 @@ public class ResourcesUtil {
         try {
             final AssetManager am = resources.getAssets();
             final XmlResourceParser xml = am.openXmlResourceParser("AndroidManifest.xml");
-
             int eventType = xml.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG && "manifest".equals(xml.getName())) {
                     for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
-
                         if ("package".equals(xml.getAttributeName(i))) {
                             return xml.getAttributeValue(i);
                         }
