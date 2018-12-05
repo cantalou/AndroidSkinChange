@@ -14,7 +14,7 @@ import com.cantalou.skin.SkinManager;
  * @author LinZhiWei
  * @date 2017年04月14日 10:37
  * <p>
- * Copyright (c) 2017年, 4399 Network CO.ltd. All Rights Reserved.
+ * Copyright (c) 2017年,  Network CO.ltd. All Rights Reserved.
  */
 public class SampleApplication extends Application {
     @Override
